@@ -18,15 +18,15 @@
 	</developers>
 
     <modules>
+        <module>config-server</module>
+        <module>api-gateway</module>
+        <module>discovery-server</module>
         <module>user-service</module>
         <module>budget-service</module>
         <module>expense-service</module>
         <module>goal-service</module>
         <module>notification-service</module>
         <module>reporting-service</module>
-        <module>config-server</module>
-        <module>discovery-server</module>
-        <module>api-gateway</module>
     </modules>
 
 	<scm>

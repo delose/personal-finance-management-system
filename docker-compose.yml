@@ -1,0 +1,133 @@
+# version: '3.8'
+
+services:
+  config-server:
+    image: delose/config-server:latest
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+    networks:
+      - pfms-network
+
+  discovery-server:
+    image: delose/discovery-server:latest
+    container_name: discovery-server
+    ports:
+      - "8761:8761"
+    networks:
+      - pfms-network
+    depends_on:
+      - config-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
+
+  api-gateway:
+    image: delose/api-gateway:latest
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - pfms-network
+    depends_on:
+      - config-server
+      - discovery-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  user-service:
+    image: delose/user-service:latest
+    container_name: user-service
+    ports:
+      - "8081:8081"
+    networks:
+      - pfms-network
+    depends_on:
+      - config-server
+      - discovery-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  budget-service:
+    image: delose/budget-service:latest
+    container_name: budget-service
+    ports:
+      - "8082:8082"
+    networks:
+      - pfms-network
+    depends_on:
+      - config-server
+      - discovery-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  expense-service:
+    image: delose/expense-service:latest
+    container_name: expense-service
+    ports:
+      - "8083:8083"
+    networks:
+      - pfms-network
+    depends_on:
+      - config-server
+      - discovery-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  goal-service:
+    image: delose/goal-service:latest
+    container_name: goal-service
+    ports:
+      - "8084:8084"
+    networks:
+      - pfms-network
+    depends_on:
+      - config-server
+      - discovery-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  notification-service:
+    image: delose/notification-service:latest
+    container_name: notification-service
+    ports:
+      - "8085:8085"
+    networks:
+      - pfms-network
+    depends_on:
+      - config-server
+      - discovery-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  reporting-service:
+    image: delose/reporting-service:latest
+    container_name: reporting-service
+    ports:
+      - "8086:8086"
+    networks:
+      - pfms-network
+    depends_on:
+      - config-server
+      - discovery-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+  messaging-service:
+    image: delose/messaging-service:latest
+    container_name: messaging-service
+    ports:
+      - "8087:8087"
+    networks:
+      - pfms-network
+    depends_on:
+      - config-server
+      - discovery-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=default
+
+networks:
+  pfms-network:
+    driver: bridge
