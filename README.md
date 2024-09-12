@@ -65,6 +65,13 @@ The front-end of PFMS is developed using React, providing a modern, dynamic, and
 - **Financial Reports**
   - Users can generate and view detailed reports on their financial activities, including spending patterns and goal achievements.
 
+#### 2.1. Screens preview
+
+##### 2.1.1 Screenshots (pfms-ui 1.0.0)
+![Home page](public/preview/home-page-preview.png)
+![Budget page](public/preview/budget-page-preview.png)
+
+
 ### 3. Deployment
 
 #### 3.1. Backend Services (Microservices)
