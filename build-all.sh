@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define an array of service directories
-services=("config-server" "discovery-server" "api-gateway" "messaging-service" "user-service" "budget-service" "expense-service" "goal-service" "notification-service" "reporting-service")
+services=("config-server" "discovery-server" "api-gateway" "message-broker" "user-service" "budget-service" "expense-service" "goal-service" "notification-service" "reporting-service")
 
 # Function to build a module
 build_module() {

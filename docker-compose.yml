@@ -115,9 +115,9 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=default
 
-  messaging-service:
-    image: delose/messaging-service:latest
-    container_name: messaging-service
+  message-broker:
+    image: delose/message-broker:latest
+    container_name: message-broker
     ports:
       - "8087:8087"
     networks:

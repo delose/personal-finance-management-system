@@ -9,9 +9,9 @@
 		<relativePath>../pom.xml</relativePath>
     </parent>
 	<groupId>com.delose.pfms</groupId>
-	<artifactId>messaging-service</artifactId>
+	<artifactId>message-broker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>messaging-service</name>
+	<name>message-broker</name>
 	<description>Facilitates asynchronous communication between services via a message broker (e.g., Kafka, RabbitMQ), ensuring the system is scalable, resilient, and decoupled.</description>
 	<url/>
 	<licenses>

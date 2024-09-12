@@ -35,6 +35,7 @@ services=(
     "config-server"
     "discovery-server"
     "api-gateway"
+    "message-broker"
     "user-service"
     "budget-service"
     "expense-service"

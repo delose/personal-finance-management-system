@@ -40,7 +40,7 @@ PFMS is composed of multiple microservices, each responsible for a specific doma
 - **Reporting Service (`reporting-service`)**
   - Generates financial reports and analytics based on user data.
   
-- **Messaging Service (`messaging-service`)**
+- **Messaging Service (`message-broker`)**
   - Handles asynchronous communication between services using message brokers like Kafka or RabbitMQ.
 
 ### 2. Front-End: React UI

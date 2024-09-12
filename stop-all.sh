@@ -20,13 +20,13 @@ services=(
     "config-server"
     "discovery-server"
     "api-gateway"
+    "message-broker"
     "user-service"
     "budget-service"
     "expense-service"
     "goal-service"
     "notification-service"
     "reporting-service"
-    "messaging-service"
 )
 
 # Loop through each service and rebuild it
