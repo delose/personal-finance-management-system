@@ -35,6 +35,8 @@ do
     stop_service $service
 done
 
+docker-compose down
+
 # Start the services using Docker Compose
 echo "Stopped services with Docker Compose..."
 
