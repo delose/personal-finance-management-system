@@ -68,8 +68,8 @@ The front-end of PFMS is developed using React, providing a modern, dynamic, and
 #### 2.1. Screens preview
 
 ##### 2.1.1 Screenshots (pfms-ui 1.0.0)
-![Home page](public/preview/home-page-preview.png)
-![Budget page](public/preview/budget-page-preview.png)
+![Home page](pfms-ui/public/preview/home-page-preview.png)
+![Budget page](pfms-ui/public/preview/budget-page-preview.png)
 
 
 ### 3. Deployment
