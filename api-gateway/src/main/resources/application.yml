@@ -1,0 +1,43 @@
+server:
+  port: 8080  # Port for the API Gateway
+
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: api-gateway
+  security:
+    user:
+      name: pfms
+      password: pfms
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/users/**
+          filters:
+            - AddRequestHeader=Authorization,Basic cGZtczp3ZWxjb21l
+        - id: budget-service
+          uri: lb://BUDGET-SERVICE
+          predicates:
+            - Path=/budgets/**
+          filters:
+            - AddRequestHeader=Authorization,Basic cGZtczp3ZWxjb21l
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

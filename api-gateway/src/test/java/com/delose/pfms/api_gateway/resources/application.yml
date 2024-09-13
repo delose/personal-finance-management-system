@@ -1,0 +1,10 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  security:
+    user:
+      name: pfms
+      password: pfms
+security:
+  basic:
+    enabled: false
