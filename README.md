@@ -70,7 +70,7 @@ The front-end of PFMS is developed using React, providing a modern, dynamic, and
 ##### 2.1.1 Screenshots (pfms-ui 1.0.0)
 ![Home page](pfms-ui/public/preview/home-page-preview.png)
 ![Budget page](pfms-ui/public/preview/budget-page-preview.png)
-
+![Eureka Dashboard](config-server/src/main/resources/config-server-registered-to-eureka-server.png)
 
 ### 3. Deployment
 

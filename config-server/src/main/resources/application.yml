@@ -1,0 +1,33 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/delose/personal-finance-management-system.git
+          clone-on-start: true
+          default-label: main
+    #   fail-fast: true
+  security:
+    user:
+      name: pfms
+      password: pfms
+eureka:
+    client:
+        serviceUrl:
+            defaultZone: http://localhost:8761/eureka
+        fetch-registry: true
+        register-with-eureka: true
+
+management:
+    endpoints:
+        web:
+            exposure:
+                include: "*"
+    endpoint:
+        health:
+            show-details: always
