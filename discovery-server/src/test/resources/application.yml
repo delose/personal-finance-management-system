@@ -1,0 +1,6 @@
+spring:
+  security:
+    basic:
+      enabled: false
+  main:
+    allow-bean-definition-overriding: true
