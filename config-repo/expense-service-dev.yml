@@ -1,0 +1,8 @@
+spring:
+  security:
+    user:
+      name: pfms
+      password: pfms
+
+  application:
+    name: expense-service

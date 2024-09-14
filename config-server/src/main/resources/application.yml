@@ -10,7 +10,7 @@ spring:
         git:
           uri: https://github.com/delose/personal-finance-management-system.git
           clone-on-start: true
-          default-label: main
+          default-label: master
     #   fail-fast: true
   security:
     user:

@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/userdb
+    username: pfms
+    password: pfms
+  security:
+    user:
+      name: pfms
+      password: pfms

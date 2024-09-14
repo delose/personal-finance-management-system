@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: reporting-service  # This name will match the config files in the config repo
+  cloud:
+    config:
+      uri: http://localhost:8086  # The address of the Reporting service
+      profile: ${spring.profiles.active}  # This tells Spring to use the active profile to select the config file
+      label: master  # Git branch to use

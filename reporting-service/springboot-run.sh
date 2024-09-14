@@ -16,4 +16,4 @@ fi
 mvn clean package
 
 # Run the Spring Boot application with the specified profile
-java -jar target/api-gateway-0.0.1-SNAPSHOT.jar --spring.profiles.active="$1"
+java -jar target/reporting-service-0.0.1-SNAPSHOT.jar --spring.profiles.active="$1"
