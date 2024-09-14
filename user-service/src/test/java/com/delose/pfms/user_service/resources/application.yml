@@ -1,12 +1,10 @@
-server:
-  port: 8081
-
 spring:
+  main:
+    allow-bean-definition-overriding: true
   security:
     user:
       name: pfms
       password: pfms
-
   application:
     name: user-service
   datasource:
@@ -21,3 +19,7 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+security:
+  basic:
+    enabled: false
