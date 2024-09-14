@@ -3,9 +3,7 @@ server:
 
 spring:
   security:
-    user:
-      name: pfms
-      password: pfms
+    enabled: false
 
   application:
     name: user-service

@@ -1,10 +1,7 @@
 spring:
   main:
     allow-bean-definition-overriding: true
-  security:
-    user:
-      name: pfms
-      password: pfms
+    web-application-type: reactive
   application:
     name: user-service
   datasource:
