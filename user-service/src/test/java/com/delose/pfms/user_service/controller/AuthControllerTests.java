@@ -13,7 +13,7 @@ import com.delose.pfms.user_service.entity.UserEntity;
 import com.delose.pfms.user_service.repository.UserRepository;
 
 @SpringBootTest
-class AuthControllerTests {
+public class AuthControllerTests {
 
     @Autowired
     private AuthController authController;
@@ -25,7 +25,7 @@ class AuthControllerTests {
     private PasswordEncoder passwordEncoder;
 
     @Test
-    void testUserRegistration() {
+    public void testUserRegistration() {
         UserRegistrationDTO registrationDTO = new UserRegistrationDTO();
         registrationDTO.setUsername("newuser");
         registrationDTO.setEmail("newuser@example.com");

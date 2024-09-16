@@ -8,13 +8,13 @@ import com.delose.pfms.user_service.entity.UserEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class UserRepositoryTests {
+public class UserRepositoryTests {
 
     @Autowired
     private UserRepository userRepository;
 
     @Test
-    void testCreateAndFindUser() {
+    public void testCreateAndFindUser() {
         UserEntity user = new UserEntity("testuser", "testuser@example.com", "password123", "ROLE_USER");
         userRepository.save(user);
 
