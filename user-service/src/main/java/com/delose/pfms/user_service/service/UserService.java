@@ -1,10 +1,9 @@
 package com.delose.pfms.user_service.service;
 
-import reactor.core.publisher.Mono;
+import com.delose.pfms.user_service.dto.UserRegistrationDTO;
 import com.delose.pfms.user_service.entity.UserEntity;
+import com.delose.pfms.user_service.exception.UserException;
 
 public interface UserService {
-    Mono<UserEntity> register(UserEntity user);
-    Mono<UserEntity> login(String username, String password);
-    Mono<UserEntity> getUserDetails(String username);
+    UserEntity register(UserRegistrationDTO user) throws UserException;
 }

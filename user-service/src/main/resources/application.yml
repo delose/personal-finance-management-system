@@ -4,7 +4,6 @@ server:
 spring:
   main:
     allow-bean-definition-overriding: true
-    web-application-type: reactive
   application:
     name: user-service
   datasource:

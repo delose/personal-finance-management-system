@@ -1,11 +1,13 @@
 package com.delose.pfms.user_service.repository;
 
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import com.delose.pfms.user_service.entity.UserEntity;
-import reactor.core.publisher.Mono;
+import java.util.Optional;
 
-public interface UserRepository extends ReactiveCrudRepository<UserEntity, Long> {
+@Repository
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    Mono<UserEntity> findByUsername(String username);
-    Mono<UserEntity> findByEmail(String email);
+    Optional<UserEntity> findByUsername(String username);
+    Optional<UserEntity> findByEmail(String email);
 }
