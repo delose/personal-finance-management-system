@@ -14,13 +14,46 @@ spring:
     gateway:
       routes:
         - id: user-service
-          uri: lb://USER-SERVICE
+          uri: http://localhost:8081   # URL for the user-service
           predicates:
-            - Path=/users/**
+            - Path=/api/v1/users/**
+          filters:
+            - StripPrefix=1
+
         - id: budget-service
-          uri: lb://BUDGET-SERVICE
+          uri: http://localhost:8082   # URL for the budget-service
           predicates:
-            - Path=/budgets/**
+            - Path=/api/v1/budgets/**
+          filters:
+            - StripPrefix=1
+
+        - id: expense-service
+          uri: http://localhost:8083   # URL for the expense-service
+          predicates:
+            - Path=/api/v1/expenses/**
+          filters:
+            - StripPrefix=1
+
+        - id: goal-service
+          uri: http://localhost:8084   # URL for the goal-service
+          predicates:
+            - Path=/api/v1/goals/**
+          filters:
+            - StripPrefix=1
+
+        - id: notification-service
+          uri: http://localhost:8085   # URL for the notification-service
+          predicates:
+            - Path=/api/v1/notifications/**
+          filters:
+            - StripPrefix=1
+
+        - id: reporting-service
+          uri: http://localhost:8086   # URL for the reporting-service
+          predicates:
+            - Path=/api/v1/reporting/**
+          filters:
+            - StripPrefix=1
 
 eureka:
   client:
@@ -33,7 +66,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health, info
   endpoint:
     health:
       show-details: always

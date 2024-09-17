@@ -33,7 +33,7 @@ public class JwtTokenUtilTest {
     }
 
     @Test
-    @Disabled("Debugging required")
+    @Disabled("Debugging required: Decoding Illegal base64 character: '_'")
     public void testGenerateToken() {
         User user = new User("testuser", "", Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null);
@@ -49,7 +49,7 @@ public class JwtTokenUtilTest {
     }
 
     @Test
-    @Disabled("Debugging required")
+    @Disabled("Debugging required: ExpiredJwt JWT expired at 2024-09-17T10:29:35Z. Current time: 2024-09-17T10:29:36Z, a difference of 1430 milliseconds.  Allowed clock skew: 0 milliseconds.")
     public void testTokenExpiration() throws InterruptedException {
         jwtTokenUtil.setExpiration(1L); // Set expiration to 1 second for testing
         User user = new User("testuser", "", Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));

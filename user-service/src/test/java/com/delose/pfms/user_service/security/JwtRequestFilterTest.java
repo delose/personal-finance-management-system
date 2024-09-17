@@ -59,7 +59,7 @@ public class JwtRequestFilterTest {
     }
 
     @Test
-    @Disabled("Debugging required")
+    @Disabled("Debugging required: expected: null but was: UsernamePasswordAuthenticationToken")
     public void testDoFilterInternalWithExpiredToken() throws ServletException, IOException {
         jwtTokenUtil.setExpiration(1L); // Set expiration to 1 second for testing
         String token = jwtTokenUtil.generateToken(new UsernamePasswordAuthenticationToken(userDetails, null));
@@ -80,7 +80,7 @@ public class JwtRequestFilterTest {
     }
 
     @Test
-    @Disabled("Debugging required")
+    @Disabled("Debugging required: expected: null but was: UsernamePasswordAuthenticationToken")
     public void testDoFilterInternalWithoutToken() throws ServletException, IOException {
         MockHttpServletRequest request = new MockHttpServletRequest();
         MockHttpServletResponse response = new MockHttpServletResponse();

@@ -2,8 +2,6 @@ server:
   port: 8080  # Port for the API Gateway
 
 spring:
-  main:
-    web-application-type: reactive
   application:
     name: api-gateway
   security:
