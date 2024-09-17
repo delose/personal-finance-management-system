@@ -8,7 +8,19 @@ This document outlines the functional use cases of the Personal Finance Manageme
 
 **High-Level Details**:
 - **User Registration**: New users provide their details, and the system verifies uniqueness (e.g., no duplicate usernames).
+
+    ```
+    Client --> API Gateway --> User Service (Register User) --> Database
+    ```
+
 - **Login**: Registered users enter their credentials, which are authenticated to grant access to the platform.
+
+    ```
+    Client --> API Gateway --> User Service (Authenticate User) --> Database
+                    |                           |
+                    +-------<--- JWT Token ----<+
+    ```
+
 - **Password Management**: Users can reset or change their passwords through the platform.
 
 ## 2. Budget Management
@@ -17,6 +29,11 @@ This document outlines the functional use cases of the Personal Finance Manageme
 
 **High-Level Details**:
 - **Create Budget**: Users can define a budget by specifying categories and assigning limits.
+
+    ```
+    Client --> API Gateway (Validate JWT) --> Budget Service (Create Budget) --> Database
+    ```
+
 - **Update Budget**: Users can modify their budget categories or limits as their financial situation changes.
 - **Track Spending**: The system tracks users’ expenditures against their budget and provides alerts if they are approaching or exceeding their limits.
 
@@ -25,6 +42,11 @@ This document outlines the functional use cases of the Personal Finance Manageme
 **Description**: Users can log their daily expenses into the system. Each expense is categorized and tracked against the budget.
 
 **High-Level Details**:
+
+    ```
+    Client --> API Gateway (Validate JWT) --> Expense Service (Log Expense) --> Database
+    ```
+
 - **Log Expense**: Users can enter details of their expenses, including amount, category, date, and a brief description.
 - **Categorization**: Expenses are automatically categorized based on user input or predefined rules.
 - **Expense History**: Users can view their historical expenses, filter by date or category, and analyze their spending patterns.
@@ -35,12 +57,23 @@ This document outlines the functional use cases of the Personal Finance Manageme
 
 **High-Level Details**:
 - **Set Goals**: Users can define specific financial goals, including the target amount, deadline, and associated savings plan.
+
+    ```
+    Client --> API Gateway (Validate JWT) --> Goal Service (Set Goal) --> Database
+    ```
+
 - **Progress Tracking**: The system tracks progress towards each goal and provides updates on whether the user is on track or needs to adjust their savings.
 - **Recommendations**: The platform can suggest adjustments to users' budgets or savings plans to help them meet their goals.
 
 ## 5. Notifications and Alerts
 
 **Description**: The system provides users with timely notifications and alerts about their financial status, such as upcoming bills, low balances, or when they’re close to exceeding their budget.
+
+    ```
+    Client --> API Gateway (Validate JWT) --> Notification Service (Retrieve Notifications) --> Database
+                    |                           |
+                    +------<--- Notifications -<+
+    ```
 
 **High-Level Details**:
 - **Budget Alerts**: Alerts are sent when users are close to or have exceeded their budget limits.
@@ -53,6 +86,13 @@ This document outlines the functional use cases of the Personal Finance Manageme
 
 **High-Level Details**:
 - **Generate Reports**: Users can generate custom reports based on various criteria (e.g., monthly spending, category-wise analysis).
+
+    ```
+    Client --> API Gateway (Validate JWT) --> Reporting Service (Generate Report) --> Database
+                    |                           |
+                    +------<--- Report --------<+
+    ```
+
 - **Visual Analytics**: The system presents data visually, using charts and graphs, to help users understand their financial behavior.
 - **Trend Analysis**: Users can see trends over time, such as increasing or decreasing spending in certain categories.
 
