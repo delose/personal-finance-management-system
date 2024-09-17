@@ -1,8 +1,4 @@
 spring:
-  security:
-    user:
-      name: pfms
-      password: pfms
 
   application:
     name: message-broker

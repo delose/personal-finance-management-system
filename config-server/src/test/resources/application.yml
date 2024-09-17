@@ -6,7 +6,3 @@ spring:
       server:
         git:
           uri: https://github.com/delose/personal-finance-management-system.git
-  security:
-    user:
-      name: pfms
-      password: pfms

@@ -2,9 +2,6 @@ server:
   port: 8081
 
 spring:
-  security:
-    enabled: false
-
   application:
     name: user-service
   datasource:

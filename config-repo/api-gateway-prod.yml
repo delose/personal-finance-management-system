@@ -4,10 +4,6 @@ server:
 spring:
   application:
     name: api-gateway
-  security:
-    user:
-      name: pfms
-      password: pfms
   cloud:
     gateway:
       routes:
