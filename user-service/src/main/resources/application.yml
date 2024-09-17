@@ -25,5 +25,5 @@ spring:
           issuer-uri: http://localhost:8080/auth/realms/myrealm
           jwk-set-uri: http://localhost:8080/auth/realms/myrealm/protocol/openid-connect/certs
 jwt:
-  secret: your_secret_key
+  secret: secret
   expiration: 3600

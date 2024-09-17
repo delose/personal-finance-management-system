@@ -11,8 +11,8 @@ import com.delose.pfms.user_service.dto.JwtRequest;
 import com.delose.pfms.user_service.dto.JwtResponse;
 import com.delose.pfms.user_service.dto.UserRegistrationDTO;
 import com.delose.pfms.user_service.entity.UserEntity;
+import com.delose.pfms.user_service.security.JwtTokenUtil;
 import com.delose.pfms.user_service.service.UserService;
-import com.delose.pfms.user_service.util.JwtTokenUtil;
 
 @RestController
 @RequestMapping("/api/v1/auth")
