@@ -3,6 +3,7 @@ server:
 
 spring:
   main:
+    allow-bean-definition-overriding: true
     web-application-type: reactive
   application:
     name: api-gateway
@@ -66,3 +67,8 @@ management:
   endpoint:
     health:
       show-details: always
+
+jwt:
+  secret: secret
+  token:
+    expiration-in-seconds: 3600
