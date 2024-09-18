@@ -1,9 +1,23 @@
 package com.delose.pfms.user_service.service;
 
-import com.delose.pfms.user_service.dto.UserRegistrationDTO;
-import com.delose.pfms.user_service.entity.UserEntity;
-import com.delose.pfms.user_service.exception.UserException;
+import org.springframework.stereotype.Service;
 
-public interface UserService {
-    UserEntity register(UserRegistrationDTO user) throws UserException;
+import com.delose.pfms.user_service.entity.User;
+import com.delose.pfms.user_service.repository.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    public User saveUser(User user) {
+        return userRepository.save(user);
+    }
 }
