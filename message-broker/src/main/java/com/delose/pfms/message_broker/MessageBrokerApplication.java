@@ -7,6 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MessageBrokerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(KafkaMessageBrokerApplication.class, args);
+        SpringApplication.run(MessageBrokerApplication.class, args);
     }
 }
