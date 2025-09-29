@@ -162,4 +162,12 @@ The expected output is:
 
 This architecture, named **Reactive Microservices Architecture with Messaging**, enables asynchronous communication between services via a message broker, promoting scalability, decoupling, and resilience. By following this architecture, each service can perform its task independently and communicate the results to other services, which improves the overall performance and reliability of your system.
 
+### Getting started
 
+1. Run build command
+```bash
+cd pfms
+./build-all.sh
+```
+
+2. TBD
