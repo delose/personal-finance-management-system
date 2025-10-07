@@ -169,5 +169,9 @@ This architecture, named **Reactive Microservices Architecture with Messaging**,
 cd pfms
 ./build-all.sh
 ```
-
-2. TBD
+- Should show a message below:
+```bash
+------------------------------------
+All modules built successfully.
+------------------------------------
+```
