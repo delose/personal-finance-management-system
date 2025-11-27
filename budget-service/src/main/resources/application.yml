@@ -1,2 +1,18 @@
 server:
-    port: 8082
+  port: 8082
+spring:
+  application:
+    name: budget-service
+  datasource:
+    url:
+      h2:
+        mem:
+          budgetdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
