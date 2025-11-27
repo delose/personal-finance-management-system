@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BudgetService {
@@ -19,5 +20,9 @@ public class BudgetService {
 
     public Budget saveBudget(Budget budget) {
         return this.budgetRepository.save(budget);
+    }
+
+    public Optional<Budget> findBudgetById(Long id) {
+        return this.budgetRepository.findById(id);
     }
 }
