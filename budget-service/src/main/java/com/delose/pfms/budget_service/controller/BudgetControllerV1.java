@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/v1/api/budgets")
@@ -26,5 +27,13 @@ public class BudgetControllerV1 {
     public ResponseEntity<Budget> createBudget(@RequestBody Budget budget) {
         Budget savedBudget = this.budgetService.saveBudget(budget);
         return ResponseEntity.ok(budget);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Budget> getBudgetById(@PathVariable Long id) {
+        Optional<Budget> budget = budgetService.findBudgetById(id);
+        return budget.map(ResponseEntity::ok).orElseGet(
+                () -> ResponseEntity.notFound().build()
+        );
     }
 }
