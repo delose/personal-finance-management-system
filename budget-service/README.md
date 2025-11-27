@@ -10,7 +10,7 @@
 curl -i -X POST http://localhost:8082/v1/api/budgets \
    -H 'Content-Type: application/json' \
    -d '{
-        "category": "Groceries",
+        "category": "GROCERIES",
         "amount": 450.75,
         "startDate": "2025-01-01",
         "endDate": "2025-01-31",
