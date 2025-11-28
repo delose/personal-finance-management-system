@@ -16,9 +16,3 @@ spring:
   h2:
     console:
       enabled: true
-
-info:
-  application:
-    name: PFMS - Budget Service
-    version: 1.0.0
-    description: Personal Finance Management Service Microservice
