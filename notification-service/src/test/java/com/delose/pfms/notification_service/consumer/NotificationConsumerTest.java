@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @DirtiesContext
 @EnableKafka
-@EmbeddedKafka(partitions = 1, topics = {"notification_requests_topic"})
+@EmbeddedKafka
 @ActiveProfiles("dev")
 public class NotificationConsumerTest {
 
