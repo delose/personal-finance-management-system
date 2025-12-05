@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# Function to check if Docker is running
+check_docker_running() {
+    if ! docker info &> /dev/null; then
+        echo "Error: Docker daemon is not running."
+        echo "Please start Docker and run the script again."
+        # Optional: Add specific run command for your OS if needed, e.g., 'open -a Docker' on macOS
+        # For Linux, it might be 'sudo systemctl start docker' if not started at boot
+        exit 1
+    fi
+}
+
 # Function to rebuild a Maven project
 restart_service() {
     SERVICE_NAME=$1
@@ -20,6 +31,11 @@ restart_service() {
     # Navigate back to the root directory
     cd ..
 }
+
+# --- Main execution starts here ---
+
+# 1. Check if Docker is running before doing anything else
+check_docker_running
 
 # List of services
 services=(
