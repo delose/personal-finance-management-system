@@ -57,8 +57,4 @@ do
     restart_service $service
 done
 
-# Start the services using Docker Compose
-echo "Starting services with Docker Compose..."
-docker-compose up
-
 
