@@ -100,7 +100,7 @@ services:
       - config-server
       - discovery-server
     environment:
-      - SPRING_PROFILES_ACTIVE=default
+      - SPRING_PROFILES_ACTIVE=dev
 
   reporting-service:
     image: delose/reporting-service:latest
