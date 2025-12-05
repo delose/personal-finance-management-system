@@ -175,3 +175,14 @@ cd pfms
 All modules built successfully.
 ------------------------------------
 ```
+
+2. Run all containers
+```bash
+./docker-run.sh
+```
+
+3. Post changes, restart a container (rebuild included)
+```bash
+cd <INSERT SERVICE NAME>
+./restart-docker.sh
+```
