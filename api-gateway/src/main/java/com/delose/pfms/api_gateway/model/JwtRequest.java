@@ -1,18 +1,24 @@
 package com.delose.pfms.api_gateway.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 import java.io.Serializable;
 
-@Getter
-@Setter
-@AllArgsConstructor
 public class JwtRequest implements Serializable {
 
     private static final long serialVersionUID = 5926468583005150707L;
 
-    private String username;
-    private String password;
+    private final String username;
+    private final String password;
 
+    public JwtRequest(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public Object getPassword() {
+        return this.password;
+    }
 }
