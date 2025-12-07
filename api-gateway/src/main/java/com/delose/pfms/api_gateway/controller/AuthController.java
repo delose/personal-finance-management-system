@@ -14,12 +14,8 @@ import com.delose.pfms.api_gateway.model.JwtResponse;
 import com.delose.pfms.api_gateway.service.JwtTokenUtil;
 import com.delose.pfms.api_gateway.service.JwtUserDetailsService;
 
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
@@ -27,6 +23,12 @@ public class AuthController {
     private final JwtTokenUtil jwtTokenUtil;
 
     private final JwtUserDetailsService userDetailsService;
+
+    public AuthController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, JwtUserDetailsService userDetailsService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.userDetailsService = userDetailsService;
+    }
 
     @PostMapping("/login")
     public JwtResponse createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws JwtAuthException {
