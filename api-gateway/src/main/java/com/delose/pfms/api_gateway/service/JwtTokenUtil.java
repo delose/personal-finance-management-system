@@ -22,10 +22,10 @@ public class JwtTokenUtil implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
-    @Value("${jwt.secret}")
+    @Value("${jwt.secret:secret}")
     private String secret;
 
-    @Value("${jwt.token.expiration-in-seconds}")
+    @Value("${jwt.token.expiration-in-seconds:3600}")
     private Long expirationTime;
 
     // retrieve username from jwt token
