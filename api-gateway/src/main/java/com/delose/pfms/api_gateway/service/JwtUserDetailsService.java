@@ -7,8 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.ArrayList;
 
 /**
@@ -17,10 +15,13 @@ import java.util.ArrayList;
  * It loads user details from a hardcoded list of users.
  */
 @Service
-@RequiredArgsConstructor
 public class JwtUserDetailsService implements UserDetailsService {
 
     private final RestTemplate restTemplate;
+
+    public JwtUserDetailsService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
