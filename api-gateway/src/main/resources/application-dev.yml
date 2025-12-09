@@ -7,7 +7,12 @@ spring:
     web-application-type: reactive
   application:
     name: api-gateway
+  config:
+    activate:
+      on-profile: dev
   cloud:
+    discovery:
+      enabled: true
     gateway:
       routes:
         - id: user-service
