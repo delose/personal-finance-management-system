@@ -25,7 +25,7 @@ This will start the Config Server on port 8080.
 ## Quick start
 1. Dockerized MySQL
 
-### 1-1. Start docker container from MySQL image
+### 1-1. Start dockerized DB from MySQL image
 ```bash
 docker run -d -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=apigwdb --name apigwdb -p 3307:3306 mysql:8.0
 ```
@@ -47,4 +47,19 @@ docker rm apigwdb
 ## 2. Run spring boot
 ```bash
 mvn spring-boot:run 
+```
+
+## 3. Register [WIP - encountering: 'An expected CSRF token cannot be found']
+```bash
+curl -X POST http://localhost:8080/auth/signup \
+     -H 'Content-Type: application/json' \
+     -d '{"email": "aaa@aaa.com", "password" : "pw123", "fullName": "Jon Doe"}'
+
+```
+
+## 4. Login [WIP]
+```bash
+curl -X POST http://localhost:8080/auth/login \
+     -H 'Content-Type: application/json' \
+     -d '{"email": "aaa@aaa.com", "password" : "pw123"}'
 ```
