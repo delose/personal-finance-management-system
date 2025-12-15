@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Mono;
 
 @RequestMapping("/auth")
 @RestController
@@ -27,9 +28,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
-        User registeredUser = authenticationService.signup(registerUserDto);
-        return ResponseEntity.ok(registeredUser);
+    public Mono<ResponseEntity<User>> register(@RequestBody RegisterUserDto registerUserDto) {
+        log.info("Received signup request for email: {}", registerUserDto.getEmail());
+
+        return Mono.just(authenticationService.signup(registerUserDto))
+                .map(ResponseEntity::ok)
+                .doOnSuccess(user -> log.info("Successfully registered user."))
+                .doOnError(e -> log.error("Error during registration", e));
     }
 
     @PostMapping("/login")
