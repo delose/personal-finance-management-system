@@ -69,3 +69,8 @@ curl -X POST http://localhost:8080/auth/login \
 curl -X GET http://localhost:8080/users/me \
      -H "Authorization: Bearer <JWT>" | jq
 ```
+
+## 6. Run dockerized app
+```bash
+./run-docker.sh
+```
