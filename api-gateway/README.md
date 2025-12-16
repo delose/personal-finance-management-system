@@ -49,17 +49,23 @@ docker rm apigwdb
 mvn spring-boot:run 
 ```
 
-## 3. Register [WIP - encountering: 'An expected CSRF token cannot be found']
+## 3. Register
 ```bash
 curl -X POST http://localhost:8080/auth/signup \
      -H 'Content-Type: application/json' \
-     -d '{"email": "aaa@aaa.com", "password" : "pw123", "fullName": "Jon Doe"}'
+     -d '{"email": "aaa@aaa.com", "password" : "pw123", "fullName": "Ziggy"}'
 
 ```
 
-## 4. Login [WIP]
+## 4. Login
 ```bash
 curl -X POST http://localhost:8080/auth/login \
      -H 'Content-Type: application/json' \
      -d '{"email": "aaa@aaa.com", "password" : "pw123"}'
+```
+
+## 5. Access Resource
+```bash
+curl -X GET http://localhost:8080/users/me \
+     -H "Authorization: Bearer <JWT>" | jq
 ```
