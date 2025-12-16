@@ -46,8 +46,8 @@ public class GlobalExceptionHandler {
         return switch (e) {
             case BadCredentialsException ex -> "error.auth.bad_credentials";
             case ExpiredJwtException ex -> "error.auth.token_expired"; // wip
-            case SignatureException ex -> "error.auth.invalid_signature";
-            case DuplicateKeyException ex -> "error.db.duplicate_key"; // wip
+            case SignatureException ex -> "error.auth.invalid_signature"; // wip
+            case DuplicateKeyException ex -> "error.db.duplicate_key";
             default -> "error.general.internal_error";
         };
     }
