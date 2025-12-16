@@ -6,16 +6,21 @@ import com.delose.pfms.api_gateway.dto.RegisterUserDto;
 import com.delose.pfms.api_gateway.entity.User;
 import com.delose.pfms.api_gateway.service.AuthenticationService;
 import com.delose.pfms.api_gateway.service.JwtService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 @RequestMapping("/auth")
+@Slf4j
 @RestController
 public class AuthenticationController {
     private static final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
@@ -28,13 +33,18 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public Mono<ResponseEntity<User>> register(@RequestBody RegisterUserDto registerUserDto) {
+    public Mono<ResponseEntity<?>> register(@RequestBody RegisterUserDto registerUserDto) {
         log.info("Received signup request for email: {}", registerUserDto.getEmail());
 
-        return Mono.just(authenticationService.signup(registerUserDto))
-                .map(ResponseEntity::ok)
-                .doOnSuccess(user -> log.info("Successfully registered user."))
-                .doOnError(e -> log.error("Error during registration", e));
+        return Mono.fromCallable(() -> authenticationService.signup(registerUserDto))
+                .subscribeOn(Schedulers.boundedElastic()) // Required for blocking DB calls
+                .onErrorMap(e -> {
+                    if (e.getMessage().contains("duplicate") || e instanceof DataIntegrityViolationException) {
+                        return new DuplicateKeyException("User already exists");
+                    }
+                    return e;
+                })
+                .map(ResponseEntity::ok);
     }
 
     @PostMapping("/login")
