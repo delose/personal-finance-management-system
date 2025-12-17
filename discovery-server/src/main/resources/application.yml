@@ -5,12 +5,12 @@ spring:
   application:
     name: discovery-server
 
-  eureka:
-    client:
-        register-with-eureka: false
-        fetch-registry: false
-    server:
-        wait-time-in-ms-when-sync-empty: 0
+eureka:
+  client:
+      register-with-eureka: false
+      fetch-registry: false
+  server:
+      wait-time-in-ms-when-sync-empty: 0
 
 
 management:
