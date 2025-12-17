@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Actuator Dashboard</title>
+        <link rel="stylesheet" href="cdn.jsdelivr.net">
+    </head>
+    <body class="container mt-5">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2 th:text="${appName}">Application Dashboard</h2>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>JVM Memory Used</td>
+                        <td th:text="${memoryUsed}">0 MB</td>
+                    </tr>
+                    <tr>
+                        <td>System CPU Usage</td>
+                        <td th:text="${cpuUsage}">0%</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <a href="/actuator" class="btn btn-secondary btn-sm">Raw Actuator Endpoints</a>
+            </div>
+        </div>
+    </body>
+</html>
