@@ -23,10 +23,3 @@ management:
       exposure:
         include: "*"
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://host.docker.internal:8761/eureka
-    register-with-eureka: true
-    fetch-registry: true
-
