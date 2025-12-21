@@ -29,7 +29,7 @@ class UserServiceTest {
     @Test
     void getUserByUsername_UserExists_ReturnsUser() {
         // Given
-        User mockUser = new User("testuser", "password", "testuser@example.com");
+        User mockUser = new User(1L, "testuser", "password", "testuser@example.com");
         when(userRepository.findByUsername("testuser")).thenReturn(mockUser);
 
         // When
@@ -45,7 +45,7 @@ class UserServiceTest {
     @Test
     void saveUser_ValidUser_SavesUser() {
         // Given
-        User mockUser = new User("testuser", "password", "testuser@example.com");
+        User mockUser = new User(1L, "testuser", "password", "testuser@example.com");
         when(userRepository.save(mockUser)).thenReturn(mockUser);
 
         // When
