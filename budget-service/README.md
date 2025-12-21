@@ -43,3 +43,13 @@ curl http://localhost:8082/actuator/metrics/jvm.memory.used | jq
 curl http://localhost:8082/actuator/env | jq
 ```
 
+## Run spring boot
+```bash
+./springboot-run.sh
+```
+
+## Run docker
+```bash
+./run-docker.sh
+```
+
