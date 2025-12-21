@@ -38,3 +38,14 @@ Unit tests are included in the src/test/java directory. To run the tests, use:
     ```bash
     mvn test
     ```
+
+## Run Spring Boot user-service on local
+```bash
+./springboot-run.sh dev
+```
+
+## Run docker
+```shell
+./run-docker.sh
+```
+
