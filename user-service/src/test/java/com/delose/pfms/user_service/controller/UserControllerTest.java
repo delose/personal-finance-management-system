@@ -37,7 +37,7 @@ class UserControllerTest {
     @Test
     void getUserByUsername_UserExists_ReturnsUser_Success() throws Exception {
         // Arrange
-        User mockUser = new User("testuser", "password", "testuser@example.com");
+        User mockUser = new User(1L, "testuser", "password", "testuser@example.com");
         when(userService.getUserByUsername("testuser")).thenReturn(mockUser);
 
         // Act & Assert
@@ -53,7 +53,7 @@ class UserControllerTest {
     @Test
     void registerUser_ValidUser_ReturnsUser() throws Exception {
         // Arrange
-        User mockUser = new User("testuser", "password", "testuser@example.com");
+        User mockUser = new User(1L, "testuser", "password", "testuser@example.com");
         when(userService.saveUser(any(User.class))).thenReturn(mockUser);
 
         // Act & Assert
