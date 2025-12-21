@@ -5,3 +5,5 @@ eureka:
       defaultZone: http://host.docker.internal:8761/eureka
     register-with-eureka: true
     fetch-registry: true
+  instance:
+    prefer-ip-address: true
