@@ -10,6 +10,8 @@ docker rm goal-service 2>/dev/null
 docker run -d -p 8084:8084 --name goal-service \
   --add-host=host.docker.internal:host-gateway \
   -e SPRING_PROFILES_ACTIVE=docker \
+  -e CONSUL_HOST=host.docker.internal \
+  -e CONSUL_PORT=8500 \
   delose/goal-service:latest
 
 
