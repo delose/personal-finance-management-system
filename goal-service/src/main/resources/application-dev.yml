@@ -1,0 +1,19 @@
+#
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka
+#    register-with-eureka: true
+#    fetch-registry: true
+
+spring:
+  output.ansi.enabled: ALWAYS
+  cloud:
+    consul:
+      discovery:
+        healthCheckPath: /goal-health-check
+        healthCheckInterval: 20s
+      host: localhost
+      port: 8500
+      config:
+        enabled: true
