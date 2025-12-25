@@ -21,7 +21,7 @@ spring:
 
 # Fix for: No spring.config.import property has been defined
   config:
-    import: optional:consul:localhost:8500
+    import: "optional:consul:${CONSUL_HOST:localhost}:${CONSUL_PORT:8500}"
 
 management:
   endpoints:
