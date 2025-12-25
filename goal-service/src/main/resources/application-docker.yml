@@ -1,0 +1,22 @@
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://host.docker.internal:8761/eureka
+#    register-with-eureka: true
+#    fetch-registry: true
+#  instance:
+#    prefer-ip-address: true
+
+spring:
+  output.ansi.enabled: ALWAYS
+  cloud:
+    consul:
+      discovery:
+        healthCheckPath: /goal-health-check
+        healthCheckInterval: 20s
+      host: http://host.docker.internal
+      port: 8500
+      config:
+        enabled: true
+
