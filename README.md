@@ -160,6 +160,20 @@ The expected output is:
                                     +--->8. Publishes a new message/JSON back to Message Broker.
 ```
 
+### 6. Mini diagram - more updated
+```bash
+[React UI]
+   |
+[API Gateway]
+   |
+-------------------------------------------------
+| Auth | User | Accounts | Transactions | Budget |
+| Goals | Reporting | Notification | Messaging |
+-------------------------------------------------
+       |           |            |
+   Config Server  Discovery   Message Broker
+```
+
 This architecture, named **Reactive Microservices Architecture with Messaging**, enables asynchronous communication between services via a message broker, promoting scalability, decoupling, and resilience. By following this architecture, each service can perform its task independently and communicate the results to other services, which improves the overall performance and reliability of your system.
 
 ### Getting started
