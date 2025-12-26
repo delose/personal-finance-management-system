@@ -13,8 +13,11 @@ spring:
   cloud:
     consul:
       discovery:
+        hostname: goal-service
+        port: 8084
         healthCheckPath: /goal-health-check
         healthCheckInterval: 20s
+        preferIpAddress: true
       host: http://host.docker.internal
       port: 8500
       config:
