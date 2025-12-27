@@ -1,6 +1,9 @@
 # Config Server
 The Config Server serves as a centralized configuration manager for all microservices.
 
+## Key feature/s
+Centralized configuration
+
 ## Running the Config Server
 
     ```

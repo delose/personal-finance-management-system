@@ -2,10 +2,9 @@
 
 The `user-service` is a microservice responsible for managing user data within the Personal Finance Management System (PFMS). It provides endpoints for user registration and retrieval.
 
-## Features
+## Key features
+User profile, preferences, onboarding state
 
-- User Registration
-- User Retrieval by Username
 
 ## Technologies Used
 

@@ -1,6 +1,9 @@
 # Discovery Server
 The Discovery Server is a Spring Boot application that acts as a service registry and discovery server for the PFMS application. It uses Eureka for service registration and discovery.
 
+## Key features
+Service registration & discovery
+
 ## Running the Discovery Server
 
     ```

@@ -1,6 +1,9 @@
 
 # Goal Service
 
+## Key features
+Financial goals & milestones
+
 # Health for instance
 ```bash
 localhost:8084/actuator/health

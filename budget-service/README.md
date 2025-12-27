@@ -1,3 +1,6 @@
+# Key features
+Budget categories, limits, tracking
+
 # Demo steps
 
 ## Run Spring Boot app

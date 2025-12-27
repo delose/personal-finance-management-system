@@ -1,6 +1,9 @@
 # API Gateway
 The API Gateway serves as the entry point for all clients, routing requests to the appropriate backend services. It can handle authentication, rate limiting, load balancing, and more.
 
+## Key features
+Routing, auth enforcement, rate limiting
+
 ## Running the API Gateway
 
     ```
