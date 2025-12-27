@@ -11,3 +11,4 @@
 docker run -d --name=consul-server -p 8500:8500 hashicorp/consul agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
 
 ```
+
