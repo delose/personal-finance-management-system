@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: pfms
+      POSTGRES_USER: pfms
+      POSTGRES_PASSWORD: pfms
+    ports:
+      - "5433:5433"
+
+  service:
+    build: .
+    ports:
+      - "3002:3002"
+    environment:
+      PORT: 3001
+      SERVICE_NAME: transaction-service
+      SERVICE_HOST: host.docker.internal
+      CONSUL_HOST: host.docker.internal
+      CONSUL_PORT: 8500
+      DB_HOST: postgres
+      DB_PORT: 5433
+      DB_USER: pfms
+      DB_PASS: pfms
+      DB_NAME: pfms
