@@ -10,7 +10,7 @@ public class HealthController {
 
     @GetMapping("/goal-health-check")
     public ResponseEntity<String> myCustomCheck() {
-        String message = "Testing my healh check function";
+        String message = "Testing goal service health check";
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }
