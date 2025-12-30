@@ -1,23 +1,6 @@
-server:
-  port: 8761
-
 spring:
   application:
     name: discovery-server
-
-eureka:
-  client:
-      register-with-eureka: false
-      fetch-registry: false
-  server:
-      wait-time-in-ms-when-sync-empty: 0
-
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    health:
-      show-details: always
+  config:
+    # This tells the service to fetch all other settings from the Config Server
+    import: "optional:configserver:http://localhost:8888"
