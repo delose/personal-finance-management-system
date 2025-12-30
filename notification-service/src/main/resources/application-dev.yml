@@ -1,20 +1,15 @@
-server:
-  port: 8085
-
 spring:
-  kafka:
-    bootstrap-servers: ${spring.embedded.kafka.brokers}
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      properties:
-        spring.json.trusted.packages: "*"
-    consumer:
-      group-id: notification-service-group
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: "*"
-  config:
-    activate:
-      on-profile: dev
+  data:
+    mongodb:
+      uri: "mongodb://admin:secret@localhost:3308/notifdb?authSource=admin"
+  output.ansi.enabled: ALWAYS
+  cloud:
+    consul:
+      discovery:
+        healthCheckPath: /notif-health-check
+        healthCheckInterval: 20s
+      host: localhost
+      port: 8500
+      config:
+        import: "optional:consul:${CONSUL_HOST:localhost}:${CONSUL_PORT:8500}"
+        enabled: false

@@ -1,0 +1,18 @@
+spring:
+  data:
+    mongodb:
+      uri: "mongodb://admin:secret@host.docker.internal:3308/notifdb?authSource=admin"
+  output.ansi.enabled: ALWAYS
+  cloud:
+    consul:
+      discovery:
+        hostname: notification-service
+        port: 8085
+        healthCheckPath: /notif-health-check
+        healthCheckInterval: 20s
+        preferIpAddress: true
+      host: http://host.docker.internal
+      port: 8500
+      config:
+        import: "optional:consul:${CONSUL_HOST:host.docker.internal}:${CONSUL_PORT:8500}"
+        enabled: false
