@@ -27,7 +27,6 @@
     <module>goal-service</module>
     <module>notification-service</module>
     <module>reporting-service</module>
-    <module>message-broker</module>
   </modules>
   <scm>
     <url>https://github.com/delose/personal-finance-management-system.git</url>
