@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker-compose down && docker-build.sh && docker-compose up --build -d
+docker-compose down && ./build.sh && docker-compose up --build -d
