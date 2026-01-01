@@ -9,6 +9,11 @@ export class AppController {
               @Inject(ACCOUNT_SERVICE) private readonly accountRMQClient: ClientProxy
     ) {}
 
+  @Get('health')
+  checkHealth() {
+    return { status: 'OK' };
+  }
+
   @Get()
   getHello(): string {
     return this.appService.getHello();
