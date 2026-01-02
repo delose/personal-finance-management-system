@@ -13,9 +13,9 @@ services:
   service:
     build: .
     ports:
-      - "3002:3002"
+      - "3003:3003"
     environment:
-      PORT: 3001
+      PORT: 3003
       SERVICE_NAME: transaction-service
       SERVICE_HOST: host.docker.internal
       CONSUL_HOST: host.docker.internal
@@ -25,3 +25,5 @@ services:
       DB_USER: pfms
       DB_PASS: pfms
       DB_NAME: pfms
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Mandatory for Linux contain
