@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ACCOUNT_SERVICE } from './constants';
 import { ConsulService } from './service/consul.service';
+import * as fs from 'fs';
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import { ConsulService } from './service/consul.service';
             name: ACCOUNT_SERVICE,
             transport: Transport.RMQ,
             options: {
-              urls: ['amqp://guest:guest@localhost:5672'],
+              urls: [`amqp://guest:guest@${fs.existsSync('/.dockerenv') ?
+                  'host.docker.internal' : 'localhost'}:5672`],
               queue: 'account_queue',
               queueOptions: {
                 durable: true
