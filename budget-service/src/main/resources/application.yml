@@ -4,3 +4,18 @@ spring:
   config:
     # This tells the service to fetch all other settings from the Config Server
     import: "optional:configserver:http://localhost:8888"
+  cache:
+    caffeine:
+      spec:
+        maximumSize: 500
+        expireAfterAccess: 600s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics
+  metrics:
+    export:
+      prometheus:
+        enabled: true
