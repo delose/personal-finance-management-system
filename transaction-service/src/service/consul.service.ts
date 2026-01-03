@@ -1,6 +1,7 @@
 import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import Consul from 'consul';
 import * as os from 'os';
+import * as fs from 'fs';
 
 @Injectable()
 export class ConsulService implements OnModuleDestroy {
@@ -9,13 +10,17 @@ export class ConsulService implements OnModuleDestroy {
   private serviceId: string;
 
   constructor() {
+
+    const txnSvcPort = 3002;
+    const consultPort = 8500;
+
     // If running in Docker, 'consul' should be the service name in docker-compose.yml
     const consulHost = process.env.CONSUL_HOST || 'localhost';
     this.consul = new Consul({
       host: consulHost,
-      port: 8500
+      port: consultPort
     });
-    this.serviceId = `transaction-service-${Date.now()}`;
+    this.serviceId = `transaction-service-${txnSvcPort}`;
   }
 
   // Utility to find the first non-internal IPv4 address
@@ -26,6 +31,14 @@ export class ConsulService implements OnModuleDestroy {
       if (iface) {
           for (const alias of iface) {
             if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
+
+              const isDocker = fs.existsSync('/.dockerenv');
+
+              if (isDocker) {
+                  console.log("Detected running on Docker environment")
+                  return 'host.docker.internal';
+              }
+              console.log(`Detected running on Non-docker environment: ${alias.address}`);
               return alias.address;
             }
           }
