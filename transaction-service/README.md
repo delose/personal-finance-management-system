@@ -64,6 +64,11 @@ curl -X POST http://localhost:3003/account \
      -d '{"email": "aaa@aaa.com", "password" : "pw123", "fullName": "Ziggy"}'
 ```
 
+## Deregister this consul
+```bash
+npm run deregister:service transaction-service-3002
+```
+
 ## Deployment
 
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.

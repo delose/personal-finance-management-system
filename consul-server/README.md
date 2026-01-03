@@ -12,3 +12,11 @@ docker run -d --name=consul-server -p 8500:8500 hashicorp/consul agent -server -
 
 ```
 
+## Test out registered consult clients
+
+```bash
+curl http://localhost:8500/v1/agent/service/expense-service-8083
+curl http://localhost:8500/v1/agent/service/transaction-service-3002
+```
+## Deregister using script
+Please refer to transaction-service's README
