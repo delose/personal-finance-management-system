@@ -59,7 +59,7 @@ $ npm run test:cov
 
 ## Test account creation (for logging only)
 ```bash
-curl -X POST http://localhost:3003/account \                
+curl -X POST http://localhost:3003/account \
      -H 'Content-Type: application/json' \
      -d '{"email": "aaa@aaa.com", "password" : "pw123", "fullName": "Ziggy"}'
 ```
