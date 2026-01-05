@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: budget-service  # This name will match the config files in the config repo
