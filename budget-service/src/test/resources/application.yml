@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: budget-service
+  config:
+    # This tells the service to fetch all other settings from the Config Server
+    import: "optional:configserver:http://localhost:8888"
