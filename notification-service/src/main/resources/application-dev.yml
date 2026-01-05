@@ -1,6 +1,7 @@
 spring:
   kafka:
-    bootstrap-servers: global-service-kafka:29092
+    bootstrap:
+      servers: global-service-kafka:29092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -11,7 +12,16 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        spring.json.trusted.packages: "*"
+        spring:
+          json:
+            trusted:
+              packages: "*"
+            use:
+              type:
+                headers: false
+            value:
+              default:
+                type: "com.delose.pfms.notification_service.dto.NotificationRequest"
   data:
     mongodb:
       uri: "mongodb://admin:secret@localhost:3308/notifdb?authSource=admin"
