@@ -1,9 +1,24 @@
 spring:
+  kafka:
+    bootstrap-servers: http://host.docker.internal:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.trusted.packages: "*"
+    consumer:
+      group-id: notification-service-group
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
   data:
     mongodb:
       uri: "mongodb://admin:secret@host.docker.internal:3308/notifdb?authSource=admin"
   output.ansi.enabled: ALWAYS
   cloud:
+    config:
+      uri: http://host.docker.internal:8085  # The address of the Notification service
     consul:
       discovery:
         hostname: notification-service
