@@ -20,10 +20,15 @@ This will start the Config Server on port 8080.
 
 ## Health Check and Monitoring
 
-    ```
-    http://localhost:8080/actuator/health
-    http://localhost:8080/actuator/metrics
-    ```
+### Health
+```bash
+curl http://localhost:8080/actuator/health
+```
+
+### Metrics
+```bash
+curl http://localhost:8080/actuator/metrics
+```
 
 ## Quick start
 1. Dockerized MySQL
