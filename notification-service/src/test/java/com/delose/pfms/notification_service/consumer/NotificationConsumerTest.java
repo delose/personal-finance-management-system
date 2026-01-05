@@ -43,8 +43,8 @@ public class NotificationConsumerTest {
 
         for (int i = 0; i < 5; i++) {
             NotificationRequest request = new NotificationRequest(
+                    1L,
                     "user" + i,
-                    "test" + i + "@example.com",
                     "Test Subject " + i,
                     "Test Body " + i,
                     "EMAIL"
