@@ -37,7 +37,7 @@ public class BudgetControllerV1 {
     @PostMapping
     public ResponseEntity<Budget> createBudget(@RequestBody Budget budget) {
         Budget savedBudget = this.budgetService.saveBudget(budget);
-        return ResponseEntity.ok(budget);
+        return ResponseEntity.ok(savedBudget);
     }
 
     @GetMapping("/{id}")
