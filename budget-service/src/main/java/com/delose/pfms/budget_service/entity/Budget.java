@@ -17,6 +17,8 @@ public class Budget {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String userId;
+
     private BudgetCategory category;
 
     private BigDecimal amount;
@@ -24,6 +26,14 @@ public class Budget {
     private LocalDate startDate;
 
     private LocalDate endDate;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public Long getId() {
         return id;
