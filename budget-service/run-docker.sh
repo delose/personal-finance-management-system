@@ -12,6 +12,8 @@ docker rm budget-service 2>/dev/null
 docker run -d -p 8082:8082 --name budget-service \
   --add-host=host.docker.internal:host-gateway \
   -e SPRING_PROFILES_ACTIVE=docker \
+  -e spring.kafka.bootstrap-servers="global-service-kafka:29092" \
+  -e spring.kafka.producer.value-serializer="org.springframework.kafka.support.serializer.JsonSerializer" \
   delose/budget-service:latest
 
 
