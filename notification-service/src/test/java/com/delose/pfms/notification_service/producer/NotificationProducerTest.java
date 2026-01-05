@@ -63,7 +63,7 @@ public class NotificationProducerTest {
     @Test
     void testSendNotificationRequest_sendsMessageToKafkaTopic() throws Exception {
         NotificationRequest testRequest = new NotificationRequest(
-                "user456",
+                1L,
                 "producer@example.com",
                 "Producer Test",
                 "This is a test message from the producer test.",
@@ -77,7 +77,7 @@ public class NotificationProducerTest {
 
         assertNotNull(receivedRecord, "A message should have been received by the test consumer.");
         assertEquals(testRequest.getUserId(), receivedRecord.key(), "Message key should match the userId.");
-        assertEquals(testRequest.getRecipient(), receivedRecord.value().getRecipient(), "Recipient should match the sent request.");
+        assertEquals(testRequest.getSubject(), receivedRecord.value().getSubject(), "Recipient should match the sent request.");
         assertEquals(testRequest.getMessageBody(), receivedRecord.value().getMessageBody(), "Message body should match the sent request.");
     }
 }
