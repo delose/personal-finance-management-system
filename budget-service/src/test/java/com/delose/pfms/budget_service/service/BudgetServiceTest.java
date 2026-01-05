@@ -1,13 +1,16 @@
 package com.delose.pfms.budget_service.service;
 
+import com.delose.pfms.budget_service.dto.BudgetNotification;
 import com.delose.pfms.budget_service.entity.Budget;
 import com.delose.pfms.budget_service.entity.BudgetCategory;
+import com.delose.pfms.budget_service.mapper.BudgetMapper;
 import com.delose.pfms.budget_service.repository.BudgetRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -20,6 +23,10 @@ public class BudgetServiceTest {
 
     @Mock
     private BudgetRepository budgetRepository;
+    @Mock
+    private ApplicationEventPublisher applicationEventPublisher;
+    @Mock
+    private BudgetMapper budgetMapper;
 
     @InjectMocks
     private BudgetService budgetService;
@@ -51,5 +58,19 @@ public class BudgetServiceTest {
 
     }
 
+    @Test
+    void testSaveBudgetFlow() {
+        Budget budget = new Budget();
+        budget.setId(1L);
 
+        BudgetNotification mockNote = new BudgetNotification();
+        mockNote.setId(1L);
+
+        when(budgetRepository.save(any())).thenReturn(budget);
+        when(budgetMapper.toNotification(any())).thenReturn(mockNote);
+
+        budgetService.saveBudget(budget);
+
+        verify(applicationEventPublisher).publishEvent(mockNote);
+    }
 }
