@@ -1,6 +1,7 @@
 spring:
   kafka:
-    bootstrap-servers: global-service-kafka:29092
+    bootstrap:
+      servers: global-service-kafka:29092
   config:
     # This tells the service to fetch all other settings from the Config Server
     import: "optional:configserver:http://host.docker.internal:8888"
