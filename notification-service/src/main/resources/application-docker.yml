@@ -1,6 +1,6 @@
 spring:
   kafka:
-    bootstrap-servers: http://host.docker.internal:9092
+    bootstrap-servers: global-service-kafka:29092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -9,9 +9,16 @@ spring:
     consumer:
       group-id: notification-service-group
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
       properties:
+        # Delegate the actual work to JsonDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        # TRUST ALL PACKAGES (Required for cross-service communication)
         spring.json.trusted.packages: "*"
+        # MAP THE CLASS: Tell it to use YOUR local class regardless of what the header says
+        spring.json.value.default.type: "com.delose.pfms.notification_service.dto.NotificationRequest"
+        # FORCE THE TYPE: Ignore the header from the Producer
+        spring.json.use.type.headers: false
   data:
     mongodb:
       uri: "mongodb://admin:secret@host.docker.internal:3308/notifdb?authSource=admin"
