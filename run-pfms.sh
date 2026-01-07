@@ -27,7 +27,7 @@ kill_process_on_port() {
     local port=$1
     # -t (terse) returns only the PIDs, one per line
     local pids
-    pids=$(lsof -t -i :$port)
+    pids=$(lsof -t -n -P -i :$port || true)
 
     if [ -z "$pids" ]; then
         echo "[INFO] No process found on port $port."
