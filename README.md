@@ -178,34 +178,7 @@ This architecture, named **Reactive Microservices Architecture with Messaging**,
 
 ### Getting started
 
-1. Run build command
+#### Run the microservices
 ```bash
-cd pfms
-./build-all.sh
+./run-pfms.sh
 ```
-- Should show a message below:
-```bash
-------------------------------------
-All modules built successfully.
-------------------------------------
-```
-
-2. Run all containers
-```bash
-./docker-run.sh
-```
-
-3. Post changes, restart a container (rebuild included)
-```bash
-cd <INSERT SERVICE NAME>
-./restart-docker.sh
-```
-4. Run a container for MySQL
-```bash
-docker run -d -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=budgetdb --name budgetsqldb -p 3307:3306 mysql:8.0
-docker exec -it budgetsqldb mysql -uroot -psecret budgetdb
-docker stop budgetsqldb
-docker rm budgetsqldb
-```
-
-5. 
