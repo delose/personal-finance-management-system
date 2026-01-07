@@ -1,16 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Function to rebuild a Maven project
-stop_service() {
+# Assumption: Every service is down
+start_service() {
     SERVICE_NAME=$1
-    echo "Stopping $SERVICE_NAME..."
-    
+    echo "Building $SERVICE_NAME..."
+
     # Navigate to the service directory
     cd $SERVICE_NAME
-    
-    # Stop Docker
-    ./stop-remote-docker.sh   
- 
+
+    # Check logs
+    ./run-docker.sh
+
     # Navigate back to the root directory
     cd ..
 }
@@ -20,24 +21,17 @@ services=(
     "config-server"
     "discovery-server"
     "api-gateway"
-    "message-broker"
-    "user-service"
     "budget-service"
-    "expense-service"
     "goal-service"
     "notification-service"
-    "reporting-service"
+    "account-service"
+    "transaction-service"
 )
 
 # Loop through each service and rebuild it
 for service in "${services[@]}"
 do
-    stop_service $service
+    start_service $service
 done
-
-docker-compose down
-
-# Start the services using Docker Compose
-echo "Stopped services with Docker Compose..."
 
 
