@@ -1,0 +1,22 @@
+services:
+  consul-server:
+    image: hashicorp/consul:latest
+    container_name: consul-server
+    ports:
+      - "8500:8500"
+    command: >
+      agent -server -ui 
+      -node=server-1 
+      -bootstrap-expect=1 
+      -client=0.0.0.0
+    restart: always
+    volumes:
+      - consul_data:/consul/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8500/v1/status/leader"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  consul_data:
