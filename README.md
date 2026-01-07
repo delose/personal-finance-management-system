@@ -182,3 +182,16 @@ This architecture, named **Reactive Microservices Architecture with Messaging**,
 ```bash
 ./run-pfms.sh
 ```
+
+#### Open UI
+[Link](http://localhost:3000/)
+
+#### Check the cluster status
+```bash
+kubectl cluster-info
+```
+
+#### Verify the node is ready
+```bash
+kubectl get nodes
+```
