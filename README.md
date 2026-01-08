@@ -10,38 +10,66 @@ The **Personal Finance Management System (PFMS)** is a comprehensive application
 
 PFMS is composed of multiple microservices, each responsible for a specific domain of the application:
 
+- **Account Service (`account-service`)**
+  - NestJS
+  
 - **API Gateway (`api-gateway`)**
   - Central entry point for all client requests.
   - Handles routing, load balancing, authentication, and authorization.
-  
-- **Service Discovery (`discovery-server`)**
-  - Manages service registration and discovery using Eureka.
-  - Enables dynamic scaling and load balancing.
-  
+  - Spring Boot
+
+- **Budget Service (`budget-service`)**
+  - Manages user budgets, including creation, tracking, and updates.
+  - Spring Boot
+
 - **Configuration Server (`config-server`)**
   - Centralized configuration management.
   - Allows dynamic reconfiguration of services without needing to restart them.
-  
-- **User Service (`user-service`)**
-  - Manages user registration, authentication, and profiles.
-  
-- **Budget Service (`budget-service`)**
-  - Manages user budgets, including creation, tracking, and updates.
-  
+  - Spring Boot
+
+- **Consul Server (`consul-server`)**
+  - Dockerized
+
+- **Discovery Server (`discovery-server`)**
+  - Spring Boot
+
+- **Service Discovery (`discovery-server`)**
+  - Manages service registration and discovery using Eureka.
+  - Enables dynamic scaling and load balancing.
+  - Spring Boot
+
 - **Expense Service (`expense-service`)**
   - Tracks and manages user expenses, integrates with the Budget Service to update budget status.
-  
+  - PHP - TBD
+
 - **Goal Service (`goal-service`)**
   - Allows users to set and track financial goals, integrating with Budget and Expense Services.
-  
-- **Notification Service (`notification-service`)**
-  - Sends notifications related to budgets, goals, and expenses via email or in-app alerts.
-  
-- **Reporting Service (`reporting-service`)**
-  - Generates financial reports and analytics based on user data.
-  
+  - Spring Boot
+
+- **Kafka (`kafka`)**
+  - Dockerized kafka + kafka-ui + portainer
+
 - **Message Broker (`message-broker`)**
   - Handles asynchronous communication between services using message brokers like Kafka or RabbitMQ.
+  - Dockerized RabbitMq
+
+- **Notification Service (`notification-service`)**
+  - Sends notifications related to budgets, goals, and expenses via email or in-app alerts.
+  - Spring Boot
+
+- **PFMS UI (`pfms-ui`)**
+  - React
+
+- **Reporting Service (`reporting-service`)**
+  - Generates financial reports and analytics based on user data.
+  - Python
+
+- **Transaction Service (`transaction-service`)**
+  - NestJS
+
+- **User Service (`user-service`)**
+  - Manages user registration, authentication, and profiles.
+  - Go
 
 ### 2. Front-End: React UI
 
@@ -194,4 +222,9 @@ kubectl cluster-info
 #### Verify the node is ready
 ```bash
 kubectl get nodes
+```
+
+#### Verify Helm
+```bash
+helm version
 ```
