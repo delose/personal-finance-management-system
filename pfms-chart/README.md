@@ -51,3 +51,28 @@ helm dependency build .
 ```bash
 helm template .
 ```
+
+## Deploys defined charts together
+```bash
+helm upgrade --install pfms-prod . -n pfms-namespace --create-namespace
+```
+
+## Verify Deployment Status
+```bash
+kubectl get all -n pfms-namespace
+```
+
+## View Service Endpoints
+```bash
+kubectl get svc -n pfms-namespace
+```
+
+## Management Workflow (The "Umbrella" Power)
+```bash
+helm rollback pfms-prod 1 -n pfms-namespace
+```
+
+## Check release history
+```bash
+helm history pfms-prod -n pfms-namespace
+```
