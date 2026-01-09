@@ -12,7 +12,6 @@ DB_NAMES=("notifdb" "apigwdb")
 
 # Services that use 'docker stop' (Single container services)
 docker_services=(
-    "consul-server"
     "config-server"
     "discovery-server"
     "api-gateway"
@@ -24,6 +23,7 @@ docker_services=(
 # Modules with internal docker-compose.yml files
 # Ensure these paths correctly point to the module directories from this script
 compose_modules=(
+    "consul-server"
     "account-service"
     "transaction-service"
     "kafka"
