@@ -1,1 +1,19 @@
-# This file is often left empty in Umbrella patterns 
+# This file is often left empty in Umbrella patterns
+global:
+  environment: production
+#  imageRegistry: mycompany.azurecr.io
+
+account-service:
+  replicaCount: 3
+  service:
+    port: 3001
+
+api-gateway:
+  replicaCount: 2
+  service:
+    port: 8080
+
+budget-service:
+  replicaCount: 1
+  service:
+    port: 8080
