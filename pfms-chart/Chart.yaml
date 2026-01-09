@@ -11,3 +11,6 @@ dependencies:
   - name: api-gateway
     version: 0.1.0                # Must match version in api-gateway/Chart.yaml
     repository: "file://charts/api-gateway"
+  - name: budget-service
+    version: 0.1.0
+    repository: "file://charts/budget-service"
