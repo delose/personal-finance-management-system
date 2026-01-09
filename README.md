@@ -213,18 +213,4 @@ This architecture, named **Reactive Microservices Architecture with Messaging**,
 
 #### Open UI
 [Link](http://localhost:3000/)
-
-#### Check the cluster status
-```bash
-kubectl cluster-info
-```
-
-#### Verify the node is ready
-```bash
-kubectl get nodes
-```
-
-#### Verify Helm
-```bash
-helm version
 ```
