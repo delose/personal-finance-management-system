@@ -9,6 +9,9 @@ start_service() {
     # Navigate to the service directory
     cd $SERVICE_NAME
 
+    # Build
+    ./docker-build.sh
+
     # Check logs
     ./run-docker.sh
 
