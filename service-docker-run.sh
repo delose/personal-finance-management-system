@@ -10,7 +10,13 @@ start_service() {
     cd $SERVICE_NAME
 
     # Build
-    ./docker-build.sh
+
+    if ./verify-build.sh; then
+      echo "Artifact found for $SERVICE_NAME. Skipping build..."
+    else
+      echo "Artifact missing for $SERVICE_NAME. Running build..."
+      ./docker-build.sh
+    fi
 
     # Check logs
     ./run-docker.sh
