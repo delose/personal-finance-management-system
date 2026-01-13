@@ -1,33 +1,47 @@
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+*.log
+.DS_Store
+.env
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+/.fleet
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+Homestead.json
+Homestead.yaml
+Thumbs.db
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+/config/*.php          # Framework settings; use .env for changes instead
+/tests/*               # Default feature/unit tests
+/database/factories/*  # Data generation logic
+/database/seeders/*    # Initial data population logic
+phpunit.xml            # Testing configuration
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+/public/favicon.ico
+/public/robots.txt
+/resources/css/
+/resources/js/
+/resources/views/      # API services don't use Blade templates
+vite.config.js
+package.json
+package-lock.json
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+/lang/                 # Default translation strings
+/app/Console/          # Custom CLI commands (unless you create one)
+/app/Providers/        # Standard service providers (App, Auth, Event)
+.editorconfig
+.gitattributes
+artisan                # The CLI executable itself
 
-### VS Code ###
-.vscode/
