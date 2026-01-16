@@ -1,12 +1,9 @@
-
 #eureka:
 #  client:
 #    serviceUrl:
 #      defaultZone: http://host.docker.internal:8761/eureka
 #    register-with-eureka: true
 #    fetch-registry: true
-#  instance:
-#    prefer-ip-address: true
 
 spring:
   output.ansi.enabled: ALWAYS
@@ -23,3 +20,7 @@ spring:
       config:
         enabled: true
 
+# External Service Configuration
+external:
+  budget-service:
+    url: http://host.docker.internal:8085
