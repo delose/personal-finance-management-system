@@ -18,7 +18,7 @@ public class BudgetServiceClientFallback implements BudgetServiceClient {
     public BudgetResponse getBudgetById(Long id) {
         // This method is not used by Resilience4j, but is required by the FeignClient interface.
         // The actual fallback logic is in the fallbackGetBudgetById method.
-        return null;
+        return fallbackGetBudgetById(id, new RuntimeException("Feign fallback triggered"));
     }
 
     // Correct fallback method signature
