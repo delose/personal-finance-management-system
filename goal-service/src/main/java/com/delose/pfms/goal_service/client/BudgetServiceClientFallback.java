@@ -16,7 +16,14 @@ public class BudgetServiceClientFallback implements BudgetServiceClient {
 
     @Override
     public BudgetResponse getBudgetById(Long id) {
-        logger.warn("Fallback triggered for getBudgetById, id: {}", id);
+        // This method is not used by Resilience4j, but is required by the FeignClient interface.
+        // The actual fallback logic is in the fallbackGetBudgetById method.
+        return null;
+    }
+
+    // Correct fallback method signature
+    public BudgetResponse fallbackGetBudgetById(Long id, Throwable t) {
+        logger.warn("Fallback triggered for getBudgetById, id: {}, error: {}", id, t.getMessage());
 
         // Try to get from Redis cache
         if (redisTemplate != null) {
