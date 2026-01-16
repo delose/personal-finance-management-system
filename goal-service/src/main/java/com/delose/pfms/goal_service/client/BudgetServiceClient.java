@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface BudgetServiceClient {
 
     @GetMapping("/api/budgets/{id}")
-    @CircuitBreaker(name = "budgetService", fallbackMethod = "fallbackGetBudgetById")
-    @Retry(name = "budgetService", fallbackMethod = "fallbackGetBudgetById")
+    @CircuitBreaker(name = "budgetService")
+    @Retry(name = "budgetService")
     BudgetResponse getBudgetById(@PathVariable("id") Long id);
 }
