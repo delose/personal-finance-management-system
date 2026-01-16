@@ -1,7 +1,6 @@
 package com.delose.pfms.goal_service.service;
 
 import com.delose.pfms.goal_service.client.BudgetResponse;
-import com.delose.pfms.goal_service.client.BudgetServiceClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,10 @@ public class ExternalBudgetService {
     private static final Logger logger = LoggerFactory.getLogger(ExternalBudgetService.class);
 
     @Autowired
-    private BudgetServiceClient budgetServiceClient;
+    private BudgetServiceWrapper budgetServiceWrapper;
 
     public BudgetResponse getBudgetById(Long id) {
         logger.info("Calling budget service for id: {}", id);
-        return budgetServiceClient.getBudgetById(id);
+        return budgetServiceWrapper.getBudgetById(id);
     }
 }

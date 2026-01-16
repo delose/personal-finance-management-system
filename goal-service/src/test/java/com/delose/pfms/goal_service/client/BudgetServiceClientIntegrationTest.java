@@ -1,5 +1,6 @@
 package com.delose.pfms.goal_service.client;
 
+import com.delose.pfms.goal_service.service.BudgetServiceWrapper;
 import com.delose.pfms.goal_service.service.ExternalBudgetService;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,6 +28,9 @@ class BudgetServiceClientIntegrationTest {
     private BudgetServiceClient budgetServiceClient;
 
     @Autowired
+    private BudgetServiceWrapper budgetServiceWrapper;
+
+    @Autowired
     private ExternalBudgetService externalBudgetService;
 
     @Autowired
@@ -39,6 +42,7 @@ class BudgetServiceClientIntegrationTest {
     void setUp() {
         circuitBreaker = circuitBreakerRegistry.circuitBreaker("budgetService");
         circuitBreaker.reset();
+        budgetServiceWrapper.setFallbackEnabled(true);
     }
 
     @AfterEach
@@ -59,7 +63,7 @@ class BudgetServiceClientIntegrationTest {
                         .withBody(expectedResponse)));
 
         // Act
-        BudgetResponse response = budgetServiceClient.getBudgetById(budgetId);
+        BudgetResponse response = budgetServiceWrapper.getBudgetById(budgetId);
 
         // Assert
         assertNotNull(response);
@@ -78,7 +82,7 @@ class BudgetServiceClientIntegrationTest {
                         .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
 
         // Act
-        BudgetResponse response = budgetServiceClient.getBudgetById(budgetId);
+        BudgetResponse response = budgetServiceWrapper.getBudgetById(budgetId);
 
         // Assert
         assertNotNull(response);
@@ -91,6 +95,7 @@ class BudgetServiceClientIntegrationTest {
     void circuitBreaker_ShouldOpen_WhenMultipleFailuresOccur() {
         // Arrange
         Long budgetId = 1L;
+        budgetServiceWrapper.setFallbackEnabled(false);
 
         // Simulate 5 failures to open the circuit breaker
         for (int i = 0; i < 5; i++) {
@@ -98,7 +103,7 @@ class BudgetServiceClientIntegrationTest {
                     .willReturn(aResponse()
                             .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())));
             try {
-                budgetServiceClient.getBudgetById(budgetId);
+                budgetServiceWrapper.getBudgetById(budgetId);
             } catch (Exception e) {
                 // Expected
             }
@@ -108,7 +113,7 @@ class BudgetServiceClientIntegrationTest {
         assertEquals(CircuitBreaker.State.OPEN, circuitBreaker.getState());
 
         // Act: Try again after circuit is open
-        BudgetResponse response = budgetServiceClient.getBudgetById(budgetId);
+        BudgetResponse response = budgetServiceWrapper.getBudgetById(budgetId);
 
         // Assert: Should return fallback immediately without calling external service
         assertNotNull(response);
