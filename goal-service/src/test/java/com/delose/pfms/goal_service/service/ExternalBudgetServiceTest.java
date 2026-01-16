@@ -1,7 +1,6 @@
 package com.delose.pfms.goal_service.service;
 
 import com.delose.pfms.goal_service.client.BudgetResponse;
-import com.delose.pfms.goal_service.client.BudgetServiceClient;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,7 +15,7 @@ import static org.mockito.Mockito.*;
 class ExternalBudgetServiceTest {
 
     @Mock
-    private BudgetServiceClient budgetServiceClient;
+    private BudgetServiceWrapper budgetServiceWrapper;
 
     @InjectMocks
     private ExternalBudgetService externalBudgetService;
@@ -30,7 +29,7 @@ class ExternalBudgetServiceTest {
         expectedResponse.setAmount(1000.0);
         expectedResponse.setCategory("FOOD");
 
-        when(budgetServiceClient.getBudgetById(budgetId)).thenReturn(expectedResponse);
+        when(budgetServiceWrapper.getBudgetById(budgetId)).thenReturn(expectedResponse);
 
         // Act
         BudgetResponse actualResponse = externalBudgetService.getBudgetById(budgetId);
@@ -40,6 +39,6 @@ class ExternalBudgetServiceTest {
         assertEquals(budgetId, actualResponse.getId());
         assertEquals(1000.0, actualResponse.getAmount());
         assertEquals("FOOD", actualResponse.getCategory());
-        verify(budgetServiceClient, times(1)).getBudgetById(budgetId);
+        verify(budgetServiceWrapper, times(1)).getBudgetById(budgetId);
     }
 }
