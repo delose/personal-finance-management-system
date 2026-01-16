@@ -1,0 +1,23 @@
+cat <<EOF > .gitignore
+# uv and Python environment
+.venv/
+uv.lock
+__pycache__/
+*.py[cod]
+
+# Environments and Secrets
+.env
+.env.*
+
+# IDEs
+.vscode/
+.idea/
+
+# Distribution / Build
+dist/
+build/
+*.egg-info/
+
+# macOS
+.DS_Store
+EOF
