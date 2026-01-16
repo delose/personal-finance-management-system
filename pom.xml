@@ -21,12 +21,9 @@
     <module>config-server</module>
     <module>api-gateway</module>
     <module>discovery-server</module>
-    <module>user-service</module>
     <module>budget-service</module>
-    <module>expense-service</module>
     <module>goal-service</module>
     <module>notification-service</module>
-    <module>reporting-service</module>
   </modules>
   <scm>
     <url>https://github.com/delose/personal-finance-management-system.git</url>
