@@ -23,6 +23,10 @@ resilience4j:
         waitDurationInOpenState: 5s
         failureRateThreshold: 50
         eventConsumerBufferSize: 10
+        record-exceptions:
+          - feign.FeignException
+          - org.springframework.web.client.HttpServerErrorException
+          - java.util.concurrent.TimeoutException
   retry:
     instances:
       budgetService:
