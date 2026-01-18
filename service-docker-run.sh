@@ -31,10 +31,12 @@ services=(
     "discovery-server"
     "api-gateway"
     "budget-service"
+    "expense-service"
     "goal-service"
     "notification-service"
     "account-service"
     "transaction-service"
+    "reporting-service"
 )
 
 # Loop through each service and rebuild it
