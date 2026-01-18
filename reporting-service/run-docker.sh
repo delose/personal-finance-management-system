@@ -8,7 +8,7 @@ docker rm reporting-service 2>/dev/null
 docker run -d \
   --name reporting-service \
   --network pfms-network \
-  -p 8086:8000 \
+  -p 8000:8000 \
   -e CONSUL_HOST=host.docker.internal \
   -e CONSUL_PORT=8500 \
   reporting-service
