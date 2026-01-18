@@ -1,24 +1,26 @@
 # Stage 1: Build
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
 
-# FIX: Force uv to copy binaries instead of symlinking them
+# Force uv to copy binaries instead of symlinking them
 ENV UV_LINK_MODE=copy \
     UV_COMPILE_BYTECODE=1 \
     UV_PYTHON_DOWNLOADS=0
 
 WORKDIR /app
 
-# Install dependencies
+# Copy dependency files
 COPY pyproject.toml uv.lock ./
-# --no-install-project avoids trying to install your local code as a package yet
-RUN uv sync --frozen --no-install-project --no-dev
+
+# Install dependencies into the virtual environment
+# --no-dev ensures production dependencies only
+RUN uv sync --frozen --no-dev
 
 # Stage 2: Runtime
 FROM python:3.12-slim-bookworm
 
 WORKDIR /app
 
-# Copy the actual virtual environment (not symlinks)
+# Copy the virtual environment (including installed packages like uvicorn)
 COPY --from=builder /app/.venv /app/.venv
 
 # Update PATH to use the venv
