@@ -18,6 +18,8 @@ docker_services=(
     "budget-service"
     "goal-service"
     "notification-service"
+    "expense-service"
+    "reporting-service"
 )
 
 # Modules with internal docker-compose.yml files
