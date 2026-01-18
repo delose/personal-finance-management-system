@@ -1,35 +1,27 @@
-# Stage 1: Build
-FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
+# Use the official uv image which includes Python 3.12
+FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
-# Force uv to copy binaries instead of symlinking them
-ENV UV_LINK_MODE=copy \
-    UV_COMPILE_BYTECODE=1 \
+# Set the working directory
+WORKDIR /app
+
+# Enable bytecode compilation and ensure uv doesn't try to download a new python
+ENV UV_COMPILE_BYTECODE=1 \
     UV_PYTHON_DOWNLOADS=0
 
-WORKDIR /app
-
-# Copy dependency files
+# Copy only dependency files first to leverage Docker caching
 COPY pyproject.toml uv.lock ./
 
-# Install dependencies into the virtual environment
-# --no-dev ensures production dependencies only
+# Install dependencies into /app/.venv
 RUN uv sync --frozen --no-dev
 
-# Stage 2: Runtime
-FROM python:3.12-slim-bookworm
-
-WORKDIR /app
-
-# Copy the virtual environment (including installed packages like uvicorn)
-COPY --from=builder /app/.venv /app/.venv
-
-# Update PATH to use the venv
-ENV PATH="/app/.venv/bin:$PATH"
-
-# Copy application code
+# Copy the rest of your application code
 COPY . .
 
+# Expose the FastAPI port
 EXPOSE 8000
 
-# Use the 'python -m' approach to avoid direct bin path issues
-CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Separate "uv" and "run" into their own strings
+CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+
+
