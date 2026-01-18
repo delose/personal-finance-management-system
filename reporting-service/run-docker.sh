@@ -1,9 +1,15 @@
 #!/bin/bash
 
-# •	-p <host_port>:<container_port>:
-# •	<host_port> is the port on your host machine (i.e., your MacBook) that you want to map.
-# •	<container_port> is the port that the application is listening on inside the Docker container.
+docker stop reporting-service 2>/dev/null
+docker rm reporting-service 2>/dev/null
 
-docker run -d -p 8086:8080 --name reporting-service delose/reporting-service:latest
+./docker-build.sh
 
+docker run -d \
+  --name reporting-service \
+  --network pfms-network \
+  -p 8086:8000 \
+  -e CONSUL_HOST=host.docker.internal \
+  -e CONSUL_PORT=8500 \
+  reporting-service
 
