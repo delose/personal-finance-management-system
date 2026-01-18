@@ -8,6 +8,7 @@ fi
 
 echo "Installing dependencies using uv..."
 
+uv add -r requirements.txt
 # Install dependencies from pyproject.toml
 # --frozen ensures it uses the lock file if it exists, otherwise resolves and creates one
 uv sync --frozen
