@@ -1,216 +1,369 @@
 # Personal Finance Management System (PFMS)
 
-## Overview
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://www.docker.com/)
+[![Microservices](https://img.shields.io/badge/Architecture-Microservices-green.svg)]()
 
-The **Personal Finance Management System (PFMS)** is a comprehensive application designed to help users manage their finances efficiently. The system is built using a microservices architecture, ensuring scalability, modularity, and resilience. The front-end is developed using React, providing a dynamic and responsive user interface.
+> A comprehensive, polyglot microservices architecture demonstrating event-driven patterns for personal finance management. Built as both a production-ready application and an educational reference for fintech developers.
 
-## Features
+---
 
-### 1. Microservices Architecture
+## 🎯 Overview
 
-PFMS is composed of multiple microservices, each responsible for a specific domain of the application:
+PFMS is an open-source personal finance management system showcasing modern microservices patterns through a real-world fintech use case. The system combines multiple programming languages, message brokers, and service discovery patterns while providing a delightful, gamified user experience inspired by Duolingo.
 
-- **Account Service (`account-service`)**
-  - NestJS
-  
-- **API Gateway (`api-gateway`)**
-  - Central entry point for all client requests.
-  - Handles routing, load balancing, authentication, and authorization.
-  - Spring Boot
+**Key Highlights:**
+- 🏗️ **Polyglot Microservices**: Java, Node.js, Go, Python, PHP
+- 🔄 **Event-Driven**: Kafka and RabbitMQ messaging patterns
+- 🎮 **Gamified UX**: Streak tracking and achievement system
+- 🚀 **One-Command Setup**: Run entire system with `./run-pfms.sh`
+- 📊 **Production Patterns**: Service discovery, config management, observability
 
-- **Budget Service (`budget-service`)**
-  - Manages user budgets, including creation, tracking, and updates.
-  - Spring Boot
+---
 
-- **Configuration Server (`config-server`)**
-  - Centralized configuration management.
-  - Allows dynamic reconfiguration of services without needing to restart them.
-  - Spring Boot
+## 🏛️ Architecture
 
-- **Consul Server (`consul-server`)**
-  - Dockerized
+```
+┌──────────────┐
+│  React UI    │  Port 3000
+└──────┬───────┘
+       │
+┌──────▼────────────────────────────────────┐
+│  API Gateway (Spring Boot)                │  Port 8080
+│  • JWT Authentication                     │
+│  • Service Discovery (Eureka)             │
+│  • Health Dashboard                       │
+└──────┬────────────────────────────────────┘
+       │
+┌──────┴────────────────────────────────────┐
+│           Microservices Layer             │
+├───────────────────────────────────────────┤
+│                                           │
+│  Budget Service     Goal Service          │
+│  (Spring Boot)      (Spring Boot)         │
+│  PostgreSQL         PostgreSQL            │
+│  → Kafka            Eureka                │
+│                                           │
+│  Transaction Svc    Account Service       │
+│  (NestJS)           (NestJS)              │
+│  PostgreSQL         PostgreSQL            │
+│  → RabbitMQ         ← RabbitMQ            │
+│  Consul             Kafka Consumer        │
+│                                           │
+│  Expense Service    Analytics Service     │
+│  (PHP)              (Go)                  │
+│  PostgreSQL         TimescaleDB           │
+│                                           │
+│  Reporting Svc      AI Advisor Service    │
+│  (Python/Flask)     (Python/Flask)        │
+│                     Claude API            │
+│                                           │
+│  Notification Service                     │
+│  (Spring Boot)                            │
+│  ← Kafka Consumer                         │
+└───────────────────────────────────────────┘
+       │                    │
+       ▼                    ▼
+┌─────────────┐    ┌────────────────┐
+│   Kafka     │    │   RabbitMQ     │
+│   Port 9092 │    │   Port 5672    │
+└─────────────┘    └────────────────┘
 
-- **Discovery Server (`discovery-server`)**
-  - Spring Boot
-
-- **Service Discovery (`discovery-server`)**
-  - Manages service registration and discovery using Eureka.
-  - Enables dynamic scaling and load balancing.
-  - Spring Boot
-
-- **Expense Service (`expense-service`)**
-  - Tracks and manages user expenses, integrates with the Budget Service to update budget status.
-  - PHP - TBD
-
-- **Goal Service (`goal-service`)**
-  - Allows users to set and track financial goals, integrating with Budget and Expense Services.
-  - Spring Boot
-
-- **Kafka (`kafka`)**
-  - Dockerized kafka + kafka-ui + portainer
-
-- **Message Broker (`message-broker`)**
-  - Handles asynchronous communication between services using message brokers like Kafka or RabbitMQ.
-  - Dockerized RabbitMq
-
-- **Notification Service (`notification-service`)**
-  - Sends notifications related to budgets, goals, and expenses via email or in-app alerts.
-  - Spring Boot
-
-- **PFMS UI (`pfms-ui`)**
-  - React
-
-- **Reporting Service (`reporting-service`)**
-  - Generates financial reports and analytics based on user data.
-  - Python
-
-- **Transaction Service (`transaction-service`)**
-  - NestJS
-
-- **User Service (`user-service`)**
-  - Manages user registration, authentication, and profiles.
-  - Go
-
-### 2. Front-End: React UI
-
-The front-end of PFMS is developed using React, providing a modern, dynamic, and responsive user interface:
-
-- **User Dashboard**
-  - Overview of the user's financial status, including budgets, expenses, and goals.
-  
-- **Budget Management**
-  - Allows users to create, update, and track budgets.
-  
-- **Expense Tracking**
-  - Interface for logging and categorizing expenses, with visualizations to track spending.
-  
-- **Goal Setting**
-  - Interface for setting financial goals and tracking progress over time.
-  
-- **Notifications**
-  - Users receive real-time notifications about their financial activities, such as budget limits and goal progress.
-  
-- **Financial Reports**
-  - Users can generate and view detailed reports on their financial activities, including spending patterns and goal achievements.
-
-#### 2.1. Screens preview
-
-##### 2.1.1 Screenshots (pfms-ui 1.0.0)
-![Home page](pfms-ui/public/preview/home-page-preview.png)
-![Budget page](pfms-ui/public/preview/budget-page-preview.png)
-![Eureka Dashboard](config-server/src/main/resources/config-server-registered-to-eureka-server.png)
-
-### 3. Deployment
-
-#### 3.1. Backend Services (Microservices)
-
-The microservices are containerized using Docker and can be managed with Docker Compose. Each service is built using Spring Boot and can be deployed independently or together.
-
-##### Running the Services with Docker Compose
-
-```bash
-docker-compose up
+Infrastructure:
+• Config Server (Port 8888)
+• Eureka Discovery (Port 8761)
+• Consul (Port 8500)
+• Prometheus + Grafana
+• n8n Workflow Automation
 ```
 
-This command will start all the services, including the API Gateway, User Service, Budget Service, and more.
+---
 
-#### 3.2. Front-End Deployment
+## 🧩 Microservices
 
-The React UI can be served using Nginx or another web server, and it can be integrated into the Docker Compose setup or deployed separately on platforms like Netlify or Vercel.
+### Core Services
 
-#### Running the React UI
+| Service | Tech Stack | Port | Database | Messaging | Discovery |
+|---------|-----------|------|----------|-----------|-----------|
+| **API Gateway** | Spring Boot | 8080 | MySQL | - | Eureka |
+| **Budget Service** | Spring Boot | 3001 | PostgreSQL | Kafka (Producer) | Eureka |
+| **Goal Service** | Spring Boot | 3002 | PostgreSQL | - | Eureka |
+| **Transaction Service** | NestJS | 3003 | PostgreSQL | RabbitMQ (Producer) | Consul |
+| **Account Service** | NestJS | 3001 | PostgreSQL | RabbitMQ (Consumer) | - |
+| **Expense Service** | PHP | 3004 | PostgreSQL | - | Consul |
+| **Reporting Service** | Python/Flask | 3005 | PostgreSQL | - | Consul |
+| **Analytics Service** | Go | 3009 | TimescaleDB | Kafka (Consumer) | Consul |
+| **AI Advisor Service** | Python/Flask | 3010 | - | - | Consul |
+| **Notification Service** | Spring Boot | 3006 | PostgreSQL | Kafka (Consumer) | - |
 
-	1.	Development Mode
+### Infrastructure Services
+
+- **Config Server** (Port 8888): Centralized configuration management for api-gateway, budget-service, and discovery-server
+- **Discovery Server** (Port 8761): Eureka-based service registry
+- **Consul Server** (Port 8500): Alternative service discovery for NestJS, PHP, Python, and Go services
+- **Message Broker**: RabbitMQ for synchronous event handling
+- **Kafka**: Event streaming for budget events, notifications, and analytics
+
+---
+
+## ✨ Features
+
+### For Users
+
+- 💰 **Budget Management**: Create and track monthly budgets by category with visual progress indicators
+- 💸 **Transaction Tracking**: Log income and expenses with automatic categorization
+- 🎯 **Goal Setting**: Set savings goals and track progress with milestone celebrations
+- 🔥 **Streak Gamification**: Daily check-ins, achievement badges, and streak freezes (Duolingo-inspired)
+- 🤖 **AI Financial Advisor**: Ask questions in plain English and get personalized financial guidance
+- 📊 **Financial Dashboard**: Overview of spending trends, budget health, and net worth
+- 🔔 **Smart Notifications**: Real-time alerts for budget limits and goal milestones
+
+### For Developers
+
+- 🚀 **One-Command Setup**: Get entire system running with `./run-pfms.sh`
+- 📊 **Live Architecture Visualization**: Interactive service topology with real-time health status
+- 🧪 **Pre-loaded Demo Data**: Explore working system immediately with sample data
+- 📚 **Production Patterns**: Learn event-driven architecture, CQRS, saga patterns
+- 🔍 **Observability**: Health checks, metrics, distributed tracing
+- 🧩 **Polyglot Examples**: See how different languages solve similar problems
+- 📖 **Comprehensive Documentation**: Architecture decision records (ADRs) and service READMEs
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Docker & Docker Compose
+- Git
+
+### Installation
 
 ```bash
-cd pfms-ui
-npm start
-```
+# Clone the repository
+git clone https://github.com/yourusername/pfms.git
+cd pfms
 
-This will start the development server at http://localhost:3000.
-
-### 4. Health check for the api gateway 
-
-```bash
-curl http://localhost:8080/actuator/health
-```
-
-The expected output is:
-
-```bash
-{"status":"UP"}
-```
-
-### 5. Reactive Microservices Architecture with Messaging
-
-```bash
-+--------------------+
-|                    |
-|      React UI      |
-|    (pfms-ui)       |
-|                    |
-+---------+----------+
-        |
-        | 1. UI sends a request to API Gateway (via HTTP).
-        |
-        v
-+---------+----------+
-|                    |
-|    API Gateway     |  
-|  (api-gateway)     |  
-|                    |
-+---------+----------+
-        |
-        | 2. API Gateway routes request to appropriate microservice (via HTTP).
-        |
-        v
-+---------+----------+
-|                    |
-|   Microservice A   |  
-|   (e.g., Budget    |
-|   Service)         |
-|                    |
-+---------+----------+
-        |
-        | 3. Microservice A processes the request (e.g., saves data to DB).
-        | 4. Microservice A publishes a message to Message Broker (e.g., Kafka, RabbitMQ).
-        |
-        v
-+---------+----------+             +--------------------+
-|                    | 5. Message |                    |
-|  Message Broker    |<-----------+   Microservice B    |
-| (Kafka/RabbitMQ)   |   sent to  |   (e.g., Reporting  |
-|                    |  subscribed|   Service)          |
-+--------------------+  services. +---------+----------+
-                                    |    6. Subscriber receives message from broker.
-                                    |    7. Processes the message and performs operations.
-                                    |
-                                    +--->8. Publishes a new message/JSON back to Message Broker.
-```
-
-### 6. Mini diagram - more updated
-```bash
-[React UI]
-   |
-[API Gateway]
-   |
--------------------------------------------------
-| Auth | User | Accounts | Transactions | Budget |
-| Goals | Reporting | Notification | Messaging |
--------------------------------------------------
-       |           |            |
-   Config Server  Discovery   Message Broker
-```
-
-This architecture, named **Reactive Microservices Architecture with Messaging**, enables asynchronous communication between services via a message broker, promoting scalability, decoupling, and resilience. By following this architecture, each service can perform its task independently and communicate the results to other services, which improves the overall performance and reliability of your system.
-
-### Getting started
-
-#### Run the microservices
-```bash
+# Run the entire system
 ./run-pfms.sh
+
+# Open the application
+open http://localhost:3000
 ```
 
-#### Open UI
-[Link](http://localhost:3000/)
+**That's it!** The script will:
+1. Start all infrastructure services (Kafka, RabbitMQ, databases)
+2. Launch all microservices
+3. Seed demo data
+4. Open the congratulations page with live architecture visualization
+
+### Demo Credentials
+
 ```
+Username: demo@pfms.dev
+Password: demo123
+```
+
+---
+
+## 🛠️ Available Scripts
+
+```bash
+./run-pfms.sh          # Start all services
+./stop-pfms.sh         # Stop all services
+./reset-demo-data.sh   # Reset to fresh demo data
+./health-check.sh      # Check all services health
+```
+
+---
+
+## 📡 Service Communication Patterns
+
+### Event-Driven Flows
+
+**Budget Creation Flow:**
+```
+User → API Gateway → Budget Service 
+  → Save to PostgreSQL 
+  → Publish "budget.created" to Kafka 
+  → Notification Service consumes 
+  → Save notification
+```
+
+**Transaction Recording Flow:**
+```
+User → API Gateway → Transaction Service 
+  → Save to PostgreSQL 
+  → Publish to RabbitMQ 
+  → Account Service consumes 
+  → Update account balance
+  → Publish "transaction.created" to Kafka
+  → Analytics Service consumes
+  → Update spending trends
+```
+
+### Message Topics
+
+**Kafka Topics:**
+- `budget.created` - New budget events
+- `budget.limit.warning` - Budget threshold alerts
+- `transaction.created` - Transaction events for analytics
+- `goal.milestone.reached` - Goal achievement notifications
+- `streak.milestone.reached` - Streak achievement events
+
+**RabbitMQ Queues:**
+- `account.events` - Transaction to account updates
+- `account.balance.updated` - Balance change notifications
+
+---
+
+## 🔐 Security
+
+- JWT-based authentication via API Gateway
+- BCrypt password hashing
+- CORS configuration
+- Security filter chains
+- Rate limiting on AI Advisor endpoints
+
+---
+
+## 📊 Observability
+
+### Health Checks
+
+All services expose health endpoints:
+
+```bash
+# API Gateway health
+curl http://localhost:8080/actuator/health
+
+# Individual service health (via Eureka/Consul)
+curl http://localhost:8761/eureka/apps
+curl http://localhost:8500/v1/health/service/transaction-service
+```
+
+### Monitoring Stack
+
+- **Prometheus**: Metrics collection from all services
+- **Grafana**: Dashboards for system health, performance, and business metrics
+- **ELK Stack**: Centralized logging (optional)
+- **Custom Dashboard**: JVM metrics at `http://localhost:8080/dashboard`
+
+---
+
+## 🗄️ Database Schema
+
+Each service maintains its own database (database-per-service pattern):
+
+- **API Gateway**: User authentication data (MySQL)
+- **Budget Service**: Budgets and categories (PostgreSQL)
+- **Goal Service**: Financial goals and streaks (PostgreSQL)
+- **Transaction Service**: Transaction records (PostgreSQL)
+- **Account Service**: Account balances and history (PostgreSQL)
+- **Notification Service**: Notification records (PostgreSQL)
+- **Analytics Service**: Aggregated spending data (TimescaleDB)
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+./run-tests.sh
+
+# Run tests for specific service
+cd budget-service && mvn test
+cd transaction-service && npm test
+cd analytics-service && go test ./...
+```
+
+**Test Coverage:**
+- Unit tests for business logic
+- Integration tests for messaging
+- Contract tests with Pact (coming soon)
+- End-to-end tests for critical flows
+
+---
+
+## 📚 Documentation
+
+- [Architecture Overview](docs/architecture/overview.md)
+- [Service Communication](docs/architecture/messaging.md)
+- [API Documentation](docs/api/README.md)
+- [Deployment Guide](docs/deployment/README.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Architecture Decision Records](docs/adr/)
+
+---
+
+## 🗺️ Roadmap
+
+### ✅ Completed (v1.0)
+- Core microservices architecture
+- Event-driven messaging (Kafka + RabbitMQ)
+- Service discovery (Eureka + Consul)
+- JWT authentication
+- Basic UI with budget/transaction/goal features
+
+### 🚧 In Progress (v2.0)
+- Analytics service (Go)
+- AI financial advisor
+- Streak gamification UI
+- Interactive architecture visualization
+- Pact contract testing
+
+### 📋 Planned (v3.0+)
+- Kubernetes deployment (Helm charts)
+- Bank integration (mock APIs)
+- Mobile app (React Native)
+- Advanced AI features (spending predictions)
+- Multi-currency support
+- Service mesh (Istio)
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions from developers of all skill levels!
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- Inspired by Duolingo's gamification approach
+- Built for the developer community to learn microservices
+- Special thanks to all contributors
+
+---
+
+## 📞 Contact
+
+- **GitHub**: [@yourusername](https://github.com/yourusername)
+- **Website**: [edsa.tech](https://edsa.tech)
+- **Issues**: [GitHub Issues](https://github.com/yourusername/pfms/issues)
+
+---
+
+## ⭐ Show Your Support
+
+If PFMS helped you learn microservices or build your fintech project, please give it a star! ⭐
+
+Your support helps make this project better for everyone.
+
+---
+
+**Built with ❤️ by developers, for developers**
