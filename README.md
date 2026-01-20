@@ -141,7 +141,7 @@ Infrastructure:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/pfms.git
+git clone https://github.com/delose/personal-finance-management-system.git
 cd pfms
 
 # Run the entire system
@@ -352,9 +352,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-- **GitHub**: [@yourusername](https://github.com/yourusername)
+- **GitHub**: [@delose](https://github.com/delose)
 - **Website**: [edsa.tech](https://edsa.tech)
-- **Issues**: [GitHub Issues](https://github.com/yourusername/pfms/issues)
+- **Issues**: [GitHub Issues](https://github.com/delose/pfms/issues)
 
 ---
 
