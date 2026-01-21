@@ -37,6 +37,7 @@ services=(
     "account-service"
     "transaction-service"
     "reporting-service"
+    "analytics-service"
 )
 
 # Loop through each service and rebuild it
