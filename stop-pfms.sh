@@ -25,6 +25,8 @@ docker_services=(
 # Modules with internal docker-compose.yml files
 # Ensure these paths correctly point to the module directories from this script
 compose_modules=(
+    "analytics-service"
+    "expense-service"
     "consul-server"
     "account-service"
     "transaction-service"
