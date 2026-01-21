@@ -16,5 +16,5 @@ A lightweight, high-performance Go microservice for the Personal Finance Managem
 ### 1. Initialize (One-time setup)
 If you are adding new dependencies, initialize the Go module using Docker:
 ```bash
-docker run --rm -v "$PWD":/app -w /app golang:1.24-alpine go mod init pfms/analytics-service
+./run-docker.sh
 ```
