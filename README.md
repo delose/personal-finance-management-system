@@ -293,6 +293,8 @@ cd analytics-service && go test ./...
 - [Deployment Guide](docs/deployment/README.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Architecture Decision Records](docs/adr/)
+- **[Functional Use Cases](use-cases/README.md)** - Detailed user journeys and system flows
+- **[Product Requirements](PRD.md)** - Technical specifications and roadmap
 
 ---
 
