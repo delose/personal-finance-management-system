@@ -10,62 +10,69 @@
 
 ## 🎯 Overview
 
-PFMS is an open-source personal finance management system showcasing modern microservices patterns through a real-world fintech use case. The system combines multiple programming languages, message brokers, and service discovery patterns while providing a delightful, gamified user experience inspired by Duolingo.
+PFMS is the de facto open-source reference architecture for fintech companies, combining a production-ready personal finance application with an educational showcase of modern microservices patterns. Built with a dual purpose:
 
-**Key Highlights:**
-- 🏗️ **Polyglot Microservices**: Java, Node.js, Go, Python, PHP
-- 🔄 **Event-Driven**: Kafka and RabbitMQ messaging patterns
-- 🎮 **Gamified UX**: Streak tracking and achievement system
-- 🚀 **One-Command Setup**: Run entire system with `./run-pfms.sh`
-- 📊 **Production Patterns**: Service discovery, config management, observability
+**For Developers**: Learn microservices architecture hands-on through a polyglot system (Java, Node.js, Go, Python, PHP) with event-driven patterns, service discovery, and observability.
+
+**For Users**: Track finances with zero learning curve through a gamified, Duolingo-inspired experience featuring streak tracking, achievement badges, and AI-powered financial guidance.
+
+**Key Highlights**:
+- 🏗️ **Polyglot Microservices**: 10+ services across 5 languages
+- 🔄 **Event-Driven**: Kafka + RabbitMQ messaging patterns
+- 🎮 **Gamified UX**: Streak tracking with animated celebrations
+- 🤖 **AI Advisor**: Claude-powered financial guidance
+- 🚀 **One-Command Setup**: Full system launch with `./run-pfms.sh`
+- 📊 **Production Patterns**: Service discovery, health checks, observability
 
 ---
 
 ## 📖 User Journeys
 
-PFMS provides comprehensive user journeys that guide users through their financial management experience. Below are the key user journeys with links to detailed specifications:
+PFMS provides comprehensive user journeys aligned with PRD.md v2.0:
 
-### 1. [User Registration and Authentication](use-cases/README.md#1-user-registration-and-authentication)
-- New users can create accounts with email verification
-- Existing users can securely log in with JWT authentication
-- Password recovery and management
+### Developer Journeys
+1. **[One-Command System Setup](use-cases/README.md#1-one-command-system-setup-developer-journey)**
+   - Launch entire system with single command
+   - Live architecture visualization
+   - Health status dashboard
 
-### 2. [Budget Creation and Management](use-cases/README.md#2-budget-creation-and-management)
-- Users can create monthly budgets with custom categories
-- System provides visual progress tracking against budget limits
-- Alerts when approaching or exceeding budget thresholds
+### User Journeys
+2. **[Budget Creation and Management](use-cases/README.md#2-budget-creation-and-management)**
+   - Monthly budget creation by category
+   - Visual progress tracking
+   - Threshold alerts
 
-### 3. [Expense Tracking and Categorization](use-cases/README.md#3-expense-tracking-and-categorization)
-- Manual expense entry with smart categorization
-- Automatic transaction import from linked accounts
-- Expense history with filtering and search capabilities
+3. **[Transaction Tracking](use-cases/README.md#3-transaction-tracking)**
+   - Manual expense/income entry
+   - Smart categorization
+   - Recurring transaction detection
 
-### 4. [Financial Goal Setting and Tracking](use-cases/README.md#4-financial-goal-setting-and-tracking)
-- Create savings goals with target amounts and deadlines
-- Visual progress tracking with milestone celebrations
-- System recommendations for goal achievement
+4. **[Goal Setting with Streak Tracking](use-cases/README.md#4-goal-setting-with-streak-tracking)**
+   - Savings goal creation
+   - Daily check-in streaks
+   - Milestone celebrations
 
-### 5. [Notification System](use-cases/README.md#5-notification-system)
-- Real-time alerts for budget limits and goal milestones
-- Customizable notification preferences
-- Multi-channel delivery (email, SMS, in-app)
+5. **[AI Financial Advisor](use-cases/README.md#5-ai-financial-advisor)**
+   - Natural language Q&A
+   - Personalized guidance
+   - Conversation history
 
-### 6. [Financial Reporting and Analytics](use-cases/README.md#6-financial-reporting-and-analytics)
-- Custom report generation with date and category filters
-- Visual analytics with charts and graphs
-- Spending trend analysis and insights
+6. **[Financial Health Dashboard](use-cases/README.md#6-financial-health-dashboard)**
+   - Spending trends visualization
+   - Category breakdowns
+   - Actionable insights
 
-### 7. [User Profile Management](use-cases/README.md#7-user-profile-management)
-- Personal information updates
-- Notification and display preferences
-- Account security settings
+7. **[Interactive Architecture Visualization](use-cases/README.md#7-interactive-architecture-visualization)**
+   - Live service topology
+   - Real-time health status
+   - Message flow animation
 
-### 8. [External Account Integration](use-cases/README.md#8-external-account-integration)
-- Secure bank account linking
-- Automatic transaction import and categorization
-- Manual reconciliation capabilities
+8. **[Streak Gamification System](use-cases/README.md#8-streak-gamification-system)**
+   - Daily check-in tracking
+   - Animated progress indicators
+   - Achievement badges
 
-For detailed step-by-step user journeys and functional requirements, please refer to the **[Functional Use Cases](use-cases/README.md)** document.
+For complete implementation specifications, see **[Functional Use Cases](use-cases/README.md)**.
 
 ---
 
@@ -156,25 +163,22 @@ Infrastructure:
 
 ## ✨ Features
 
-### For Users
-
-- 💰 **Budget Management**: Create and track monthly budgets by category with visual progress indicators
-- 💸 **Transaction Tracking**: Log income and expenses with automatic categorization
-- 🎯 **Goal Setting**: Set savings goals and track progress with milestone celebrations
-- 🔥 **Streak Gamification**: Daily check-ins, achievement badges, and streak freezes (Duolingo-inspired)
-- 🤖 **AI Financial Advisor**: Ask questions in plain English and get personalized financial guidance
-- 📊 **Financial Dashboard**: Overview of spending trends, budget health, and net worth
-- 🔔 **Smart Notifications**: Real-time alerts for budget limits and goal milestones
-
 ### For Developers
+- 🚀 **One-Command Setup**: Full system launch with demo data
+- 📊 **Live Architecture Visualization**: Interactive service topology
+- 🧪 **Pre-loaded Demo Data**: Immediate exploration
+- 📚 **Production Patterns**: Event-driven, service discovery, observability
+- 🧩 **Polyglot Examples**: 5 languages solving similar problems
+- 📖 **Comprehensive Documentation**: ADRs and service READMEs
 
-- 🚀 **One-Command Setup**: Get entire system running with `./run-pfms.sh`
-- 📊 **Live Architecture Visualization**: Interactive service topology with real-time health status
-- 🧪 **Pre-loaded Demo Data**: Explore working system immediately with sample data
-- 📚 **Production Patterns**: Learn event-driven architecture, CQRS, saga patterns
-- 🔍 **Observability**: Health checks, metrics, distributed tracing
-- 🧩 **Polyglot Examples**: See how different languages solve similar problems
-- 📖 **Comprehensive Documentation**: Architecture decision records (ADRs) and service READMEs
+### For Users
+- 💰 **Budget Management**: Category-based tracking with visual progress
+- 💸 **Transaction Tracking**: Smart categorization and recurring detection
+- 🎯 **Goal Setting**: Savings goals with streak motivation
+- 🔥 **Streak Gamification**: Daily check-ins with animated celebrations
+- 🤖 **AI Financial Advisor**: Plain-English financial guidance
+- 📊 **Financial Dashboard**: Spending trends and insights
+- 🎨 **Delightful UX**: Confetti, badges, and encouraging messages
 
 ---
 
