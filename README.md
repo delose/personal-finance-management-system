@@ -21,21 +21,51 @@ PFMS is an open-source personal finance management system showcasing modern micr
 
 ---
 
-## 📖 User Journeys and Functional Use Cases
+## 📖 User Journeys
 
-For detailed user journeys, system flows, and functional specifications, please refer to the **[Functional Use Cases](use-cases/README.md)** document. This document provides comprehensive information about:
+PFMS provides comprehensive user journeys that guide users through their financial management experience. Below are the key user journeys with links to detailed specifications:
 
-- User registration and authentication flows
-- Budget management workflows
-- Expense tracking processes
-- Financial goal setting and progress tracking
-- Notification and alert systems
-- Reporting and analytics capabilities
-- User profile management
-- External account integration
-- Data backup and recovery procedures
+### 1. [User Registration and Authentication](use-cases/README.md#1-user-registration-and-authentication)
+- New users can create accounts with email verification
+- Existing users can securely log in with JWT authentication
+- Password recovery and management
 
-The use cases document serves as the primary reference for understanding how users interact with the PFMS system and how different services collaborate to deliver the complete functionality.
+### 2. [Budget Creation and Management](use-cases/README.md#2-budget-creation-and-management)
+- Users can create monthly budgets with custom categories
+- System provides visual progress tracking against budget limits
+- Alerts when approaching or exceeding budget thresholds
+
+### 3. [Expense Tracking and Categorization](use-cases/README.md#3-expense-tracking-and-categorization)
+- Manual expense entry with smart categorization
+- Automatic transaction import from linked accounts
+- Expense history with filtering and search capabilities
+
+### 4. [Financial Goal Setting and Tracking](use-cases/README.md#4-financial-goal-setting-and-tracking)
+- Create savings goals with target amounts and deadlines
+- Visual progress tracking with milestone celebrations
+- System recommendations for goal achievement
+
+### 5. [Notification System](use-cases/README.md#5-notification-system)
+- Real-time alerts for budget limits and goal milestones
+- Customizable notification preferences
+- Multi-channel delivery (email, SMS, in-app)
+
+### 6. [Financial Reporting and Analytics](use-cases/README.md#6-financial-reporting-and-analytics)
+- Custom report generation with date and category filters
+- Visual analytics with charts and graphs
+- Spending trend analysis and insights
+
+### 7. [User Profile Management](use-cases/README.md#7-user-profile-management)
+- Personal information updates
+- Notification and display preferences
+- Account security settings
+
+### 8. [External Account Integration](use-cases/README.md#8-external-account-integration)
+- Secure bank account linking
+- Automatic transaction import and categorization
+- Manual reconciliation capabilities
+
+For detailed step-by-step user journeys and functional requirements, please refer to the **[Functional Use Cases](use-cases/README.md)** document.
 
 ---
 
