@@ -21,6 +21,24 @@ PFMS is an open-source personal finance management system showcasing modern micr
 
 ---
 
+## 📖 User Journeys and Functional Use Cases
+
+For detailed user journeys, system flows, and functional specifications, please refer to the **[Functional Use Cases](use-cases/README.md)** document. This document provides comprehensive information about:
+
+- User registration and authentication flows
+- Budget management workflows
+- Expense tracking processes
+- Financial goal setting and progress tracking
+- Notification and alert systems
+- Reporting and analytics capabilities
+- User profile management
+- External account integration
+- Data backup and recovery procedures
+
+The use cases document serves as the primary reference for understanding how users interact with the PFMS system and how different services collaborate to deliver the complete functionality.
+
+---
+
 ## 🏛️ Architecture
 
 ```
@@ -183,19 +201,19 @@ Password: demo123
 
 **Budget Creation Flow:**
 ```
-User → API Gateway → Budget Service 
-  → Save to PostgreSQL 
-  → Publish "budget.created" to Kafka 
-  → Notification Service consumes 
+User → API Gateway → Budget Service
+  → Save to PostgreSQL
+  → Publish "budget.created" to Kafka
+  → Notification Service consumes
   → Save notification
 ```
 
 **Transaction Recording Flow:**
 ```
-User → API Gateway → Transaction Service 
-  → Save to PostgreSQL 
-  → Publish to RabbitMQ 
-  → Account Service consumes 
+User → API Gateway → Transaction Service
+  → Save to PostgreSQL
+  → Publish to RabbitMQ
+  → Account Service consumes
   → Update account balance
   → Publish "transaction.created" to Kafka
   → Analytics Service consumes

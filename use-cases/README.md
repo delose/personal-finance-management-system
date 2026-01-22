@@ -35,7 +35,7 @@ This document outlines the functional use cases of the Personal Finance Manageme
     ```
 
 - **Update Budget**: Users can modify their budget categories or limits as their financial situation changes.
-- **Track Spending**: The system tracks users’ expenditures against their budget and provides alerts if they are approaching or exceeding their limits.
+- **Track Spending**: The system tracks users' expenditures against their budget and provides alerts if they are approaching or exceeding their limits.
 
 ## 3. Expense Tracking
 
@@ -67,7 +67,7 @@ This document outlines the functional use cases of the Personal Finance Manageme
 
 ## 5. Notifications and Alerts
 
-**Description**: The system provides users with timely notifications and alerts about their financial status, such as upcoming bills, low balances, or when they’re close to exceeding their budget.
+**Description**: The system provides users with timely notifications and alerts about their financial status, such as upcoming bills, low balances, or when they're close to exceeding their budget.
 
     ```
     Client --> API Gateway (Validate JWT) --> Notification Service (Retrieve Notifications) --> Database
