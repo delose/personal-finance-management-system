@@ -1,242 +1,217 @@
-# Personal Finance Management System (PFMS) - Functional Use Cases
+# Personal Finance Management System (PFMS) - Lean YNAB Clone Use Cases
 
-This document outlines the detailed user journeys derived from PRD.md v2.0. Each journey provides implementation-ready specifications aligned with the product requirements.
+This document outlines the simplified user journeys for the Lean YNAB Clone, focusing exclusively on core zero-based budgeting functionality.
 
-## 1. One-Command System Setup (Developer Journey)
+## 1. Quick Setup and First Budget
 
-**Goal**: Enable developers to launch the entire PFMS system with a single command and see a working demo.
+**Goal**: Enable users to start budgeting within 2 minutes of installation.
 
 **User Actions**:
-1. Developer clones repository
-2. Developer runs `./run-pfms.sh`
-3. Developer waits for services to initialize
-4. Developer opens browser to http://localhost:3000
+1. User opens application
+2. User creates first account (checking/savings)
+3. User enters starting balance
+4. User creates initial budget categories
+5. User allocates funds to categories
 
 **Expected Outcome**:
-1. System starts all infrastructure services (Kafka, RabbitMQ, databases)
-2. System launches all microservices with health checks
-3. System seeds demo data automatically
-4. System opens congratulations page with live architecture visualization
-5. All services show "healthy" status in dashboard
+1. System displays simple account creation form
+2. System validates balance (> $0)
+3. System shows category suggestions (rent, groceries, etc.)
+4. System ensures every dollar is allocated
+5. System shows budget overview with progress bars
 
 **Functional Requirements**:
-- ✅ Shell script with Docker Compose orchestration
-- ✅ Health check endpoints on all services
-- ✅ Demo data seeding script
-- ✅ Live architecture visualization (React + D3.js)
-- ✅ Service status aggregation in API Gateway
-- ✅ Real-time health status updates via WebSocket
-- ✅ Error handling for missing dependencies
-- ✅ Success confirmation with system URL
+- ✅ Simple account creation form
+- ✅ Balance validation
+- ✅ Default category suggestions
+- ✅ Allocation validation (sum = balance)
+- ✅ Visual budget overview
+- ✅ Error handling for invalid inputs
+- ✅ Success confirmation
 
-## 2. Budget Creation and Management
+---
 
-**Goal**: Enable users to create monthly budgets by category and track spending progress.
+## 2. Manual Transaction Entry
 
-**User Actions**:
-1. User navigates to "Budgets" section
-2. User clicks "Create Budget" button
-3. User selects month/year and adds categories with amounts
-4. User saves budget
-
-**Expected Outcome**:
-1. System displays budget form with common category suggestions
-2. System validates amounts (> $0) and period (current/future months)
-3. System saves budget to PostgreSQL via budget-service
-4. System publishes `budget.created` event to Kafka
-5. System shows budget dashboard with progress bars
-
-**Functional Requirements**:
-- ✅ Budget period validation (current/future months only)
-- ✅ Category amount validation (> $0)
-- ✅ Database transaction for atomic save
-- ✅ Kafka event publishing (`budget.created`)
-- ✅ Progress bar visualization (green/yellow/red)
-- ✅ Category suggestions from past budgets
-- ✅ Error handling for duplicate budgets
-- ✅ Budget rollover on monthly reset
-
-## 3. Transaction Tracking
-
-**Goal**: Enable manual entry of income/expenses with automatic categorization.
+**Goal**: Enable users to manually record income and expenses.
 
 **User Actions**:
-1. User clicks "Add Transaction" button
-2. User enters amount, date, and description
-3. User confirms auto-suggested category
+1. User navigates to "Transactions" section
+2. User clicks "Add Transaction" button
+3. User enters date, amount, category, and memo
 4. User saves transaction
 
 **Expected Outcome**:
-1. System displays transaction form with date picker
-2. System suggests category based on description (ML-based)
-3. System validates amount (> $0) and date (not future)
-4. System saves to PostgreSQL via transaction-service
-5. System publishes to RabbitMQ for account-service
-6. System updates budget progress
+1. System displays simple transaction form
+2. System validates amount (> $0) and date (not future)
+3. System saves to SQLite database
+4. System updates account balance
+5. System updates budget category spending
 
 **Functional Requirements**:
+- ✅ Transaction form with date picker
 - ✅ Amount validation (> $0)
-- ✅ Date validation (not future dates)
-- ✅ Category suggestion algorithm
-- ✅ Transaction database storage
-- ✅ RabbitMQ event publishing
-- ✅ Budget progress recalculation
-- ✅ Recurring transaction detection
-- ✅ Receipt image upload (optional)
+- ✅ Date validation (not future)
+- ✅ Category dropdown with suggestions
+- ✅ Database transaction for atomic save
+- ✅ Balance update calculation
+- ✅ Budget spending update
+- ✅ Error handling for invalid entries
 
-## 4. Goal Setting with Streak Tracking
+---
 
-**Goal**: Enable users to create savings goals and build financial habits through streaks.
+## 3. Budget Management
 
-**User Actions**:
-1. User navigates to "Goals" section
-2. User clicks "Create Goal" button
-3. User enters goal name, target amount, and deadline
-4. User completes daily check-in
-5. User views streak progress
-
-**Expected Outcome**:
-1. System displays goal creation form
-2. System validates target amount and deadline (future date)
-3. System calculates required monthly savings
-4. System saves goal to PostgreSQL via goal-service
-5. System shows animated flame for streak counter
-6. System triggers confetti at milestones
-
-**Functional Requirements**:
-- ✅ Goal validation (future deadline, positive amount)
-- ✅ Monthly savings calculation
-- ✅ Streak counter with daily check-in
-- ✅ Streak freeze (1 per week)
-- ✅ Milestone detection (25% increments)
-- ✅ Celebration animations (confetti, sounds)
-- ✅ Visual progress indicators (thermometer)
-- ✅ Goal completion certification
-
-## 5. AI Financial Advisor
-
-**Goal**: Provide plain-English financial guidance through LLM integration.
+**Goal**: Enable users to create and manage monthly budgets.
 
 **User Actions**:
-1. User navigates to "Advisor" section
-2. User types question in natural language
-3. User receives personalized advice
-4. User saves helpful responses
+1. User navigates to "Budget" section
+2. User selects month
+3. User allocates funds to categories
+4. User saves budget
 
 **Expected Outcome**:
-1. System displays chat interface
-2. System sends question to ai-advisor-service
-3. System receives Claude API response
-4. System displays simple, jargon-free answer
-5. System saves conversation history
+1. System displays budget grid for selected month
+2. System shows available funds to allocate
+3. System validates allocations (sum = available)
+4. System saves budget to database
+5. System shows visual progress indicators
 
 **Functional Requirements**:
-- ✅ Natural language input processing
-- ✅ Claude API integration
-- ✅ Response simplification algorithm
-- ✅ Conversation history storage
-- ✅ Rate limiting (5 questions/minute)
-- ✅ Response caching for common questions
-- ✅ Personalization based on user data
-- ✅ Error handling for API failures
+- ✅ Monthly budget grid view
+- ✅ Available funds calculation
+- ✅ Allocation validation
+- ✅ Database save operation
+- ✅ Progress bar visualization
+- ✅ Category allocation suggestions
+- ✅ Error handling for over-allocation
+- ✅ Previous month rollover
 
-## 6. Financial Health Dashboard
+---
 
-**Goal**: Provide one-page overview of financial status with visual analytics.
+## 4. CSV Import/Export
+
+**Goal**: Enable users to import/export transaction data.
 
 **User Actions**:
-1. User views dashboard on login
-2. System shows spending trends
-3. User filters by time period
-4. User drills down into categories
+1. User navigates to "Import/Export" section
+2. User selects CSV file for import
+3. User maps CSV columns to fields
+4. User confirms import
+5. User exports data for backup
 
 **Expected Outcome**:
-1. System displays overview with key metrics
-2. System shows spending trends (month-over-month)
-3. System applies time filters dynamically
-4. System shows category breakdowns
-5. System provides actionable insights
+1. System displays import form
+2. System validates CSV format
+3. System shows column mapping interface
+4. System imports transactions atomically
+5. System generates export file
+6. System provides success confirmation
 
 **Functional Requirements**:
-- ✅ Real-time data aggregation
-- ✅ Chart generation (area, donut, bar)
-- ✅ Interactive filter controls
-- ✅ Category drill-down capability
-- ✅ Insight generation algorithm
-- ✅ Comparative period analysis
-- ✅ Mobile-responsive design
-- ✅ Print/export functionality
+- ✅ CSV file upload
+- ✅ Format validation
+- ✅ Column mapping interface
+- ✅ Transaction batch import
+- ✅ Error handling for invalid data
+- ✅ Export generation
+- ✅ Data validation reports
+- ✅ Backup confirmation
 
-## 7. Interactive Architecture Visualization
+---
 
-**Goal**: Show live service topology with real-time health status.
+## 5. Simple Reporting
+
+**Goal**: Provide basic financial insights through simple reports.
 
 **User Actions**:
-1. Developer views landing page
-2. System displays service diagram
-3. Developer hovers over services
-4. Developer sees message flows
+1. User navigates to "Reports" section
+2. User selects report type
+3. User views spending breakdown
+4. User filters by time period
 
 **Expected Outcome**:
-1. System renders D3.js visualization
-2. System shows real-time health status
-3. System animates Kafka/RabbitMQ flows
-4. System updates status via WebSocket
-5. System highlights unhealthy services
+1. System displays report selection
+2. System generates spending by category
+3. System shows simple bar chart
+4. System applies time filters
+5. System calculates totals
 
 **Functional Requirements**:
-- ✅ D3.js topology rendering
-- ✅ WebSocket for real-time updates
-- ✅ Health status aggregation
-- ✅ Animated message flow visualization
-- ✅ Service metadata tooltips
-- ✅ Error state highlighting
-- ✅ Zoom/pan controls
-- ✅ Legend for messaging patterns
-
-## 8. Streak Gamification System
-
-**Goal**: Motivate users through daily check-ins and achievement badges.
-
-**User Actions**:
-1. User completes daily financial check-in
-2. System increments streak counter
-3. User views growing flame animation
-4. User earns badges at milestones
-
-**Expected Outcome**:
-1. System tracks daily check-ins
-2. System increments streak counter
-3. System displays animated flame
-4. System awards badges at milestones
-5. System provides encouraging messages
-
-**Functional Requirements**:
-- ✅ Daily check-in tracking
-- ✅ Streak counter persistence
-- ✅ Flame animation (SVG-based)
-- ✅ Badge award system
-- ✅ Milestone celebrations
-- ✅ Streak freeze (1 per week)
-- ✅ Encouraging restart after breaks
-- ✅ Shareable achievement cards
+- ✅ Report type selection
+- ✅ Spending by category calculation
+- ✅ Simple chart generation
+- ✅ Time period filtering
+- ✅ Total calculations
+- ✅ Data export option
+- ✅ Print-friendly format
+- ✅ Error handling for no data
 
 ---
 
 ## Implementation Checklist
 
-1. **System Setup**: 8 requirements
-2. **Budget Management**: 8 requirements
-3. **Transaction Tracking**: 8 requirements
-4. **Goal Setting**: 8 requirements
-5. **AI Advisor**: 8 requirements
-6. **Financial Dashboard**: 8 requirements
-7. **Architecture Visualization**: 8 requirements
-8. **Streak Gamification**: 8 requirements
+1. **Quick Setup**: 8 requirements
+2. **Transaction Entry**: 8 requirements
+3. **Budget Management**: 8 requirements
+4. **CSV Import/Export**: 8 requirements
+5. **Simple Reporting**: 8 requirements
 
-**Total**: 64 implementation-ready requirements
+**Total**: 40 focused requirements (vs 64 in v2.0)
 
-**Note**: All journeys align with PRD.md v2.0 specifications. Missing details from PRD:
-- Specific bank integration requirements (marked as mock in PRD)
-- Exact celebration animation specifications
-- Detailed error handling scenarios for AI advisor
+**Note**: All journeys focus exclusively on core zero-based budgeting. Complex features from v2.0 (AI, gamification, architecture visualization) have been removed to maintain simplicity and cost efficiency.
+
+---
+
+## Key Differences from v2.0
+
+### Removed Complexity:
+- ❌ Bank integration
+- ❌ AI financial advisor
+- ❌ Gamification systems
+- ❌ Architecture visualization
+- ❌ Multi-service orchestration
+- ❌ Complex messaging patterns
+- ❌ Advanced analytics
+
+### Added Simplicity:
+- ✅ Single SQLite database
+- ✅ Minimal API surface
+- ✅ Local-first storage
+- ✅ Focused UI for budgeting
+- ✅ Simple CSV import/export
+- ✅ Basic reporting only
+- ✅ Reduced infrastructure
+
+### Performance Targets:
+- Under 2 minute setup
+- Under 1 second response times
+- Works completely offline
+- Under 5MB total size
+- Zero external dependencies
+
+---
+
+## Migration from v2.0
+
+For users migrating from the complex v2.0 architecture:
+
+1. **Data Export**: Export data from all v2.0 services
+2. **Data Transformation**: Convert to simplified schema
+3. **Import**: Use CSV import functionality
+4. **Verification**: Validate all transactions and budgets
+5. **Cleanup**: Remove old infrastructure
+
+**Note**: Some v2.0 features (AI advice, gamification) will not be available in the lean version. Focus is on core budgeting functionality.
+
+---
+
+## Development Priorities
+
+1. **Core Budgeting**: Transaction entry, category management, budget allocation
+2. **Data Portability**: CSV import/export, backup/restore
+3. **Simple Reporting**: Basic charts and calculations
+4. **Performance**: Fast load times, offline support
+5. **Reliability**: Data validation, error handling
+
+All development efforts focus on maintaining the simplicity and cost efficiency of the lean architecture while delivering core YNAB functionality.
