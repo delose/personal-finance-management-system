@@ -192,7 +192,7 @@ const ArchitecturePage: React.FC = () => {
     const updatedServices = await Promise.all(
       services.map(async (service) => {
         if (!service.endpoints?.health) {
-          return { ...service, health: 'UP' }; // Assume infrastructure services are up
+          return { ...service, health: 'UP' as const };
         }
 
         try {
@@ -205,7 +205,7 @@ const ArchitecturePage: React.FC = () => {
           });
 
           const responseTime = Date.now() - startTime;
-          let healthStatus = 'UP';
+          let healthStatus: 'UP' | 'DOWN' | 'DEGRADED' | 'UNKNOWN' = 'UP';
 
           // Handle different health endpoint formats
           if (response.data?.status) {
@@ -218,9 +218,14 @@ const ArchitecturePage: React.FC = () => {
             healthStatus = app ? 'UP' : 'DOWN';
           }
 
+          // Ensure healthStatus is one of the allowed values
+          if (!['UP', 'DOWN', 'DEGRADED', 'UNKNOWN'].includes(healthStatus)) {
+            healthStatus = 'UNKNOWN';
+          }
+
           return {
             ...service,
-            health: healthStatus as 'UP' | 'DOWN' | 'DEGRADED' | 'UNKNOWN',
+            health: healthStatus,
             responseTime,
             lastUpdated: new Date().toISOString()
           };
@@ -228,7 +233,7 @@ const ArchitecturePage: React.FC = () => {
           console.error(`Health check failed for ${service.name}:`, error);
           return {
             ...service,
-            health: 'DOWN',
+            health: 'DOWN' as const,
             responseTime: 0,
             lastUpdated: new Date().toISOString()
           };
