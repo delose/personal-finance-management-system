@@ -46,7 +46,7 @@ const BudgetPage: React.FC = () => {
     return budgeted - spent;
   };
 
-  const getRemainingColor = (remaining: number): string => {
+  const getRemainingColor = (remaining: number, budgeted: number): string => {
     if (remaining < 0) return 'text-red-500';
     if (remaining < budgeted * 0.2) return 'text-yellow-500';
     return 'text-green-500';
@@ -95,7 +95,7 @@ const BudgetPage: React.FC = () => {
                   <div className="font-medium">{budget.category}</div>
                   <div>${budget.budgeted.toFixed(2)}</div>
                   <div>${budget.spent.toFixed(2)}</div>
-                  <div className={getRemainingColor(remaining)}>
+                  <div className={getRemainingColor(remaining, budget.budgeted)}>
                     ${remaining.toFixed(2)}
                   </div>
                 </div>
