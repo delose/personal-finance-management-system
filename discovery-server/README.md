@@ -26,10 +26,10 @@ This will start the Discovery Server on port 8761.
 
 ## Health Check and Monitoring
 
-    ```
-    http://localhost:8761/actuator/health
-    http://localhost:8761/actuator/metrics
-    ```
+``` bash
+curl http://localhost:8761/actuator/health
+curl http://localhost:8761/actuator/metrics 
+```
 
 ## Run dockerized app
 ```bash
