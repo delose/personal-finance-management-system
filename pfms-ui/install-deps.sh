@@ -10,18 +10,13 @@ if ! command -v npm &> /dev/null; then
     exit 1
 fi
 
-# Navigate to pfms-ui directory
-cd pfms-ui || {
-    echo "❌ Could not navigate to pfms-ui directory"
-    exit 1
-}
-
 echo "📦 Installing required npm packages..."
 
 # Install main dependencies
 npm install reactflow@11.7.0 framer-motion@10.16.4 axios@1.6.2 @react-icons/all-files@4.1.0
 
-# Note: ReactFlow includes its own TypeScript types, so we don't need @types/reactflow
+# Install TypeScript types for the new dependencies
+npm install --save-dev @types/reactflow
 
 echo "✅ Dependencies installed successfully!"
 
