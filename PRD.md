@@ -1,419 +1,357 @@
 # Personal Finance Management System - PRD 2026-2030
 
-**Version:** 3.0
-**Status:** Lean YNAB Clone MVP
+**Version:** 2.0  
+**Status:** Open Source Reference Architecture
 
 ---
 
 ## Executive Summary
 
 ### Mission
-Provide the core zero-based budgeting experience at 1/10th the operational cost of YNAB, focusing on manual control and simplicity.
+Build the de facto open-source reference architecture for fintech companies while creating a delightful, gamified personal finance app.
 
-### Core Value Proposition
-- Give every dollar a job (YNAB's core methodology)
-- Break the paycheck-to-paycheck cycle
-- Manual control over finances with minimal overhead
-- Local-first approach for privacy and cost efficiency
+### Dual Purpose
+
+**For Developers:**
+- Learn microservices architecture hands-on
+- Explore polyglot patterns (Java/Node/Go/Python/PHP)
+- Study real-world event-driven design
+- Run complete system with one command
+
+**For Users:**
+- Track finances with zero learning curve
+- Build healthy money habits through streaks
+- Get AI-powered financial guidance
+- Beautiful, Duolingo-inspired UX
 
 ### Success Metrics
-- Under $5/month hosting cost per 1,000 users
-- 90% feature parity with YNAB's core budgeting functionality
-- Under 2GB memory footprint for entire stack
-- Setup time under 2 minutes
-- 80% reduction in operational complexity
+- 10,000+ GitHub stars by 2027
+- Cited as reference architecture in 50+ tech blogs
+- 1,000+ active deployments
 
 ---
 
 ## User Personas
 
-### Budgeting Beginner (Primary)
-- First-time budgeter trying to get control of finances
-- Living paycheck-to-paycheck
-- Needs simple, manual system without complexity
-- Comfortable with manual data entry
+### Developer Dan (Primary)
+Mid-level backend developer at fintech startup
 
-### Cost-Conscious User (Secondary)
-- Wants YNAB functionality without subscription
-- Unwilling to pay $99/year for budgeting software
-- Comfortable with manual entry and CSV imports
-- Values privacy and local data control
+**Goals:**
+- Understand event-driven architecture
+- See polyglot microservices working together
+- Get project running in under 10 minutes
+- Learn from clean, well-documented code
 
-### Privacy-Focused User (Tertiary)
-- Prefers local data storage over cloud
-- Wants to avoid third-party bank integrations
-- Values simplicity and transparency
+### Consumer Chris (Secondary)
+Young professional, tech-savvy but not financially literate
+
+**Goals:**
+- Track spending without spreadsheets
+- Understand if financial decisions are smart
+- Stay motivated through gamification
+- Get simple, jargon-free advice
+
+### Enterprise Eva (Tertiary)
+Tech lead evaluating architecture for new fintech product
+
+**Goals:**
+- Evaluate microservices patterns
+- Assess observability strategies
+- Fork and customize for company needs
 
 ---
 
 ## Core Features
 
 ### Priority Legend
-- **P0:** MVP (Immediate implementation)
-- **P1:** Phase 2 (Post-MVP enhancements)
-- **P2:** Future (Nice-to-have features)
+- **P0:** MVP (2026 Q1-Q2)
+- **P1:** Phase 2 (2026 Q3-Q4)
+- **P2:** Future (2027+)
 
-### P0: Zero-Based Budgeting (Core YNAB Methodology)
-- Manual transaction entry with simple form
-- CSV import/export functionality
-- Category-based allocation (give every dollar a job)
-- Monthly budget rollover
-- Running balance tracking
-- Simple category management
+---
 
-### P0: Transaction Management
-- Manual entry form (date, amount, category, memo)
-- Bulk CSV upload with standard format
-- Basic categorization with dropdown
-- Search and filter by date/category
-- Transaction editing and deletion
-- Running balance calculation
+## Developer Experience Features
 
-### P0: Budget Tracking
-- Monthly budget creation
-- Category allocation tracking
-- Spent vs. allocated visualization
-- Simple progress bars
-- Overspending warnings
-- Month-to-month comparison
+### P0: One-Command Setup
+Run ./run-pfms.sh and see congratulations page with all services green. Pre-loaded demo data included.
 
-### P1: Simple Reporting
-- Monthly spending by category (bar chart)
-- Income vs expense pie chart
-- Net worth tracking over time
-- Spending trends (3-month view)
-- Category breakdown reports
+**Tech:** Shell scripts + Docker Compose + health checks
 
-### P1: Data Management
-- Local data backup/export
-- Import from other budgeting tools
-- Data validation and error handling
-- Simple search functionality
-- Bulk edit operations
+### P0: Interactive Architecture Visualization
+Landing page shows live service topology with real-time health status and animated message flows.
 
-### P2: Enhanced Features
-- Recurring transaction templates
-- Multiple currency support
-- Basic goal tracking
-- Simple debt payoff calculator
-- Mobile-responsive UI improvements
+**Tech:** React + D3.js + WebSocket
 
-### Non-Goals (Explicitly Excluded)
-- Bank API syncing (Plaid/Yodlee)
-- Mobile apps (native iOS/Android)
-- Multi-user support
-- AI/ML features
-- Real-time collaboration
-- Complex gamification
-- Investment tracking
-- Tax calculations
+### P0: Embedded Documentation
+Code comments explain architecture decisions. README for each service.
+
+**Tech:** Markdown + MDX
+
+### P1: Pact Contract Testing
+Consumer-driven contract tests between all services with CI integration.
+
+**Tech:** Pact + GitHub Actions
+
+### P2: Chaos Engineering Demos
+Built-in failure scenarios to demonstrate resilience patterns.
+
+**Tech:** Custom scripts or Chaos Mesh
+
+---
+
+## User-Facing Features
+
+### P0: Budget Management
+Create monthly budgets by category, track spending with visual progress bars, receive alerts.
+
+**Tech:** budget-service (Spring Boot) → Kafka → notification-service
+
+### P0: Transaction Tracking
+Manual entry of income/expenses with categorization and recurring support.
+
+**Tech:** transaction-service (NestJS) → RabbitMQ → account-service
+
+### P0: Goal Setting
+Create savings goals, track progress, celebrate milestones with animations.
+
+**Tech:** goal-service (Spring Boot)
+
+### P0: Streak Gamification
+Daily check-in streaks, weekly goal tracking, achievement badges.
+
+**Tech:** Extend goal-service or create streak-service (Go)
+
+### P1: AI Financial Advisor
+Ask questions in plain English and get simple, personalized advice.
+
+**Tech:** NEW ai-advisor-service (Python + Claude API)
+
+### P1: Financial Health Dashboard
+One-page overview with spending trends, budget health, goal progress.
+
+**Tech:** reporting-service (Python + Flask) + Chart.js
+
+### P1: Expense Analytics
+Spending patterns, month-over-month comparisons, predictive insights.
+
+**Tech:** NEW analytics-service (Go)
+
+### P2: Bank Integration (Demo)
+Mock integration with Philippine banks for automatic transaction import.
+
+**Tech:** Mock API endpoints + webhooks
+
+### P2: Automated Workflows
+n8n workflows for automated rules, alerts, and reports.
+
+**Tech:** n8n + webhook triggers
 
 ---
 
 ## Technical Architecture
 
-### Simplified Stack
+### Service Landscape
 
-```
-┌───────────────────────────────────────────────────────┐
-│                    User Interface                     │
-│  Progressive Web App (React) - Local-First Approach   │
-└───────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌───────────────────────────────────────────────────────┐
-│                 Monolithic Backend                    │
-│  Node.js (Serverless Functions) - Minimal API Surface │
-└───────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌───────────────────────────────────────────────────────┐
-│                   Data Storage                        │
-│  SQLite (Primary) + IndexedDB (Browser Cache)        │
-│  Single database file for all user data               │
-└───────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌───────────────────────────────────────────────────────┐
-│                   Hosting                             │
-│  Vercel/Netlify (Serverless) - Minimal Cost           │
-└───────────────────────────────────────────────────────┘
-```
+| Service | Language | Database | Messaging | Discovery | Status |
+|---------|----------|----------|-----------|-----------|--------|
+| API Gateway | Spring Boot | MySQL | - | Eureka | Implemented |
+| Budget Service | Spring Boot | PostgreSQL | Kafka (producer) | Eureka | Implemented |
+| Goal Service | Spring Boot | PostgreSQL | - | Eureka | Implemented |
+| Transaction Service | NestJS | PostgreSQL | RabbitMQ (producer) | Consul | Implemented |
+| Account Service | NestJS | PostgreSQL | RabbitMQ (consumer) | - | Implemented |
+| Expense Service | PHP | PostgreSQL | - | Consul | Implemented |
+| Reporting Service | Python + Flask | Read replicas | - | Consul | Implemented |
+| Notification Service | Spring Boot | PostgreSQL | Kafka (consumer) | - | Implemented |
+| Analytics Service | Go | TimescaleDB | Kafka (consumer) | Consul | NEW |
+| AI Advisor Service | Python + Flask | - | - | Consul | NEW |
 
-### Key Architectural Changes from v2.0:
+### Recommended Changes
 
-1. **Monolithic Backend**: Single Node.js service replacing 10+ microservices
-2. **Local-First Storage**: SQLite primary storage with IndexedDB browser cache
-3. **Serverless Functions**: Minimal API endpoints (5-10 total)
-4. **No Message Brokers**: Direct API calls, no Kafka/RabbitMQ
-5. **Simplified Database**: Single SQLite file with 3-5 tables
-6. **Reduced Infrastructure**: No service discovery, config servers, or complex orchestration
+**Deprecate:**
+- user-service (redundant with account-service)
 
-### Database Schema (SQLite)
+**Add:**
+- analytics-service (Go) for spending patterns and predictions
+- ai-advisor-service (Python) for LLM-powered financial Q&A
 
-```sql
--- Core tables for zero-based budgeting
-CREATE TABLE accounts (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  balance REAL NOT NULL DEFAULT 0,
-  created_at TEXT DEFAULT CURRENT_TIMESTAMP
-);
+**Enhance:**
+- goal-service to handle streak tracking
+- All services expose /health and /metrics endpoints
+- Standardize logging format
 
-CREATE TABLE categories (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL UNIQUE,
-  is_income BOOLEAN DEFAULT 0,
-  hidden BOOLEAN DEFAULT 0
-);
+### Messaging Patterns
 
-CREATE TABLE transactions (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  account_id INTEGER NOT NULL,
-  date TEXT NOT NULL,
-  amount REAL NOT NULL,
-  category_id INTEGER,
-  memo TEXT,
-  cleared BOOLEAN DEFAULT 0,
-  FOREIGN KEY(account_id) REFERENCES accounts(id),
-  FOREIGN KEY(category_id) REFERENCES categories(id)
-);
+**Kafka Topics:**
+- budget.created
+- budget.limit.warning
+- transaction.created
+- goal.milestone.reached
 
-CREATE TABLE budgets (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  month TEXT NOT NULL, -- YYYY-MM format
-  category_id INTEGER NOT NULL,
-  allocated REAL NOT NULL DEFAULT 0,
-  spent REAL DEFAULT 0,
-  FOREIGN KEY(category_id) REFERENCES categories(id),
-  UNIQUE(month, category_id)
-);
-
-CREATE TABLE metadata (
-  key TEXT PRIMARY KEY,
-  value TEXT
-);
-```
-
-### API Endpoints (Simplified)
-
-```
-GET    /api/accounts          - List all accounts
-POST   /api/accounts          - Create new account
-GET    /api/transactions      - List transactions (with filters)
-POST   /api/transactions      - Create transaction
-PUT    /api/transactions/:id  - Update transaction
-DELETE /api/transactions/:id  - Delete transaction
-GET    /api/budgets/:month    - Get budget for specific month
-POST   /api/budgets/:month    - Update budget allocations
-POST   /api/import            - CSV import
-GET    /api/export            - Data export
-GET    /api/reports/spending  - Spending report
-```
+**RabbitMQ Queues:**
+- account.events
+- account.balance.updated
 
 ---
 
-## Implementation Plan
+## UX Principles
 
-### Phase 1: Core Budgeting (4 weeks)
-- SQLite schema implementation
-- Transaction CRUD operations
-- Budget allocation system
-- Monthly rollover logic
-- Basic UI for data entry
-- Local storage integration
+### Core Philosophy
+Make finance feel like a game, not homework.
 
-### Phase 2: Import/Export (2 weeks)
-- CSV import functionality
-- Data export/backup system
-- Error handling for imports
-- Data validation
+### Key Elements
 
-### Phase 3: Basic Reporting (2 weeks)
-- Spending by category charts
-- Income vs expense visualization
-- Net worth tracking
-- Simple reporting UI
+**Streak System**
+- Daily check-in counter (prominent on home)
+- Streak freeze (1 per week)
+- Animated flame grows with longer streaks
+- Encouraging restart after breaks
 
-### Phase 4: Polish (2 weeks)
-- UI refinements
-- Performance optimization
-- Documentation
-- Testing and bug fixes
+**Celebration Moments**
+- Confetti when goals reached
+- Success sounds for completing tasks
+- Badges for milestones
+- Shareable achievement cards
 
----
+**Visual Progress**
+- Budget: horizontal bars (green/yellow/red)
+- Goals: thermometer fills up
+- Spending: donut charts by category
+- Net worth: area chart over time
 
-## Cost Analysis
+**Friendly Copy**
+- No jargon
+- Encouraging tone
+- Simple explanations
 
-### Current Architecture Costs (v2.0):
-- $500+/month for cloud services
-- Complex DevOps requirements
-- High maintenance overhead
-- Multiple database instances
-- Message broker costs
-
-### New Architecture Costs (v3.0):
-- **Hosting**: $5/month (Vercel hobby tier)
-- **Database**: $0 (SQLite - no server required)
-- **API Calls**: $0 (serverless functions within free tier)
-- **Maintenance**: Minimal (single codebase)
-- **Total**: Under $10/month for entire system
-
-### Cost Savings: 98%+ reduction
+**Design System**
+- Primary: Vibrant blue
+- Success: Green
+- Warning: Yellow
+- Danger: Red
+- Smooth animations (200-300ms)
 
 ---
 
-## Technology Rationale
+## Observability Strategy
 
-**Frontend: React (PWA)**
-- Progressive Web App for installable experience
-- Works offline with IndexedDB caching
-- Single codebase for all devices
-- Familiar to most developers
+### Health Checks (P0)
+All services expose /health endpoints. API Gateway aggregates status. React dashboard shows real-time health.
 
-**Backend: Node.js (Serverless)**
-- Minimal API surface
-- Easy to deploy and scale
-- Low cold-start times
-- Huge ecosystem
+### Metrics (P1)
+Prometheus + Grafana for request rate, latency, errors, resource usage.
 
-**Database: SQLite**
-- Zero configuration
-- Single file storage
-- ACID compliant
-- Works in browser (via SQL.js)
-- No server required
+### Logging (P1)
+Structured JSON logging with ELK stack. Correlation IDs across services.
 
-**Hosting: Vercel/Netlify**
-- Free tier sufficient
-- Easy deployment
-- Serverless functions included
-- Global CDN
-
----
-
-## Migration Path from v2.0
-
-1. **Data Consolidation**
-   - Export data from all microservices
-   - Transform into simplified SQLite schema
-   - Create migration scripts
-
-2. **Backend Simplification**
-   - Replace microservices with serverless functions
-   - Implement minimal API endpoints
-   - Remove all messaging infrastructure
-
-3. **Frontend Rebuild**
-   - Simplify UI to focus on core budgeting
-   - Implement PWA features
-   - Add local-first data handling
-
-4. **Infrastructure Reduction**
-   - Remove Kafka, RabbitMQ, Eureka, Consul
-   - Eliminate multiple databases
-   - Simplify to single hosting provider
-
-5. **Feature Removal**
-   - Remove AI advisor
-   - Remove gamification
-   - Remove architecture visualization
-   - Remove complex reporting
-
----
-
-## Success Criteria
-
-### Technical Success
-- Under 2 minute setup time
-- Under 10 API endpoints total
-- Single database file
-- Under 5MB total codebase size
-- 90% test coverage
-
-### User Success
-- 80% of YNAB core functionality
-- Under 1 second response times
-- Works completely offline
-- Simple data export/import
-- Intuitive for first-time budgeters
-
-### Cost Success
-- Under $10/month hosting
-- Zero database costs
-- Minimal maintenance time
-- No third-party API dependencies
-- Open source with MIT license
-
----
-
-## Open Source Strategy
-
-### Simplified Repository Structure
-```
-pfms/
-├── client/          # React PWA
-├── server/          # Node.js serverless functions
-├── database/        # SQLite schema and migrations
-├── scripts/         # Setup and utility scripts
-├── docs/            # Minimal documentation
-└── README.md        # Simplified setup instructions
-```
-
-### Community Focus
-- Position as "YNAB for developers"
-- Emphasize local-first privacy
-- Simple contribution process
-- Clear architecture documentation
-- Focus on core budgeting needs
-
-### License
-MIT License for maximum adoption
+### Alerting (P2)
+GoAlert, OneUptime, or Uptime Kuma for service down and high error rates.
 
 ---
 
 ## Roadmap
 
-### v3.0 (Current - MVP)
-- Core zero-based budgeting
-- Manual transaction entry
-- CSV import/export
-- Basic reporting
-- Local-first storage
+### Phase 1: MVP (Q1-Q2 2026)
+- One-command setup with congratulations page
+- Pre-loaded demo data
+- Budget, transaction, goal services working end-to-end
+- Streak tracking UI
+- Interactive architecture visualization
+- Health check dashboard
 
-### v3.1 (Q1 2027)
-- Recurring transaction templates
-- Improved mobile experience
-- Data validation enhancements
-- Performance optimizations
+### Phase 2: Feature Complete (Q3-Q4 2026)
+- AI financial advisor integration
+- Analytics service (Go) with spending insights
+- Financial health dashboard
+- Celebration animations
+- Pact contract testing
+- Prometheus + Grafana observability
 
-### v3.2 (Q2 2027)
-- Multiple budget support
-- Simple goal tracking
-- Enhanced reporting
-- Backup automation
+### Phase 3: Production-Grade (2027)
+- Kubernetes manifests (Helm charts)
+- CI/CD pipelines
+- ELK stack integration
+- Chaos engineering demos
+- Bank integration (mock)
+- Mobile-responsive refinements
+- n8n workflow examples
 
-### Future Considerations
-- Encrypted cloud sync (optional)
-- Multi-currency support
-- Basic mobile apps (React Native)
-- Plugin system for extensions
-
----
-
-## Key Differences from YNAB
-
-| Feature | YNAB | PFMS Lean Clone |
-|---------|------|-----------------|
-| Bank Sync | ✅ Paid | ❌ Manual only |
-| Mobile Apps | ✅ Native | ❌ PWA only |
-| Multi-User | ✅ | ❌ Single user |
-| AI Features | ✅ | ❌ Rule-based only |
-| Price | $99/year | FREE (MIT) |
-| Data Location | Cloud | Local-first |
-| Setup Complexity | Simple | Simpler |
-| Offline Support | Limited | Full |
+### Phase 4: Advanced (2027+)
+- Service mesh (Istio/Envoy)
+- Terraform infrastructure-as-code
+- Multi-cloud deployment examples
+- Advanced AI features
+- Real bank integrations
+- Mobile apps (React Native)
 
 ---
 
-END OF PRD v3.0 - Lean YNAB Clone
+## Open Source Strategy
+
+### Repository Structure
+```
+pfms/
+├── services/
+│   ├── api-gateway/
+│   ├── budget-service/
+│   ├── analytics-service/     (NEW)
+│   └── ai-advisor-service/    (NEW)
+├── infrastructure/
+├── pfms-ui/
+├── docs/
+├── scripts/
+└── README.md
+```
+
+### Community Building
+- Launch on Hacker News, Reddit
+- Blog series on building fintech with microservices
+- Conference talks
+- YouTube walkthroughs
+- Regular Twitter/X updates
+
+### License
+MIT License for maximum permissiveness
+
+---
+
+## Success Criteria
+
+### Developer Adoption
+- 10,000+ GitHub stars by 2027
+- 1,000+ forks
+- Cited in 50+ tech blogs/courses
+- Used in university courses
+- 10+ enterprise teams using as reference
+
+### Product Quality
+- Under 5 minute setup time
+- Over 80% test coverage
+- Zero critical security vulnerabilities
+- All services pass health checks
+- Complete documentation
+
+### User Engagement
+- 1,000+ weekly active users
+- Average 15-day streak
+- Under 1% error rate
+- Under 500ms p95 response time
+
+---
+
+## Technology Rationale
+
+**Spring Boot:** Industry standard, excellent ecosystem, production-proven
+
+**NestJS:** Modern Node.js with TypeScript, familiar to Spring devs
+
+**Go:** Performance for analytics, different paradigm showcase
+
+**Python:** Best ML/AI ecosystem for reporting and AI services
+
+**PHP:** Legacy integration patterns showcase
+
+**React:** Dominant frontend, huge ecosystem
+
+---
+
+END OF PRD v2.0
