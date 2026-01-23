@@ -39,7 +39,7 @@ interface ArchitectureGraphProps {
   onServiceClick: (service: Service) => void;
 }
 
-const serviceIcons: Record<string, JSX.Element> = {
+const serviceIcons: Record<string, React.ReactElement> = {
   'gateway': <FaNetworkWired className="text-2xl" />,
   'service': <FaServer className="text-2xl" />,
   'database': <FaDatabase className="text-2xl" />,

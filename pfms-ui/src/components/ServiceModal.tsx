@@ -30,7 +30,7 @@ interface ServiceModalProps {
   onClose: () => void;
 }
 
-const serviceIcons: Record<string, JSX.Element> = {
+const serviceIcons: Record<string, React.ReactElement> = {
   'gateway': <FaNetworkWired className="text-3xl mb-4" />,
   'service': <FaServer className="text-3xl mb-4" />,
   'database': <FaDatabase className="text-3xl mb-4" />,
