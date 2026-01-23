@@ -19,3 +19,58 @@ a {
 .btn-outline {
   @apply border border-white text-white font-bold py-2 px-4 rounded;
 }
+
+/* Architecture Page Styles */
+.architecture-page {
+  @apply container mx-auto px-4 py-8;
+}
+
+.service-node {
+  transition: all 0.2s ease;
+}
+
+.service-node:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* React Flow custom styles */
+.react-flow__node {
+  cursor: pointer;
+}
+
+.react-flow__edge-path {
+  stroke-width: 2;
+}
+
+.react-flow__edge.animated path {
+  stroke-dasharray: 10;
+  stroke-dashoffset: 10;
+  animation: dashdraw 5s linear infinite;
+}
+
+@keyframes dashdraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Message flow animation */
+.message-flow {
+  position: absolute;
+  background: #3B82F6;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .react-flow {
+    transform: scale(0.8);
+    transform-origin: top left;
+  }
+}
