@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import {
-  FaServer, FaDatabase, FaNetworkWired, FaCog, FaExchangeAlt,
+  FaServer, FaDatabase, FaNetworkWired, FaCog, FaExchangeAlt
+} from 'react-icons/fa';
+import {
   FaTimes, FaExternalLinkAlt, FaClipboard, FaCheck
 } from 'react-icons/fa';
 
