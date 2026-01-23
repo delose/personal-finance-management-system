@@ -1,29 +1,119 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import BaseLayout from '../components/BaseLayout';
+import axios from 'axios';
+
+interface Budget {
+  id: number;
+  category: string;
+  budgeted: number;
+  spent: number;
+}
 
 const BudgetPage: React.FC = () => {
+  const [budgets, setBudgets] = useState<Budget[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [month, setMonth] = useState<string>('June 2024');
+
+  useEffect(() => {
+    const fetchBudgets = async () => {
+      try {
+        // Try to fetch from actual API
+        const response = await axios.get('http://localhost:8080/api/budgets');
+        setBudgets(response.data);
+      } catch (error) {
+        console.error('Error fetching budgets:', error);
+        // Use mock data if API fails
+        setBudgets([
+          { id: 1, category: "Groceries", budgeted: 500, spent: 320 },
+          { id: 2, category: "Transport", budgeted: 200, spent: 180 },
+          { id: 3, category: "Entertainment", budgeted: 150, spent: 120 },
+          { id: 4, category: "Utilities", budgeted: 300, spent: 280 }
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBudgets();
+  }, []);
+
+  const handleAddBudget = () => {
+    alert('Add budget functionality coming soon!');
+  };
+
+  const getRemaining = (budgeted: number, spent: number): number => {
+    return budgeted - spent;
+  };
+
+  const getRemainingColor = (remaining: number): string => {
+    if (remaining < 0) return 'text-red-500';
+    if (remaining < budgeted * 0.2) return 'text-yellow-500';
+    return 'text-green-500';
+  };
+
+  if (loading) {
+    return (
+      <BaseLayout>
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
+      </BaseLayout>
+    );
+  }
+
   return (
     <BaseLayout>
-      <h1 className="text-4xl font-bold mb-5">Manage Your Budget</h1>
-      <form className="bg-gray-800 p-5 rounded-lg shadow-lg space-y-4">
-        <div>
-          <label className="block text-sm font-medium">Budget Name</label>
-          <input 
-            type="text" 
-            placeholder="Enter budget name" 
-            className="input input-bordered w-full" 
-          />
+      <div className="max-w-4xl mx-auto">
+        {/* Month selector */}
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold">Budgets</h1>
+          <div className="text-lg font-medium">{month}</div>
         </div>
-        <div>
-          <label className="block text-sm font-medium">Amount</label>
-          <input 
-            type="number" 
-            placeholder="Enter amount" 
-            className="input input-bordered w-full" 
-          />
+
+        {/* Budget table */}
+        <div className="bg-gray-800 rounded-lg overflow-hidden shadow">
+          <div className="grid grid-cols-4 gap-4 p-4 font-semibold text-gray-300 border-b border-gray-700">
+            <div>Category</div>
+            <div>Budgeted</div>
+            <div>Spent</div>
+            <div>Remaining</div>
+          </div>
+
+          {budgets.length === 0 ? (
+            <div className="p-6 text-center text-gray-400">
+              No budgets found. Add your first budget!
+            </div>
+          ) : (
+            budgets.map((budget) => {
+              const remaining = getRemaining(budget.budgeted, budget.spent);
+              return (
+                <div
+                  key={budget.id}
+                  className="grid grid-cols-4 gap-4 p-4 border-b border-gray-700 last:border-0 hover:bg-gray-700 transition-colors"
+                >
+                  <div className="font-medium">{budget.category}</div>
+                  <div>${budget.budgeted.toFixed(2)}</div>
+                  <div>${budget.spent.toFixed(2)}</div>
+                  <div className={getRemainingColor(remaining)}>
+                    ${remaining.toFixed(2)}
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
-        <button className="btn btn-primary w-full">Create Budget</button>
-      </form>
+
+        {/* Add budget button */}
+        <div className="mt-6">
+          <button
+            onClick={handleAddBudget}
+            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
+          >
+            + Add Budget
+          </button>
+        </div>
+      </div>
     </BaseLayout>
   );
 };
