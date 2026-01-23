@@ -11,7 +11,7 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { motion } from 'framer-motion';
-import { FaServer, FaDatabase, FaNetworkWired, FaCog, FaExchangeAlt } from 'react-icons/all-files';
+import { FaServer, FaDatabase, FaNetworkWired, FaCog, FaExchangeAlt } from 'react-icons/fa';
 
 interface Service {
   id: string;
