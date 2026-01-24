@@ -7,9 +7,13 @@ import BudgetForm from '../components/BudgetForm';
 
 interface Budget {
   id: number;
+  userId: string;
   category: string;
-  budgeted: number;
-  spent: number;
+  amount: number;
+  startDate: string;
+  endDate: string;
+  // Add spent field for tracking (we'll calculate this from transactions in a real app)
+  spent?: number;
 }
 
 const BudgetPage: React.FC = () => {
@@ -32,14 +36,23 @@ const BudgetPage: React.FC = () => {
             'Authorization': `Bearer ${token}`
           }
         });
-        setBudgets(response.data);
+
+        // Transform the API response to match our UI format
+        const transformedBudgets = response.data.map((budget: any) => ({
+          ...budget,
+          budgeted: budget.amount,
+          spent: budget.spent || 0 // Add spent field with default 0 if not provided
+        }));
+
+        setBudgets(transformedBudgets);
       } catch (error) {
         console.error('Error fetching budgets:', error);
+        // Fallback to mock data if API fails
         setBudgets([
-          { id: 1, category: "Groceries", budgeted: 500, spent: 320 },
-          { id: 2, category: "Transport", budgeted: 200, spent: 180 },
-          { id: 3, category: "Entertainment", budgeted: 150, spent: 120 },
-          { id: 4, category: "Utilities", budgeted: 300, spent: 280 }
+          { id: 1, userId: "1", category: "Groceries", amount: 500, budgeted: 500, spent: 320, startDate: "2025-01-01", endDate: "2025-01-31" },
+          { id: 2, userId: "1", category: "Transport", amount: 200, budgeted: 200, spent: 180, startDate: "2025-01-01", endDate: "2025-01-31" },
+          { id: 3, userId: "1", category: "Entertainment", amount: 150, budgeted: 150, spent: 120, startDate: "2025-01-01", endDate: "2025-01-31" },
+          { id: 4, userId: "1", category: "Utilities", amount: 300, budgeted: 300, spent: 280, startDate: "2025-01-01", endDate: "2025-01-31" }
         ]);
       } finally {
         setLoading(false);
@@ -107,7 +120,7 @@ const BudgetPage: React.FC = () => {
             </div>
           ) : (
             budgets.map((budget) => {
-              // Add null checks for budgeted and spent values
+              // Use the transformed budgeted and spent values
               const budgeted = budget.budgeted || 0;
               const spent = budget.spent || 0;
               const remaining = budgeted - spent;

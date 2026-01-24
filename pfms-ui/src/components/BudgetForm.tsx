@@ -37,9 +37,13 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ onBudgetCreated }) => {
       // For now, we'll use a placeholder user ID
       const userId = 1; // This should be extracted from the JWT in a real app
 
+      // Transform the form data to match the API's expected format
       const budgetData = {
-        ...formData,
-        userId: userId
+        category: formData.category.toUpperCase(), // API expects uppercase category
+        amount: formData.amount,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        userId: userId.toString() // API expects userId as string
       };
 
       await createBudget(budgetData);
