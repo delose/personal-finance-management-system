@@ -156,11 +156,13 @@ const BudgetPage: React.FC = () => {
 
         {/* Budget table */}
         <div className="bg-gray-800 rounded-lg overflow-hidden shadow">
-          <div className="grid grid-cols-4 gap-4 p-4 font-semibold text-gray-300 border-b border-gray-700">
+          <div className="grid grid-cols-6 gap-4 p-4 font-semibold text-gray-300 border-b border-gray-700">
             <div>Category</div>
             <div>Budgeted</div>
             <div>Spent</div>
             <div>Remaining</div>
+            <div>Start Date</div>
+            <div>End Date</div>
           </div>
 
           {budgets.length === 0 ? (
@@ -177,7 +179,7 @@ const BudgetPage: React.FC = () => {
               return (
                 <div
                   key={budget.id}
-                  className="grid grid-cols-4 gap-4 p-4 border-b border-gray-700 last:border-0 hover:bg-gray-700 transition-colors"
+                  className="grid grid-cols-6 gap-4 p-4 border-b border-gray-700 last:border-0 hover:bg-gray-700 transition-colors"
                 >
                   <div className="font-medium">{budget.category}</div>
                   <div>${budgeted.toFixed(2)}</div>
@@ -185,6 +187,8 @@ const BudgetPage: React.FC = () => {
                   <div className={getRemainingColor(remaining, budgeted)}>
                     ${remaining.toFixed(2)}
                   </div>
+                  <div>{new Date(budget.startDate).toLocaleDateString()}</div>
+                  <div>{new Date(budget.endDate).toLocaleDateString()}</div>
                 </div>
               );
             })
