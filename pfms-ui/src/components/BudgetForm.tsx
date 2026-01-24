@@ -145,9 +145,19 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ onBudgetCreated }) => {
               name="category"
               value={formData.category}
               onChange={handleChange}
-              onFocus={() => setShowSuggestions(formData.category.length > 0)}
+              onFocus={() => {
+                setShowSuggestions(formData.category.length > 0);
+                // Clear any browser autocomplete suggestions
+                setTimeout(() => {
+                  const input = document.activeElement as HTMLInputElement;
+                  if (input) {
+                    input.setAttribute('autocomplete', 'off');
+                  }
+                }, 0);
+              }}
               onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
               required
+              autoComplete="off"
               className="w-full p-2 pl-10 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 focus:outline-none"
               placeholder="e.g., GROCERIES"
             />
@@ -161,15 +171,21 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ onBudgetCreated }) => {
               animate={{ opacity: 1, y: 0 }}
               className="absolute z-10 w-full mt-1 bg-gray-700 rounded-md shadow-lg max-h-40 overflow-y-auto"
             >
-              {filteredCategories.map(category => (
-                <div
-                  key={category}
-                  className="p-2 hover:bg-gray-600 cursor-pointer"
-                  onClick={() => handleCategorySelect(category)}
-                >
-                  {category.charAt(0) + category.slice(1).toLowerCase()}
+              {filteredCategories.length > 0 ? (
+                filteredCategories.map(category => (
+                  <div
+                    key={category}
+                    className="p-2 hover:bg-gray-600 cursor-pointer"
+                    onClick={() => handleCategorySelect(category)}
+                  >
+                    {category.charAt(0) + category.slice(1).toLowerCase()}
+                  </div>
+                ))
+              ) : (
+                <div className="p-2 text-gray-400">
+                  No categories found
                 </div>
-              ))}
+              )}
             </motion.div>
           )}
         </div>
