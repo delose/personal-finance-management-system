@@ -12,7 +12,7 @@ interface Budget {
   amount: number;
   startDate: string;
   endDate: string;
-  // Add spent field for tracking (we'll calculate this from transactions in a real app)
+  budgeted?: number;
   spent?: number;
 }
 
