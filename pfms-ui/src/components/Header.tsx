@@ -14,6 +14,7 @@ const Header: React.FC = () => {
           <a href="/goals" className="text-white">Goals</a>
           <a href="/reports" className="text-white">Reports</a>
           <a href="/login" className="btn btn-outline btn-sm text-white">Log In</a>
+          <a href="/register" className="btn btn-outline btn-sm text-white">Register</a>
         </nav>
       </div>
     </header>
