@@ -1,6 +1,7 @@
 package com.delose.pfms.budget_service.controller;
 
 import com.delose.pfms.budget_service.entity.Budget;
+import com.delose.pfms.budget_service.entity.BudgetCategory;
 import com.delose.pfms.budget_service.service.BudgetService;
 import com.netflix.discovery.EurekaClient;
 import org.springframework.beans.factory.annotation.Autowired;
