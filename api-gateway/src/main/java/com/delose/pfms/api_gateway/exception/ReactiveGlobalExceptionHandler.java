@@ -32,7 +32,10 @@ public class ReactiveGlobalExceptionHandler implements org.springframework.web.s
         ServerRequest request = ServerRequest.create(exchange, (List<HttpMessageReader<?>>) exchange.getRequest().getHeaders());
 
         return handleException(ex, request)
-                .flatMap(response -> response.writeTo(exchange, new org.springframework.web.reactive.function.server.support.ServerResponseContext()))
+                .flatMap(response -> {
+                    exchange.getResponse().setStatusCode(response.statusCode());
+                    return response.writeTo(exchange.getResponse(), new org.springframework.web.reactive.function.server.support.ServerResponseContext());
+                })
                 .onErrorResume(e -> Mono.error(ex));
     }
 
