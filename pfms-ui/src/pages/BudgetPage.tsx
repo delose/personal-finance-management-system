@@ -20,8 +20,33 @@ const BudgetPage: React.FC = () => {
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [month, setMonth] = useState<string>('June 2024');
+  const [month, setMonth] = useState<string>(getCurrentMonthYear());
   const [refreshTrigger, setRefreshTrigger] = useState(false);
+
+  // Helper function to get current month and year
+  const getCurrentMonthYear = () => {
+    const now = new Date();
+    return now.toLocaleString('default', { month: 'long', year: 'numeric' });
+  };
+
+  // Generate month options for the selector
+  const getMonthOptions = () => {
+    const months = [];
+    const now = new Date();
+
+    // Generate months for the current year and next year
+    for (let i = -6; i <= 6; i++) {
+      const date = new Date();
+      date.setMonth(now.getMonth() + i);
+      months.push(
+        date.toLocaleString('default', { month: 'long', year: 'numeric' })
+      );
+    }
+
+    return months;
+  };
+
+  const monthOptions = getMonthOptions();
 
   useEffect(() => {
     const fetchBudgets = async () => {
@@ -31,9 +56,17 @@ const BudgetPage: React.FC = () => {
           throw new Error('No authentication token found');
         }
 
+        // Parse month/year from the selected month string
+        const [monthName, year] = month.split(' ');
+        const monthIndex = new Date(`${monthName} 1, 2021`).getMonth();
+
         const response = await axios.get('http://localhost:8080/v1/api/budgets', {
           headers: {
             'Authorization': `Bearer ${token}`
+          },
+          params: {
+            year: year,
+            month: monthIndex + 1 // Months are 1-12 in API
           }
         });
 
@@ -60,7 +93,7 @@ const BudgetPage: React.FC = () => {
     };
 
     fetchBudgets();
-  }, [refreshTrigger]);
+  }, [month, refreshTrigger]);
 
   const handleBudgetCreated = () => {
     setRefreshTrigger(!refreshTrigger);
@@ -92,7 +125,25 @@ const BudgetPage: React.FC = () => {
         {/* Month selector */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Budgets</h1>
-          <div className="text-lg font-medium">{month}</div>
+          <div className="flex items-center space-x-2">
+            <select
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+              className="bg-gray-700 border border-gray-600 rounded px-3 py-1 text-sm"
+            >
+              {monthOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={() => setMonth(getCurrentMonthYear())}
+              className="text-blue-400 hover:text-blue-300 text-sm"
+            >
+              Today
+            </button>
+          </div>
         </div>
 
         {/* Budget Service Health Checker */}
