@@ -54,15 +54,21 @@ public class ReactiveGlobalExceptionHandler implements org.springframework.web.s
     }
 
     private String getDetailMessageCode(Throwable ex) {
-        return switch (ex) {
-            case BadCredentialsException e -> "error.auth.bad_credentials";
-            case ExpiredJwtException e -> "error.auth.token_expired";
-            case SignatureException e -> "error.auth.invalid_signature";
-            case MalformedJwtException e -> "error.auth.malformed_token";
-            case InsufficientAuthenticationException e -> "error.auth.missing_token";
-            case DuplicateKeyException e -> "error.db.duplicate_key";
-            default -> "error.general.internal_error";
-        };
+        if (ex instanceof BadCredentialsException) {
+            return "error.auth.bad_credentials";
+        } else if (ex instanceof ExpiredJwtException) {
+            return "error.auth.token_expired";
+        } else if (ex instanceof SignatureException) {
+            return "error.auth.invalid_signature";
+        } else if (ex instanceof MalformedJwtException) {
+            return "error.auth.malformed_token";
+        } else if (ex instanceof InsufficientAuthenticationException) {
+            return "error.auth.missing_token";
+        } else if (ex instanceof DuplicateKeyException) {
+            return "error.db.duplicate_key";
+        } else {
+            return "error.general.internal_error";
+        }
     }
 
     private HttpStatus getStatus(Throwable ex) {
