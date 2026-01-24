@@ -19,3 +19,27 @@ export const createBudget = async (budgetData: Budget): Promise<void> => {
         throw error;
     }
 };
+
+// Login function
+export const login = async (email: string, password: string): Promise<void> => {
+  try {
+    const response = await axios.post(`${API_GATEWAY_URL}/login`, {
+      username: email,
+      password: password
+    });
+    localStorage.setItem('authToken', response.data.token);
+  } catch (error) {
+    console.error('Login failed:', error);
+    throw error;
+  }
+};
+
+// Get auth token helper
+export const getAuthToken = (): string | null => {
+  return localStorage.getItem('authToken');
+};
+
+// Logout function
+export const logout = (): void => {
+  localStorage.removeItem('authToken');
+};

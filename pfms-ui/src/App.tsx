@@ -1,11 +1,18 @@
 import './styles/index.css';
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import BudgetPage from './pages/BudgetPage';
 import ArchitecturePage from './pages/ArchitecturePage';
+import LoginPage from './pages/LoginPage';
 import Header from './components/Header';
 import { AuthProvider } from './context/AuthContext';
+import { getAuthToken } from './services/api';
+
+const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
+  const isAuthenticated = !!getAuthToken();
+  return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;
+};
 
 const App: React.FC = () => {
   return (
@@ -14,9 +21,17 @@ const App: React.FC = () => {
         <Header />
         <Routes>
           <Route path="/architecture" element={<ArchitecturePage />} />
-          <Route path="/budget" element={<BudgetPage />} />
-          <Route path="/" element={<BudgetPage />} />
-          {/* Add more routes as needed */}
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/budget" element={
+            <PrivateRoute>
+              <BudgetPage />
+            </PrivateRoute>
+          } />
+          <Route path="/" element={
+            <PrivateRoute>
+              <BudgetPage />
+            </PrivateRoute>
+          } />
         </Routes>
       </Router>
     </AuthProvider>
