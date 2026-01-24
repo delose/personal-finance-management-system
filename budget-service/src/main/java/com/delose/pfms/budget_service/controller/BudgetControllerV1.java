@@ -9,8 +9,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/api/budgets")
@@ -21,7 +23,7 @@ public class BudgetControllerV1 {
     @Autowired
     @Lazy
     private EurekaClient eurekaClient;
-    
+
     @Value("${spring.application.name}")
     private String appName;
 
@@ -53,5 +55,12 @@ public class BudgetControllerV1 {
         return String.format(
           "Hello from '%s'!", eurekaClient.getApplication(this.appName).getName()
         );
+    }
+
+    @GetMapping("/categories")
+    public List<String> getBudgetCategories() {
+        return Arrays.stream(BudgetCategory.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
     }
 }
