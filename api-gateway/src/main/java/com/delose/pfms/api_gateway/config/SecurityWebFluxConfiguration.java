@@ -1,17 +1,16 @@
 package com.delose.pfms.api_gateway.config;
 
+import com.delose.pfms.api_gateway.exception.ReactiveGlobalExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
-import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
 import org.springframework.security.web.server.authentication.HttpStatusServerEntryPoint;
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
@@ -22,17 +21,19 @@ import java.util.List;
 public class SecurityWebFluxConfiguration {
     private final CustomReactiveAuthenticationManager customReactiveAuthenticationManager;
     private final ServerJwtAuthenticationConverter serverJwtAuthenticationConverter;
+    private final ReactiveGlobalExceptionHandler exceptionHandler;
 
     public SecurityWebFluxConfiguration(
             CustomReactiveAuthenticationManager customReactiveAuthenticationManager,
-            ServerJwtAuthenticationConverter serverJwtAuthenticationConverter) {
+            ServerJwtAuthenticationConverter serverJwtAuthenticationConverter,
+            ReactiveGlobalExceptionHandler exceptionHandler) {
         this.customReactiveAuthenticationManager = customReactiveAuthenticationManager;
         this.serverJwtAuthenticationConverter = serverJwtAuthenticationConverter;
+        this.exceptionHandler = exceptionHandler;
     }
 
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) {
-
         AuthenticationWebFilter authenticationWebFilter = new AuthenticationWebFilter(customReactiveAuthenticationManager);
         authenticationWebFilter.setServerAuthenticationConverter(serverJwtAuthenticationConverter);
 
@@ -45,9 +46,14 @@ public class SecurityWebFluxConfiguration {
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint(new HttpStatusServerEntryPoint(HttpStatus.UNAUTHORIZED))
+                        .authenticationEntryPoint((exchange, ex) -> {
+                            return exceptionHandler.handle(exchange, ex);
+                        })
+                        .accessDeniedHandler((exchange, ex) -> {
+                            return exceptionHandler.handle(exchange, ex);
+                        })
                 )
-                .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION);
+                .addFilterAt(authenticationWebFilter, org.springframework.security.web.server.SecurityWebFiltersOrder.AUTHENTICATION);
         return http.build();
     }
 
