@@ -1,4 +1,4 @@
 #!/bin/bash
 
-./stop-remote-docker.sh && ./docker-build.sh && ./run-docker.sh
+./docker-build.sh && ./stop-remote-docker.sh && ./run-docker.sh
 
