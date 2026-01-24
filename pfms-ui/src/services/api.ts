@@ -9,6 +9,8 @@ interface Budget {
     amount: number;
 }
 
+// Create budget categories function
+
 // Create budget function
 export const createBudget = async (budgetData: {
   category: string;
