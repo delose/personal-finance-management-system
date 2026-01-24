@@ -25,7 +25,28 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<ErrorResponse> handleExpiredJwtException(ExpiredJwtException e) {
-        return getErrorResponseResponseEntity(e);
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        String messageCode = "error.auth.token_expired";
+
+        ErrorResponse error = new ErrorResponse() {
+            @Override
+            public HttpStatusCode getStatusCode() { return status; }
+
+            @Override
+            public ProblemDetail getBody() {
+                ProblemDetail pd = ProblemDetail.forStatusAndDetail(
+                    status,
+                    "Your session has expired. Please log in again."
+                );
+                pd.setTitle("Unauthorized");
+                pd.setProperty("errorCode", messageCode);
+                return pd;
+            }
+
+            @Override
+            public String getDetailMessageCode() { return messageCode; }
+        };
+        return new ResponseEntity<>(error, status);
     }
 
     @ExceptionHandler(SignatureException.class)
