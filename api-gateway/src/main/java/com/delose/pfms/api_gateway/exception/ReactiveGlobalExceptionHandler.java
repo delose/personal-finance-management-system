@@ -8,6 +8,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.codec.HttpMessageReader;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,8 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Component
 @Order(-2) // High precedence to handle exceptions before other handlers
@@ -26,7 +29,7 @@ public class ReactiveGlobalExceptionHandler implements org.springframework.web.s
             return Mono.error(ex);
         }
 
-        ServerRequest request = ServerRequest.create(exchange, exchange.getRequest().getHeaders());
+        ServerRequest request = ServerRequest.create(exchange, (List<HttpMessageReader<?>>) exchange.getRequest().getHeaders());
 
         return handleException(ex, request)
                 .flatMap(response -> response.writeTo(exchange, new org.springframework.web.reactive.function.server.support.ServerResponseContext()))
