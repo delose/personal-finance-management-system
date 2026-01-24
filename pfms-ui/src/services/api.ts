@@ -20,6 +20,48 @@ export const createBudget = async (budgetData: Budget): Promise<void> => {
     }
 };
 
+// Create budget function
+export const createBudget = async (budgetData: {
+  category: string;
+  amount: number;
+  startDate: string;
+  endDate: string;
+  userId: number;
+}): Promise<any> => {
+  try {
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    const response = await axios.post(`${API_GATEWAY_URL}/v1/api/budgets`, budgetData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Failed to create budget:', error);
+
+    if (axios.isAxiosError(error) && error.response) {
+      const errorData = error.response.data;
+      let errorMessage = 'Failed to create budget.';
+
+      if (errorData.detail) {
+        errorMessage = errorData.detail;
+      } else if (errorData.message) {
+        errorMessage = errorData.message;
+      }
+
+      throw new Error(errorMessage);
+    }
+
+    throw error;
+  }
+};
+
 // Login function
 export const login = async (email: string, password: string): Promise<void> => {
   try {

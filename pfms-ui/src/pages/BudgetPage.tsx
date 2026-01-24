@@ -3,6 +3,7 @@ import BaseLayout from '../components/BaseLayout';
 import axios from 'axios';
 import UserProfile from '../components/UserProfile';
 import BudgetServiceHealth from '../components/BudgetServiceHealth';
+import BudgetForm from '../components/BudgetForm';
 
 interface Budget {
   id: number;
@@ -16,16 +17,24 @@ const BudgetPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [month, setMonth] = useState<string>('June 2024');
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
 
   useEffect(() => {
     const fetchBudgets = async () => {
       try {
-        // Try to fetch from actual API
-        const response = await axios.get('http://localhost:8080/api/budgets');
+        const token = getAuthToken();
+        if (!token) {
+          throw new Error('No authentication token found');
+        }
+
+        const response = await axios.get('http://localhost:8080/v1/api/budgets', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         setBudgets(response.data);
       } catch (error) {
         console.error('Error fetching budgets:', error);
-        // Use mock data if API fails
         setBudgets([
           { id: 1, category: "Groceries", budgeted: 500, spent: 320 },
           { id: 2, category: "Transport", budgeted: 200, spent: 180 },
@@ -38,10 +47,10 @@ const BudgetPage: React.FC = () => {
     };
 
     fetchBudgets();
-  }, []);
+  }, [refreshTrigger]);
 
-  const handleAddBudget = () => {
-    alert('Add budget functionality coming soon!');
+  const handleBudgetCreated = () => {
+    setRefreshTrigger(!refreshTrigger);
   };
 
   const getRemaining = (budgeted: number, spent: number): number => {
@@ -78,6 +87,11 @@ const BudgetPage: React.FC = () => {
           <BudgetServiceHealth />
         </div>
 
+        {/* Budget Form */}
+        <div className="mb-6">
+          <BudgetForm onBudgetCreated={handleBudgetCreated} />
+        </div>
+
         {/* Budget table */}
         <div className="bg-gray-800 rounded-lg overflow-hidden shadow">
           <div className="grid grid-cols-4 gap-4 p-4 font-semibold text-gray-300 border-b border-gray-700">
@@ -111,16 +125,6 @@ const BudgetPage: React.FC = () => {
           )}
         </div>
 
-        {/* Add budget button */}
-        <div className="mt-6">
-          <button
-            onClick={handleAddBudget}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
-          >
-            + Add Budget
-          </button>
-        </div>
-
         {/* User Profile Section */}
         <div className="mt-8">
           <UserProfile />
@@ -131,3 +135,7 @@ const BudgetPage: React.FC = () => {
 };
 
 export default BudgetPage;
+
+function getAuthToken(): string | null {
+  return localStorage.getItem('authToken');
+}
