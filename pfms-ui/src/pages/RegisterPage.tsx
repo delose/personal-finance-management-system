@@ -6,6 +6,7 @@ const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [fullName, setFullName] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const RegisterPage: React.FC = () => {
     }
 
     try {
-      await register(email, password);
+      await register(email, password, fullName);
       setSuccess(true);
       setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
@@ -34,6 +35,15 @@ const RegisterPage: React.FC = () => {
       {error && <div className="error-message">{error}</div>}
       {success && <div className="success-message">Registration successful! Redirecting to login...</div>}
       <form onSubmit={handleSubmit}>
+        <div>
+          <label>Full Name:</label>
+          <input
+            type="text"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+          />
+        </div>
         <div>
           <label>Email:</label>
           <input

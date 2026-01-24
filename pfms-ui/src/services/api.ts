@@ -35,11 +35,12 @@ export const login = async (email: string, password: string): Promise<void> => {
 };
 
 // Register function
-export const register = async (email: string, password: string): Promise<void> => {
+export const register = async (email: string, password: string, fullName: string): Promise<void> => {
   try {
-    const response = await axios.post(`${API_GATEWAY_URL}/register`, {
-      username: email,
-      password: password
+    const response = await axios.post(`${API_GATEWAY_URL}/auth/signup`, {
+      email: email,
+      password: password,
+      fullName: fullName
     });
     return response.data;
   } catch (error) {
