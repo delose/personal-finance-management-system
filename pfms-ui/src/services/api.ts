@@ -87,6 +87,41 @@ export const register = async (email: string, password: string, fullName: string
   }
 };
 
+// Get current user function
+export const getCurrentUser = async (): Promise<any> => {
+  try {
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    const response = await axios.get(`${API_GATEWAY_URL}/users/me`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch user data:', error);
+
+    if (axios.isAxiosError(error) && error.response) {
+      const errorData = error.response.data;
+      let errorMessage = 'Failed to fetch user data.';
+
+      if (errorData.detail) {
+        errorMessage = errorData.detail;
+      } else if (errorData.message) {
+        errorMessage = errorData.message;
+      }
+
+      throw new Error(errorMessage);
+    }
+
+    throw error;
+  }
+};
+
 // Get auth token helper
 export const getAuthToken = (): string | null => {
   return localStorage.getItem('authToken');

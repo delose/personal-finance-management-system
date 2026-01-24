@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BaseLayout from '../components/BaseLayout';
 import axios from 'axios';
+import UserProfile from '../components/UserProfile';
 
 interface Budget {
   id: number;
@@ -112,6 +113,11 @@ const BudgetPage: React.FC = () => {
           >
             + Add Budget
           </button>
+        </div>
+
+        {/* User Profile Section */}
+        <div className="mt-8">
+          <UserProfile />
         </div>
       </div>
     </BaseLayout>
