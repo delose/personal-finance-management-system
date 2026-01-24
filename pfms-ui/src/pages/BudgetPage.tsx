@@ -107,16 +107,20 @@ const BudgetPage: React.FC = () => {
             </div>
           ) : (
             budgets.map((budget) => {
-              const remaining = getRemaining(budget.budgeted, budget.spent);
+              // Add null checks for budgeted and spent values
+              const budgeted = budget.budgeted || 0;
+              const spent = budget.spent || 0;
+              const remaining = budgeted - spent;
+
               return (
                 <div
                   key={budget.id}
                   className="grid grid-cols-4 gap-4 p-4 border-b border-gray-700 last:border-0 hover:bg-gray-700 transition-colors"
                 >
                   <div className="font-medium">{budget.category}</div>
-                  <div>${budget.budgeted.toFixed(2)}</div>
-                  <div>${budget.spent.toFixed(2)}</div>
-                  <div className={getRemainingColor(remaining, budget.budgeted)}>
+                  <div>${budgeted.toFixed(2)}</div>
+                  <div>${spent.toFixed(2)}</div>
+                  <div className={getRemainingColor(remaining, budgeted)}>
                     ${remaining.toFixed(2)}
                   </div>
                 </div>
