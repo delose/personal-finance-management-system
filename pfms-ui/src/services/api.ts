@@ -42,9 +42,29 @@ export const register = async (email: string, password: string, fullName: string
       password: password,
       fullName: fullName
     });
-    return response.data;
+
+    // The API returns user data, but we don't need to store it
+    // We just need to confirm registration was successful
+    if (response.status === 200 || response.status === 201) {
+      return; // Registration successful
+    }
   } catch (error) {
     console.error('Registration failed:', error);
+
+    // Extract and throw a more specific error message if available
+    if (axios.isAxiosError(error) && error.response) {
+      const errorData = error.response.data;
+      let errorMessage = 'Registration failed. Please try again.';
+
+      if (errorData.detail) {
+        errorMessage = errorData.detail;
+      } else if (errorData.message) {
+        errorMessage = errorData.message;
+      }
+
+      throw new Error(errorMessage);
+    }
+
     throw error;
   }
 };
