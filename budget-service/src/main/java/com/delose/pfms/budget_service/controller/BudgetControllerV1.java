@@ -54,7 +54,7 @@ public class BudgetControllerV1 {
     @GetMapping("/greeting")
     public String greeting() {
         return String.format(
-          "Hello from '%s'!", eurekaClient.getApplication(this.appName).getName()
+          "Hey there from '%s'!", eurekaClient.getApplication(this.appName).getName()
         );
     }
 
