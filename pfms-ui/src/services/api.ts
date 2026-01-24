@@ -9,17 +9,6 @@ interface Budget {
     amount: number;
 }
 
-// Function to create a new budget by sending a request to the API Gateway
-export const createBudget = async (budgetData: Budget): Promise<void> => {
-    try {
-        const response = await axios.post(`${API_GATEWAY_URL}/budget-service/budgets`, budgetData);
-        return response.data;
-    } catch (error) {
-        console.error('Error creating budget:', error);
-        throw error;
-    }
-};
-
 // Create budget function
 export const createBudget = async (budgetData: {
   category: string;
