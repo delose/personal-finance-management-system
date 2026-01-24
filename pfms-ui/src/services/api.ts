@@ -23,13 +23,31 @@ export const createBudget = async (budgetData: Budget): Promise<void> => {
 // Login function
 export const login = async (email: string, password: string): Promise<void> => {
   try {
-    const response = await axios.post(`${API_GATEWAY_URL}/login`, {
-      username: email,
+    const response = await axios.post(`${API_GATEWAY_URL}/auth/login`, {
+      email: email,
       password: password
     });
+
+    // Store both token and expiration time
     localStorage.setItem('authToken', response.data.token);
+    localStorage.setItem('tokenExpires', Date.now() + response.data.expiresIn);
   } catch (error) {
     console.error('Login failed:', error);
+
+    // Extract and throw a more specific error message if available
+    if (axios.isAxiosError(error) && error.response) {
+      const errorData = error.response.data;
+      let errorMessage = 'Invalid credentials. Please try again.';
+
+      if (errorData.detail) {
+        errorMessage = errorData.detail;
+      } else if (errorData.message) {
+        errorMessage = errorData.message;
+      }
+
+      throw new Error(errorMessage);
+    }
+
     throw error;
   }
 };
@@ -77,4 +95,5 @@ export const getAuthToken = (): string | null => {
 // Logout function
 export const logout = (): void => {
   localStorage.removeItem('authToken');
+  localStorage.removeItem('tokenExpires');
 };
