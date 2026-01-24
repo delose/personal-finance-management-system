@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCurrentUser, getAuthToken } from '../services/api';
+import { getCurrentUser, getAuthToken, logout } from '../services/api';
 
 const UserProfile: React.FC = () => {
   const [user, setUser] = useState<any>(null);
@@ -11,42 +11,62 @@ const UserProfile: React.FC = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        // Check token before making API call
+        const token = getAuthToken();
+        if (!token) {
+          setError('Your session has expired. Please log in again.');
+          setLoading(false);
+          return;
+        }
+
         const userData = await getCurrentUser();
         setUser(userData);
 
-        // Get token expiration time
+        // Set up token expiration monitoring
         const expiresAt = localStorage.getItem('tokenExpires');
         if (expiresAt) {
           const expires = new Date(parseInt(expiresAt));
           setTokenExpires(expires.toLocaleString());
 
-          // Calculate time remaining
+          // Calculate time remaining with more frequent updates when close to expiry
           const calculateTimeRemaining = () => {
             const now = new Date().getTime();
             const diff = parseInt(expiresAt) - now;
 
             if (diff <= 0) {
               setTimeRemaining('Session expired');
+              setError('Your session has expired. Please log in again.');
+              logout();
               return;
             }
 
-            // Convert milliseconds to hours, minutes, seconds
             const hours = Math.floor(diff / (1000 * 60 * 60));
             const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
             setTimeRemaining(`${hours}h ${minutes}m ${seconds}s remaining`);
+
+            // Warn when less than 5 minutes remaining
+            if (diff <= 300000 && diff > 0) {
+              setError('Your session will expire soon. Please save your work.');
+            }
           };
 
-          // Update time remaining every second
+          // Update more frequently when close to expiry
+          const updateInterval = Math.min(1000, Math.max(100, parseInt(expiresAt) - new Date().getTime() / 10));
           calculateTimeRemaining();
-          const interval = setInterval(calculateTimeRemaining, 1000);
+          const interval = setInterval(calculateTimeRemaining, updateInterval);
 
           return () => clearInterval(interval);
         }
       } catch (err) {
         if (err instanceof Error) {
-          setError(err.message);
+          if (err.message.includes('token_expired') || err.message.includes('Session expired')) {
+            setError('Your session has expired. Please log in again.');
+            logout();
+          } else {
+            setError(err.message);
+          }
         } else {
           setError('Failed to load user data');
         }

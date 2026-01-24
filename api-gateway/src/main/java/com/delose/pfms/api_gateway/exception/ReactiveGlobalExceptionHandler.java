@@ -37,8 +37,15 @@ public class ReactiveGlobalExceptionHandler implements org.springframework.web.s
         HttpStatus status = getStatus(ex);
         String messageCode = getDetailMessageCode(ex);
 
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, ex.getMessage());
+        // Create a more detailed error message for expired tokens
+        String errorMessage = ex.getMessage();
+        if (ex instanceof ExpiredJwtException) {
+            errorMessage = "Your session has expired. Please log in again.";
+        }
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(status, errorMessage);
         problemDetail.setTitle(status.getReasonPhrase());
+        problemDetail.setProperty("errorCode", messageCode);
 
         return ServerResponse.status(status)
                 .bodyValue(problemDetail);

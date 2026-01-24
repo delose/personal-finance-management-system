@@ -38,6 +38,50 @@ export const getBudgetCategories = async (): Promise<string[]> => {
   }
 };
 
+// Enhanced token expiration check
+export const isTokenExpired = (): boolean => {
+  const expiresAt = localStorage.getItem('tokenExpires');
+  if (!expiresAt) return true;
+
+  try {
+    const now = new Date().getTime();
+    const expires = parseInt(expiresAt);
+    return expires <= now;
+  } catch (e) {
+    console.error('Invalid token expiration format:', e);
+    return true;
+  }
+};
+
+// Enhanced getAuthToken with expiration check
+export const getAuthToken = (): string | null => {
+  const token = localStorage.getItem('authToken');
+  if (!token || isTokenExpired()) {
+    console.warn('Token expired or not found, clearing session...');
+    logout();
+    return null;
+  }
+  return token;
+};
+
+// Add this function to refresh the token (if your API supports it)
+export const refreshToken = async (): Promise<void> => {
+  try {
+    const response = await axios.post(`${API_GATEWAY_URL}/auth/refresh`, {}, {
+      headers: {
+        'Authorization': `Bearer ${getAuthToken()}`
+      }
+    });
+
+    localStorage.setItem('authToken', response.data.token);
+    localStorage.setItem('tokenExpires', Date.now() + response.data.expiresIn);
+  } catch (error) {
+    console.error('Token refresh failed:', error);
+    logout();
+    throw new Error('Session expired. Please log in again.');
+  }
+};
+
 // Create budget categories function
 
 // Create budget function
