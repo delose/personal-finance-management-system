@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { createBudget } from '../services/api';
+import React, { useState, useEffect } from 'react';
+import { createBudget, getBudgetCategories } from '../services/api';
 import { getAuthToken } from '../services/api';
 import { motion } from 'framer-motion';
+import { FaSearch } from 'react-icons/fa';
 
 interface BudgetFormProps {
   onBudgetCreated: () => void;
@@ -14,16 +15,66 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ onBudgetCreated }) => {
     startDate: '',
     endDate: ''
   });
+  const [categories, setCategories] = useState<string[]>([]);
+  const [filteredCategories, setFilteredCategories] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  useEffect(() => {
+    // Fetch categories when component mounts
+    const fetchCategories = async () => {
+      try {
+        const cats = await getBudgetCategories();
+        setCategories(cats);
+        setFilteredCategories(cats);
+      } catch (err) {
+        console.error('Failed to load categories:', err);
+        // Fallback to default categories
+        setCategories([
+          'GROCERIES', 'UTILITIES', 'RENT', 'TRAVEL',
+          'FOOD', 'ENTERTAINMENT', 'DINING', 'SHOPPING', 'OTHER'
+        ]);
+        setFilteredCategories([
+          'GROCERIES', 'UTILITIES', 'RENT', 'TRAVEL',
+          'FOOD', 'ENTERTAINMENT', 'DINING', 'SHOPPING', 'OTHER'
+        ]);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    if (name === 'category') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value.toUpperCase()
+      }));
+
+      // Filter categories based on input
+      const filtered = categories.filter(cat =>
+        cat.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredCategories(filtered);
+      setShowSuggestions(value.length > 0 && filtered.length > 0);
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: name === 'amount' ? parseFloat(value) : value
+      }));
+    }
+  };
+
+  const handleCategorySelect = (category: string) => {
     setFormData(prev => ({
       ...prev,
-      [name]: name === 'amount' ? parseFloat(value) : value
+      category: category
     }));
+    setShowSuggestions(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,17 +84,14 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ onBudgetCreated }) => {
     setLoading(true);
 
     try {
-      // Get user ID from token (this would be better handled by decoding the JWT)
-      // For now, we'll use a placeholder user ID
       const userId = 1; // This should be extracted from the JWT in a real app
 
-      // Transform the form data to match the API's expected format
       const budgetData = {
-        category: formData.category.toUpperCase(), // API expects uppercase category
+        category: formData.category.toUpperCase(),
         amount: formData.amount,
         startDate: formData.startDate,
         endDate: formData.endDate,
-        userId: userId // API expects userId as string
+        userId: userId
       };
 
       await createBudget(budgetData);
@@ -55,10 +103,7 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ onBudgetCreated }) => {
         endDate: ''
       });
 
-      // Refresh the budget list
       onBudgetCreated();
-
-      // Hide success message after 3 seconds
       setTimeout(() => setSuccess(false), 3000);
     } catch (err) {
       if (err instanceof Error) {
@@ -92,17 +137,41 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ onBudgetCreated }) => {
       )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
+        <div className="relative">
           <label className="block text-sm font-medium mb-1">Category</label>
-          <input
-            type="text"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            required
-            className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 focus:outline-none"
-            placeholder="e.g., GROCERIES"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              onFocus={() => setShowSuggestions(formData.category.length > 0)}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+              required
+              className="w-full p-2 pl-10 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 focus:outline-none"
+              placeholder="e.g., GROCERIES"
+            />
+            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+          </div>
+
+          {/* Category suggestions dropdown */}
+          {showSuggestions && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="absolute z-10 w-full mt-1 bg-gray-700 rounded-md shadow-lg max-h-40 overflow-y-auto"
+            >
+              {filteredCategories.map(category => (
+                <div
+                  key={category}
+                  className="p-2 hover:bg-gray-600 cursor-pointer"
+                  onClick={() => handleCategorySelect(category)}
+                >
+                  {category.charAt(0) + category.slice(1).toLowerCase()}
+                </div>
+              ))}
+            </motion.div>
+          )}
         </div>
 
         <div>
