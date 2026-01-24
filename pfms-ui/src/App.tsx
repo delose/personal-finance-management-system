@@ -5,6 +5,7 @@ import HomePage from './pages/HomePage';
 import BudgetPage from './pages/BudgetPage';
 import ArchitecturePage from './pages/ArchitecturePage';
 import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 import Header from './components/Header';
 import { AuthProvider } from './context/AuthContext';
 import { getAuthToken } from './services/api';
@@ -22,6 +23,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/architecture" element={<ArchitecturePage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/budget" element={
             <PrivateRoute>
               <BudgetPage />

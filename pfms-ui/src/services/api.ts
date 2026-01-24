@@ -34,6 +34,20 @@ export const login = async (email: string, password: string): Promise<void> => {
   }
 };
 
+// Register function
+export const register = async (email: string, password: string): Promise<void> => {
+  try {
+    const response = await axios.post(`${API_GATEWAY_URL}/register`, {
+      username: email,
+      password: password
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Registration failed:', error);
+    throw error;
+  }
+};
+
 // Get auth token helper
 export const getAuthToken = (): string | null => {
   return localStorage.getItem('authToken');
