@@ -4,6 +4,12 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Check if MetaMask is trying to inject and handle it gracefully
+if (window.ethereum) {
+  console.log('MetaMask detected but not required for PFMS');
+  // We don't need to connect or handle MetaMask for this application
+}
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

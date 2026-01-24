@@ -1,5 +1,5 @@
 import './styles/index.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import BudgetPage from './pages/BudgetPage';
@@ -16,6 +16,21 @@ const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App: React.FC = () => {
+  useEffect(() => {
+    // Handle any MetaMask-related errors that might occur
+    const handleMetaMaskError = (event: ErrorEvent) => {
+      if (event.message.includes('MetaMask') || event.message.includes('ethereum')) {
+        console.warn('MetaMask error detected but ignored (PFMS does not require MetaMask)');
+        event.preventDefault(); // Prevent the error from showing in console
+      }
+    };
+
+    window.addEventListener('error', handleMetaMaskError);
+    return () => {
+      window.removeEventListener('error', handleMetaMaskError);
+    };
+  }, []);
+
   return (
     <AuthProvider>
       <Router>
