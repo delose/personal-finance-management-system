@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BaseLayout from '../components/BaseLayout';
 import axios from 'axios';
 import UserProfile from '../components/UserProfile';
+import BudgetServiceHealth from '../components/BudgetServiceHealth';
 
 interface Budget {
   id: number;
@@ -70,6 +71,11 @@ const BudgetPage: React.FC = () => {
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-3xl font-bold">Budgets</h1>
           <div className="text-lg font-medium">{month}</div>
+        </div>
+
+        {/* Budget Service Health Checker */}
+        <div className="mb-6">
+          <BudgetServiceHealth />
         </div>
 
         {/* Budget table */}

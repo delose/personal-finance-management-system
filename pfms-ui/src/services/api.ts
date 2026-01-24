@@ -132,3 +132,38 @@ export const logout = (): void => {
   localStorage.removeItem('authToken');
   localStorage.removeItem('tokenExpires');
 };
+
+// Check budget service health
+export const checkBudgetServiceHealth = async (): Promise<string> => {
+  try {
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    const response = await axios.get(`${API_GATEWAY_URL}/v1/api/budgets/greeting`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Failed to check budget service health:', error);
+
+    if (axios.isAxiosError(error) && error.response) {
+      const errorData = error.response.data;
+      let errorMessage = 'Failed to connect to budget service.';
+
+      if (errorData.detail) {
+        errorMessage = errorData.detail;
+      } else if (errorData.message) {
+        errorMessage = errorData.message;
+      }
+
+      throw new Error(errorMessage);
+    }
+
+    throw error;
+  }
+};
