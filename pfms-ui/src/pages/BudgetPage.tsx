@@ -5,6 +5,28 @@ import UserProfile from '../components/UserProfile';
 import BudgetServiceHealth from '../components/BudgetServiceHealth';
 import BudgetForm from '../components/BudgetForm';
 
+// Move the helper functions outside the component
+const getCurrentMonthYear = () => {
+  const now = new Date();
+  return now.toLocaleString('default', { month: 'long', year: 'numeric' });
+};
+
+const getMonthOptions = () => {
+  const months = [];
+  const now = new Date();
+
+  // Generate months for the current year and next year
+  for (let i = -6; i <= 6; i++) {
+    const date = new Date();
+    date.setMonth(now.getMonth() + i);
+    months.push(
+      date.toLocaleString('default', { month: 'long', year: 'numeric' })
+    );
+  }
+
+  return months;
+};
+
 interface Budget {
   id: number;
   userId: string;
@@ -22,30 +44,6 @@ const BudgetPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [month, setMonth] = useState<string>(getCurrentMonthYear());
   const [refreshTrigger, setRefreshTrigger] = useState(false);
-
-  // Helper function to get current month and year
-  const getCurrentMonthYear = () => {
-    const now = new Date();
-    return now.toLocaleString('default', { month: 'long', year: 'numeric' });
-  };
-
-  // Generate month options for the selector
-  const getMonthOptions = () => {
-    const months = [];
-    const now = new Date();
-
-    // Generate months for the current year and next year
-    for (let i = -6; i <= 6; i++) {
-      const date = new Date();
-      date.setMonth(now.getMonth() + i);
-      months.push(
-        date.toLocaleString('default', { month: 'long', year: 'numeric' })
-      );
-    }
-
-    return months;
-  };
-
   const monthOptions = getMonthOptions();
 
   useEffect(() => {
