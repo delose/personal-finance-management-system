@@ -9,6 +9,35 @@ interface Budget {
     amount: number;
 }
 
+/**
+ * Get all budget categories from the API
+ * @returns Promise<string[]> - Array of budget category names
+ */
+export const getBudgetCategories = async (): Promise<string[]> => {
+  try {
+    const token = getAuthToken();
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    const response = await axios.get(`${API_GATEWAY_URL}/v1/api/budgets/categories`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch budget categories:', error);
+
+    // Fallback to default categories if API fails
+    return [
+      'GROCERIES', 'UTILITIES', 'RENT', 'TRAVEL',
+      'FOOD', 'ENTERTAINMENT', 'DINING', 'SHOPPING', 'OTHER'
+    ];
+  }
+};
+
 // Create budget categories function
 
 // Create budget function
