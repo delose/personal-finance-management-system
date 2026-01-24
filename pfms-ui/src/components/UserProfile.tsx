@@ -1,16 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { getCurrentUser } from '../services/api';
+import { getCurrentUser, getAuthToken } from '../services/api';
 
 const UserProfile: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [tokenExpires, setTokenExpires] = useState<string | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState<string>('');
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const userData = await getCurrentUser();
         setUser(userData);
+
+        // Get token expiration time
+        const expiresAt = localStorage.getItem('tokenExpires');
+        if (expiresAt) {
+          const expires = new Date(parseInt(expiresAt));
+          setTokenExpires(expires.toLocaleString());
+
+          // Calculate time remaining
+          const calculateTimeRemaining = () => {
+            const now = new Date().getTime();
+            const diff = parseInt(expiresAt) - now;
+
+            if (diff <= 0) {
+              setTimeRemaining('Session expired');
+              return;
+            }
+
+            // Convert milliseconds to hours, minutes, seconds
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            setTimeRemaining(`${hours}h ${minutes}m ${seconds}s remaining`);
+          };
+
+          // Update time remaining every second
+          calculateTimeRemaining();
+          const interval = setInterval(calculateTimeRemaining, 1000);
+
+          return () => clearInterval(interval);
+        }
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
@@ -24,6 +57,21 @@ const UserProfile: React.FC = () => {
 
     fetchUserData();
   }, []);
+
+  const getTokenStatusColor = () => {
+    if (!tokenExpires) return 'bg-gray-500';
+
+    const expiresAt = localStorage.getItem('tokenExpires');
+    if (!expiresAt) return 'bg-gray-500';
+
+    const now = new Date().getTime();
+    const diff = parseInt(expiresAt) - now;
+    const minutesRemaining = Math.floor(diff / (1000 * 60));
+
+    if (minutesRemaining <= 0) return 'bg-red-500';
+    if (minutesRemaining <= 30) return 'bg-yellow-500';
+    return 'bg-green-500';
+  };
 
   if (loading) {
     return (
@@ -86,6 +134,21 @@ const UserProfile: React.FC = () => {
             {new Date(user.updateAt).toLocaleDateString()}
           </span>
         </div>
+
+        {/* Token Expiry Information */}
+        <div>
+          <span className="text-gray-400">Token Status:</span>
+          <span className={`ml-2 inline-block px-2 py-1 rounded text-xs font-semibold ${getTokenStatusColor()}`}>
+            {timeRemaining || 'Unknown'}
+          </span>
+        </div>
+
+        {tokenExpires && (
+          <div>
+            <span className="text-gray-400">Token Expires:</span>
+            <span className="ml-2 font-medium">{tokenExpires}</span>
+          </div>
+        )}
       </div>
     </div>
   );
