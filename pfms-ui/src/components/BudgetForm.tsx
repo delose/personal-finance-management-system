@@ -43,7 +43,7 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ onBudgetCreated }) => {
         amount: formData.amount,
         startDate: formData.startDate,
         endDate: formData.endDate,
-        userId: userId.toString() // API expects userId as string
+        userId: userId // API expects userId as string
       };
 
       await createBudget(budgetData);
