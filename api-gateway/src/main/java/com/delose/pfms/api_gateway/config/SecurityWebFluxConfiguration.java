@@ -17,6 +17,8 @@ import org.springframework.web.cors.reactive.CorsConfigurationSource;
 
 import java.util.List;
 
+import static org.springframework.security.config.web.server.SecurityWebFiltersOrder.AUTHENTICATION;
+
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityWebFluxConfiguration {
@@ -54,7 +56,7 @@ public class SecurityWebFluxConfiguration {
                             return exceptionHandler.handle(exchange, ex);
                         })
                 )
-                .addFilterAt(authenticationWebFilter, org.springframework.security.web.server.SecurityWebFiltersOrder.AUTHENTICATION);
+                .addFilterAt(authenticationWebFilter, AUTHENTICATION);
         return http.build();
     }
 
