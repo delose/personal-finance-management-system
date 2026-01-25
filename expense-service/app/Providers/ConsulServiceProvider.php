@@ -5,22 +5,16 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Services\ConsulService;
 
-class AppServiceProvider extends ServiceProvider
+class ConsulServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
+    public function register()
     {
         $this->app->singleton(ConsulService::class, function ($app) {
             return new ConsulService();
         });
     }
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
+    public function boot()
     {
         // Register with Consul on startup (only in production)
         if (config('app.env') === 'production' && !app()->runningInConsole()) {
