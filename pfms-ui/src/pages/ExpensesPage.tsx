@@ -38,18 +38,10 @@ const ExpensesPage: React.FC = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data = await response.text();
-      console.log("fetchExpenses response text:", data);
-      // Parse the HTML response to extract JSON
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(data, 'text/html');
-      const preContent = doc.querySelector('pre')?.textContent;
-      console.log("fetchExpenses preContent:", preContent);
-      if (preContent) {
-        const parsedExpenses = JSON.parse(preContent);
-        console.log("fetchExpenses parsedExpenses:", parsedExpenses);
-        setExpenses(parsedExpenses);
-      }
+      // Parse the response as JSON directly
+      const data = await response.json();
+      console.log("fetchExpenses response data:", data);
+      setExpenses(data);
     } catch (err) {
       console.error('Error fetching expenses:', err);
       setError('Failed to fetch expenses');
@@ -254,7 +246,7 @@ const ExpensesPage: React.FC = () => {
                     <tr key={expense.id} className="border-b border-gray-700 hover:bg-gray-750">
                       <td className="p-2 text-gray-400">{expense.id}</td>
                       <td className="p-2 text-white">{expense.title}</td>
-                      <td className="p-2 text-green-400">${expense.amount}</td>
+                      <td className="p-2 text-green-400">${parseFloat(expense.amount).toFixed(2)}</td>
                       <td className="p-2 text-blue-400">{expense.category}</td>
                       <td className="p-2 text-gray-400">{expense.entry_date}</td>
                     </tr>
