@@ -317,20 +317,28 @@ const ExpensesPage: React.FC = () => {
           transition={{ delay: 0.8 }}
           className="mt-8 bg-gray-800 rounded-lg p-6"
         >
-          <h3 className="text-xl font-bold mb-4 text-purple-300">API Endpoint</h3>
-          <div className="bg-gray-900 p-4 rounded font-mono text-sm text-green-400">
-            POST http://localhost/api/expenses
-          </div>
-          <div className="mt-4 text-gray-400 text-sm">
-            <p>Example request body:</p>
-            <pre className="bg-gray-900 p-4 rounded mt-2 text-xs">
+          <h3 className="text-xl font-bold mb-4 text-purple-300">API Endpoints</h3>
+          <div className="space-y-4">
+            <div>
+              <div className="bg-gray-900 p-4 rounded font-mono text-sm text-green-400 mb-2">
+                GET http://localhost/api/expenses
+              </div>
+              <p className="text-gray-400 text-sm">Fetch all expenses</p>
+            </div>
+            <div>
+              <div className="bg-gray-900 p-4 rounded font-mono text-sm text-green-400 mb-2">
+                POST http://localhost/api/expenses
+              </div>
+              <p className="text-gray-400 text-sm">Create a new expense</p>
+              <pre className="bg-gray-900 p-4 rounded mt-2 text-xs">
 {`{
   "title": "Coffee",
   "amount": 4.50,
   "category": "Food",
   "entry_date": "2026-01-13"
 }`}
-            </pre>
+              </pre>
+            </div>
           </div>
         </motion.div>
       </motion.div>
