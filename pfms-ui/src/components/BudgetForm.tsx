@@ -32,14 +32,12 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ onBudgetCreated }) => {
       } catch (err) {
         console.error('Failed to load categories:', err);
         // Fallback to default categories
-        setCategories([
+        const defaultCategories = [
           'GROCERIES', 'UTILITIES', 'RENT', 'TRAVEL',
           'FOOD', 'ENTERTAINMENT', 'DINING', 'SHOPPING', 'OTHER'
-        ]);
-        setFilteredCategories([
-          'GROCERIES', 'UTILITIES', 'RENT', 'TRAVEL',
-          'FOOD', 'ENTERTAINMENT', 'DINING', 'SHOPPING', 'OTHER'
-        ]);
+        ];
+        setCategories(defaultCategories);
+        setFilteredCategories(defaultCategories);
       }
     };
 
@@ -60,13 +58,19 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ onBudgetCreated }) => {
         cat.toLowerCase().includes(value.toLowerCase())
       );
       setFilteredCategories(filtered);
-      setShowSuggestions(value.length > 0 && filtered.length > 0);
+      setShowSuggestions(value.length >= 0); // Show suggestions even when empty
     } else {
       setFormData(prev => ({
         ...prev,
         [name]: name === 'amount' ? parseFloat(value) : value
       }));
     }
+  };
+
+  const handleCategoryFocus = () => {
+    // Show all categories when input is focused
+    setFilteredCategories(categories);
+    setShowSuggestions(true);
   };
 
   const handleCategorySelect = (category: string) => {
@@ -145,16 +149,7 @@ const BudgetForm: React.FC<BudgetFormProps> = ({ onBudgetCreated }) => {
               name="category"
               value={formData.category}
               onChange={handleChange}
-              onFocus={() => {
-                setShowSuggestions(formData.category.length > 0);
-                // Clear any browser autocomplete suggestions
-                setTimeout(() => {
-                  const input = document.activeElement as HTMLInputElement;
-                  if (input) {
-                    input.setAttribute('autocomplete', 'off');
-                  }
-                }, 0);
-              }}
+              onFocus={handleCategoryFocus}
               onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
               required
               autoComplete="off"
