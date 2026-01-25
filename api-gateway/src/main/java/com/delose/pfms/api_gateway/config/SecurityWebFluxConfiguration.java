@@ -25,15 +25,12 @@ import static org.springframework.security.config.web.server.SecurityWebFiltersO
 public class SecurityWebFluxConfiguration {
     private final CustomReactiveAuthenticationManager customReactiveAuthenticationManager;
     private final ServerJwtAuthenticationConverter serverJwtAuthenticationConverter;
-    private final ReactiveGlobalExceptionHandler exceptionHandler;
 
     public SecurityWebFluxConfiguration(
             CustomReactiveAuthenticationManager customReactiveAuthenticationManager,
-            ServerJwtAuthenticationConverter serverJwtAuthenticationConverter,
-            ReactiveGlobalExceptionHandler exceptionHandler) {
+            ServerJwtAuthenticationConverter serverJwtAuthenticationConverter) {
         this.customReactiveAuthenticationManager = customReactiveAuthenticationManager;
         this.serverJwtAuthenticationConverter = serverJwtAuthenticationConverter;
-        this.exceptionHandler = exceptionHandler;
     }
 
     @Bean
@@ -51,10 +48,10 @@ public class SecurityWebFluxConfiguration {
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint((exchange, ex) -> {
-                            return exceptionHandler.handle(exchange, ex);
+                            return Mono.error(ex);
                         })
                         .accessDeniedHandler((exchange, ex) -> {
-                            return exceptionHandler.handle(exchange, ex);
+                            return Mono.error(ex);
                         })
                 )
                 .addFilterAt(authenticationWebFilter, AUTHENTICATION);
