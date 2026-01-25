@@ -41,7 +41,6 @@ interface Budget {
 
 const BudgetPage: React.FC = () => {
   const [budgets, setBudgets] = useState<Budget[]>([]);
-  const [filteredBudgets, setFilteredBudgets] = useState<Budget[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [month, setMonth] = useState<string>(getCurrentMonthYear());
@@ -78,7 +77,6 @@ const BudgetPage: React.FC = () => {
         }));
 
         setBudgets(transformedBudgets);
-        setFilteredBudgets(transformedBudgets);
       } catch (error) {
         console.error('Error fetching budgets:', error);
         // Fallback to mock data if API fails
@@ -89,7 +87,6 @@ const BudgetPage: React.FC = () => {
           { id: 4, userId: "1", category: "Utilities", amount: 300, budgeted: 300, spent: 280, startDate: "2025-01-01", endDate: "2025-01-31" }
         ];
         setBudgets(mockBudgets);
-        setFilteredBudgets(mockBudgets);
       } finally {
         setLoading(false);
       }
@@ -97,43 +94,6 @@ const BudgetPage: React.FC = () => {
 
     fetchBudgets();
   }, [month, refreshTrigger]);
-
-  // Filter budgets based on selected month
-  useEffect(() => {
-    if (budgets.length === 0) {
-      setFilteredBudgets([]);
-      return;
-    }
-
-    const [monthName, year] = month.split(' ');
-    const monthIndex = new Date(`${monthName} 1, 2021`).getMonth();
-    const selectedYear = parseInt(year);
-    const selectedMonth = monthIndex + 1; // 1-12
-
-    const filtered = budgets.filter(budget => {
-      const budgetStartDate = new Date(budget.startDate);
-      const budgetEndDate = new Date(budget.endDate);
-      
-      // Check if the budget's date range overlaps with the selected month
-      const budgetStartMonth = budgetStartDate.getMonth() + 1;
-      const budgetStartYear = budgetStartDate.getFullYear();
-      const budgetEndMonth = budgetEndDate.getMonth() + 1;
-      const budgetEndYear = budgetEndDate.getFullYear();
-
-      // Check if the selected month falls within the budget's date range
-      const isWithinRange = 
-        (budgetStartYear < selectedYear) ||
-        (budgetStartYear === selectedYear && budgetStartMonth <= selectedMonth) ||
-        (budgetStartYear === selectedYear && budgetStartMonth === selectedMonth) ||
-        (budgetEndYear > selectedYear) ||
-        (budgetEndYear === selectedYear && budgetEndMonth >= selectedMonth) ||
-        (budgetEndYear === selectedYear && budgetEndMonth === selectedMonth);
-
-      return isWithinRange;
-    });
-
-    setFilteredBudgets(filtered);
-  }, [month, budgets]);
 
   const handleBudgetCreated = () => {
     setRefreshTrigger(!refreshTrigger);
@@ -207,12 +167,12 @@ const BudgetPage: React.FC = () => {
             <div>End Date</div>
           </div>
 
-          {filteredBudgets.length === 0 ? (
+          {budgets.length === 0 ? (
             <div className="p-6 text-center text-gray-400">
               No budgets found for {month}. Add your first budget!
             </div>
           ) : (
-            filteredBudgets.map((budget) => {
+            budgets.map((budget) => {
               // Use the transformed budgeted and spent values
               const budgeted = budget.budgeted || 0;
               const spent = budget.spent || 0;
