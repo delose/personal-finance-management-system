@@ -28,7 +28,7 @@ services:
       "
 
   consul-agent:
-    image: consul:latest
+    image: consul:1.15.4
     container_name: expense-consul-agent
     command: >
       agent 
@@ -46,7 +46,7 @@ services:
       - consul-server
 
   consul-server:
-    image: consul:latest
+    image: consul:1.15.4
     container_name: expense-consul-server
     ports:
       - "8500:8500"
