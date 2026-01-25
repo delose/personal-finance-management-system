@@ -51,7 +51,8 @@ public class ReactiveGlobalExceptionHandler implements org.springframework.web.s
             return Mono.error(ex);
         }
 
-        ServerRequest request = ServerRequest.create(exchange, (List<HttpMessageReader<?>>) exchange.getRequest().getHeaders());
+        // Create ServerRequest properly without casting
+        ServerRequest request = ServerRequest.create(exchange, Collections.emptyList());
 
         return handleException(ex, request)
                 .flatMap(response -> response.writeTo(exchange, new ServerResponse.Context() {
