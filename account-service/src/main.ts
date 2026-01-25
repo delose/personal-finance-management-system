@@ -9,14 +9,14 @@ async function bootstrap() {
 
   const isDocker = fs.existsSync('/.dockerenv');
   const rabbitHost = isDocker ? 'host.docker.internal' : 'localhost';
-  const rabbitMQUrl = `amqp://guest:guest@${rabbitHost}:5672`;
+  const rabbitMQUrl = process.env.RABBITMQ_URL || `amqp://guest:guest@${rabbitHost}:5672`;
 
   const httpPort = 3001;
 
   app.connectMicroservice<MicroserviceOptions>({
         transport: Transport.RMQ,
         options: {
-          urls: [`amqp://guest:guest@${rabbitHost}:5672`],
+          urls: [rabbitMQUrl],
           queue: 'account_queue',
           queueOptions: {
             durable: true
