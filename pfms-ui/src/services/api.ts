@@ -31,11 +31,24 @@ export const getBudgetCategories = async (): Promise<string[]> => {
   } catch (error) {
     console.error('Failed to fetch budget categories:', error);
 
-    // Check if it's a 401 error (session expired)
+    // Check if it's a 401 error (session expired or invalid signature)
     if (axios.isAxiosError(error) && error.response?.status === 401) {
-      // Redirect to session expired page
-      window.location.href = '/session-expired';
-      throw new Error('Session expired. Redirecting to login...');
+      const errorData = error.response.data;
+      
+      // Check for specific error codes
+      if (errorData?.errorCode === 'error.auth.token_expired') {
+        // Redirect to session expired page
+        window.location.href = '/session-expired';
+        throw new Error('Session expired. Redirecting to login...');
+      } else if (errorData?.errorCode === 'error.auth.invalid_signature') {
+        // Redirect to invalid signature page
+        window.location.href = '/invalid-signature';
+        throw new Error('Invalid security token. Redirecting to login...');
+      } else {
+        // Generic 401 error
+        window.location.href = '/session-expired';
+        throw new Error('Authentication failed. Redirecting to login...');
+      }
     }
 
     // Fallback to default categories if API fails
@@ -117,11 +130,24 @@ export const createBudget = async (budgetData: {
   } catch (error) {
     console.error('Failed to create budget:', error);
 
-    // Check if it's a 401 error (session expired)
+    // Check if it's a 401 error (session expired or invalid signature)
     if (axios.isAxiosError(error) && error.response?.status === 401) {
-      // Redirect to session expired page
-      window.location.href = '/session-expired';
-      throw new Error('Session expired. Redirecting to login...');
+      const errorData = error.response.data;
+      
+      // Check for specific error codes
+      if (errorData?.errorCode === 'error.auth.token_expired') {
+        // Redirect to session expired page
+        window.location.href = '/session-expired';
+        throw new Error('Session expired. Redirecting to login...');
+      } else if (errorData?.errorCode === 'error.auth.invalid_signature') {
+        // Redirect to invalid signature page
+        window.location.href = '/invalid-signature';
+        throw new Error('Invalid security token. Redirecting to login...');
+      } else {
+        // Generic 401 error
+        window.location.href = '/session-expired';
+        throw new Error('Authentication failed. Redirecting to login...');
+      }
     }
 
     if (axios.isAxiosError(error) && error.response) {
@@ -226,11 +252,24 @@ export const getCurrentUser = async (): Promise<any> => {
   } catch (error) {
     console.error('Failed to fetch user data:', error);
 
-    // Check if it's a 401 error (session expired)
+    // Check if it's a 401 error (session expired or invalid signature)
     if (axios.isAxiosError(error) && error.response?.status === 401) {
-      // Redirect to session expired page
-      window.location.href = '/session-expired';
-      throw new Error('Session expired. Redirecting to login...');
+      const errorData = error.response.data;
+      
+      // Check for specific error codes
+      if (errorData?.errorCode === 'error.auth.token_expired') {
+        // Redirect to session expired page
+        window.location.href = '/session-expired';
+        throw new Error('Session expired. Redirecting to login...');
+      } else if (errorData?.errorCode === 'error.auth.invalid_signature') {
+        // Redirect to invalid signature page
+        window.location.href = '/invalid-signature';
+        throw new Error('Invalid security token. Redirecting to login...');
+      } else {
+        // Generic 401 error
+        window.location.href = '/session-expired';
+        throw new Error('Authentication failed. Redirecting to login...');
+      }
     }
 
     if (axios.isAxiosError(error) && error.response) {
@@ -279,11 +318,24 @@ export const checkBudgetServiceHealth = async (): Promise<string> => {
   } catch (error) {
     console.error('Failed to check budget service health:', error);
 
-    // Check if it's a 401 error (session expired)
+    // Check if it's a 401 error (session expired or invalid signature)
     if (axios.isAxiosError(error) && error.response?.status === 401) {
-      // Redirect to session expired page
-      window.location.href = '/session-expired';
-      throw new Error('Session expired. Redirecting to login...');
+      const errorData = error.response.data;
+      
+      // Check for specific error codes
+      if (errorData?.errorCode === 'error.auth.token_expired') {
+        // Redirect to session expired page
+        window.location.href = '/session-expired';
+        throw new Error('Session expired. Redirecting to login...');
+      } else if (errorData?.errorCode === 'error.auth.invalid_signature') {
+        // Redirect to invalid signature page
+        window.location.href = '/invalid-signature';
+        throw new Error('Invalid security token. Redirecting to login...');
+      } else {
+        // Generic 401 error
+        window.location.href = '/session-expired';
+        throw new Error('Authentication failed. Redirecting to login...');
+      }
     }
 
     if (axios.isAxiosError(error) && error.response) {
