@@ -6,6 +6,7 @@ import BudgetPage from './pages/BudgetPage';
 import ArchitecturePage from './pages/ArchitecturePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import SessionExpiredPage from './pages/SessionExpiredPage';
 import Header from './components/Header';
 import { AuthProvider } from './context/AuthContext';
 import { getAuthToken } from './services/api';
@@ -40,6 +41,7 @@ const App: React.FC = () => {
           <Route path="/architecture" element={<ArchitecturePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+          <Route path="/session-expired" element={<SessionExpiredPage />} />
           <Route path="/budget" element={
             <PrivateRoute>
               <BudgetPage />

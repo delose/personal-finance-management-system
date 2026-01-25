@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // Define the base URL for the API Gateway
 const API_GATEWAY_URL = 'http://localhost:8080';
@@ -29,6 +30,13 @@ export const getBudgetCategories = async (): Promise<string[]> => {
     return response.data;
   } catch (error) {
     console.error('Failed to fetch budget categories:', error);
+
+    // Check if it's a 401 error (session expired)
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      // Redirect to session expired page
+      window.location.href = '/session-expired';
+      throw new Error('Session expired. Redirecting to login...');
+    }
 
     // Fallback to default categories if API fails
     return [
@@ -108,6 +116,13 @@ export const createBudget = async (budgetData: {
     return response.data;
   } catch (error) {
     console.error('Failed to create budget:', error);
+
+    // Check if it's a 401 error (session expired)
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      // Redirect to session expired page
+      window.location.href = '/session-expired';
+      throw new Error('Session expired. Redirecting to login...');
+    }
 
     if (axios.isAxiosError(error) && error.response) {
       const errorData = error.response.data;
@@ -211,6 +226,13 @@ export const getCurrentUser = async (): Promise<any> => {
   } catch (error) {
     console.error('Failed to fetch user data:', error);
 
+    // Check if it's a 401 error (session expired)
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      // Redirect to session expired page
+      window.location.href = '/session-expired';
+      throw new Error('Session expired. Redirecting to login...');
+    }
+
     if (axios.isAxiosError(error) && error.response) {
       const errorData = error.response.data;
       let errorMessage = 'Failed to fetch user data.';
@@ -256,6 +278,13 @@ export const checkBudgetServiceHealth = async (): Promise<string> => {
     return response.data;
   } catch (error) {
     console.error('Failed to check budget service health:', error);
+
+    // Check if it's a 401 error (session expired)
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      // Redirect to session expired page
+      window.location.href = '/session-expired';
+      throw new Error('Session expired. Redirecting to login...');
+    }
 
     if (axios.isAxiosError(error) && error.response) {
       const errorData = error.response.data;
