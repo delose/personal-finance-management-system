@@ -1,6 +1,7 @@
 package com.delose.pfms.api_gateway.config;
 
 import com.delose.pfms.api_gateway.service.JwtService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
