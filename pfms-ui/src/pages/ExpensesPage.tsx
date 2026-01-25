@@ -1,18 +1,117 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import BaseLayout from '../components/BaseLayout';
 import { motion } from 'framer-motion';
-import { FaReceipt, FaChartLine, FaCalendarAlt } from 'react-icons/fa';
+import { FaReceipt, FaChartLine, FaCalendarAlt, FaPlus, FaList } from 'react-icons/fa';
+
+interface Expense {
+  id: number;
+  title: string;
+  amount: string;
+  category: string;
+  entry_date: string;
+  created_at: string;
+  updated_at: string;
+}
 
 const ExpensesPage: React.FC = () => {
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  
+  // Form state
+  const [formData, setFormData] = useState({
+    title: '',
+    amount: '',
+    category: '',
+    entry_date: ''
+  });
+
+  // Fetch expenses on mount
+  useEffect(() => {
+    fetchExpenses();
+  }, []);
+
+  const fetchExpenses = async () => {
+    try {
+      const response = await fetch('http://localhost/api/expenses');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.text();
+      // Parse the HTML response to extract JSON
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(data, 'text/html');
+      const preContent = doc.querySelector('pre')?.textContent;
+      if (preContent) {
+        const parsedExpenses = JSON.parse(preContent);
+        setExpenses(parsedExpenses);
+      }
+    } catch (err) {
+      console.error('Error fetching expenses:', err);
+      setError('Failed to fetch expenses');
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const response = await fetch('http://localhost/api/expenses', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: formData.title,
+          amount: parseFloat(formData.amount),
+          category: formData.category,
+          entry_date: formData.entry_date
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      setSuccess('Expense created successfully!');
+      setFormData({
+        title: '',
+        amount: '',
+        category: '',
+        entry_date: ''
+      });
+      
+      // Refresh the expenses list
+      fetchExpenses();
+    } catch (err) {
+      console.error('Error creating expense:', err);
+      setError('Failed to create expense. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   return (
     <BaseLayout>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-4xl mx-auto"
+        className="max-w-6xl mx-auto"
       >
         {/* Header Section */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <motion.h1
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -31,12 +130,144 @@ const ExpensesPage: React.FC = () => {
           </motion.p>
         </div>
 
+        {/* API Test Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="bg-gray-800 rounded-lg p-6 mb-8"
+        >
+          <h2 className="text-2xl font-bold mb-4 text-blue-300">
+            <FaPlus className="inline mr-2" />
+            Add New Expense
+          </h2>
+          
+          {error && (
+            <div className="bg-red-500/20 border border-red-500 text-red-300 p-3 rounded mb-4">
+              {error}
+            </div>
+          )}
+          
+          {success && (
+            <div className="bg-green-500/20 border border-green-500 text-green-300 p-3 rounded mb-4">
+              {success}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">Title:</label>
+              <input
+                type="text"
+                name="title"
+                value={formData.title}
+                onChange={handleInputChange}
+                required
+                placeholder="e.g., Coffee"
+                className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Amount:</label>
+              <input
+                type="number"
+                name="amount"
+                value={formData.amount}
+                onChange={handleInputChange}
+                required
+                step="0.01"
+                min="0"
+                placeholder="e.g., 4.50"
+                className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Category:</label>
+              <input
+                type="text"
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+                required
+                placeholder="e.g., Food"
+                className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Entry Date:</label>
+              <input
+                type="date"
+                name="entry_date"
+                value={formData.entry_date}
+                onChange={handleInputChange}
+                required
+                className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 focus:outline-none"
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:bg-blue-400"
+              >
+                {loading ? 'Creating...' : 'Create Expense'}
+              </button>
+            </div>
+          </form>
+        </motion.div>
+
+        {/* Existing Expenses Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="bg-gray-800 rounded-lg p-6"
+        >
+          <h2 className="text-2xl font-bold mb-4 text-green-300">
+            <FaList className="inline mr-2" />
+            Existing Expenses
+          </h2>
+
+          {expenses.length === 0 ? (
+            <p className="text-gray-400 text-center py-4">No expenses found. Create your first expense above!</p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="border-b border-gray-700">
+                    <th className="p-2 text-gray-300">ID</th>
+                    <th className="p-2 text-gray-300">Title</th>
+                    <th className="p-2 text-gray-300">Amount</th>
+                    <th className="p-2 text-gray-300">Category</th>
+                    <th className="p-2 text-gray-300">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {expenses.map((expense) => (
+                    <tr key={expense.id} className="border-b border-gray-700 hover:bg-gray-750">
+                      <td className="p-2 text-gray-400">{expense.id}</td>
+                      <td className="p-2 text-white">{expense.title}</td>
+                      <td className="p-2 text-green-400">${expense.amount}</td>
+                      <td className="p-2 text-blue-400">{expense.category}</td>
+                      <td className="p-2 text-gray-400">{expense.entry_date}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </motion.div>
+
         {/* Feature Preview Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.5 }}
             className="bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-750 transition-colors"
           >
             <div className="text-4xl mb-4 text-blue-400">
@@ -51,7 +282,7 @@ const ExpensesPage: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: 0.6 }}
             className="bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-750 transition-colors"
           >
             <div className="text-4xl mb-4 text-green-400">
@@ -66,7 +297,7 @@ const ExpensesPage: React.FC = () => {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5 }}
+            transition={{ delay: 0.7 }}
             className="bg-gray-800 rounded-lg p-6 text-center hover:bg-gray-750 transition-colors"
           >
             <div className="text-4xl mb-4 text-purple-400">
@@ -79,108 +310,28 @@ const ExpensesPage: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* Coming Soon Banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-lg p-8 text-center"
-        >
-          <h2 className="text-3xl font-bold mb-4 text-blue-300">Coming Soon</h2>
-          <p className="text-gray-300 text-lg mb-6">
-            The Expenses module is currently under development. We're working hard to bring you a powerful expense tracking solution.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors"
-              onClick={() => window.location.href = '/budget'}
-            >
-              Explore Budgets Instead
-            </button>
-            <button
-              className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors"
-              onClick={() => window.location.href = '/dashboard'}
-            >
-              Check Dashboard
-            </button>
-          </div>
-        </motion.div>
-
-        {/* Feature List */}
+        {/* API Endpoint Info */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
-          className="mt-12 bg-gray-800 rounded-lg p-8"
-        >
-          <h3 className="text-2xl font-bold mb-6 text-center">What to Expect</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div className="flex items-start">
-                <span className="text-green-400 mr-3">✓</span>
-                <div>
-                  <h4 className="font-semibold">Multi-currency Support</h4>
-                  <p className="text-gray-400 text-sm">Track expenses in any currency with automatic conversion</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-400 mr-3">✓</span>
-                <div>
-                  <h4 className="font-semibold">Receipt Scanning</h4>
-                  <p className="text-gray-400 text-sm">Upload photos of receipts for automatic data extraction</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-400 mr-3">✓</span>
-                <div>
-                  <h4 className="font-semibold">Expense Reports</h4>
-                  <p className="text-gray-400 text-sm">Generate detailed reports for tax season or business needs</p>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-4">
-              <div className="flex items-start">
-                <span className="text-green-400 mr-3">✓</span>
-                <div>
-                  <h4 className="font-semibold">Budget Integration</h4>
-                  <p className="text-gray-400 text-sm">See how actual spending compares to your budget goals</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-400 mr-3">✓</span>
-                <div>
-                  <h4 className="font-semibold">Smart Categories</h4>
-                  <p className="text-gray-400 text-sm">AI-powered categorization with custom rules</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <span className="text-green-400 mr-3">✓</span>
-                <div>
-                  <h4 className="font-semibold">Mobile App</h4>
-                  <p className="text-gray-400 text-sm">Track expenses on the go with our mobile application</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
-          className="mt-12 text-center"
+          className="mt-8 bg-gray-800 rounded-lg p-6"
         >
-          <p className="text-gray-400 mb-4">
-            Want to be notified when Expenses launches?
-          </p>
-          <button
-            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-lg transition-colors"
-            onClick={() => alert('Thanks for your interest! We\'ll notify you when Expenses is ready.')}
-          >
-            Get Notified
-          </button>
+          <h3 className="text-xl font-bold mb-4 text-purple-300">API Endpoint</h3>
+          <div className="bg-gray-900 p-4 rounded font-mono text-sm text-green-400">
+            POST http://localhost/api/expenses
+          </div>
+          <div className="mt-4 text-gray-400 text-sm">
+            <p>Example request body:</p>
+            <pre className="bg-gray-900 p-4 rounded mt-2 text-xs">
+{`{
+  "title": "Coffee",
+  "amount": 4.50,
+  "category": "Food",
+  "entry_date": "2026-01-13"
+}`}
+            </pre>
+          </div>
         </motion.div>
       </motion.div>
     </BaseLayout>
