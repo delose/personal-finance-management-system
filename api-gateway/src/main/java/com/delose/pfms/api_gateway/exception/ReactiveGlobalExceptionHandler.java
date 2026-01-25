@@ -36,7 +36,6 @@ public class ReactiveGlobalExceptionHandler implements org.springframework.web.s
 
     public ReactiveGlobalExceptionHandler(HandlerStrategies strategies,
                                           ObjectProvider<ServerCodecConfigurer> codecProvider) {
-//        this.messageWriters = strategies.messageWriters();
         this.viewResolvers = strategies.viewResolvers();
         this.codecProvider = codecProvider;
     }
