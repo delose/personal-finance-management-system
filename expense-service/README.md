@@ -1,148 +1,117 @@
-# Expense Service
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-A Laravel-based microservice for managing expenses in the Personal Finance Management System (PFMS).
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-## Features
-
-- Expense CRUD operations
-- Consul service registration
-- Health check endpoints
-- Docker support
-
-## Consul Service Registration
-
-This service is automatically registered with Consul when running in production mode.
-
-### Health Check Endpoints
-
-- **Basic Health**: `GET /health`
-- **Detailed Health**: `GET /health/detailed`
-
-### Service Discovery
-
-The service is registered with the following details:
-- **Service Name**: `expense-service`
-- **Service ID**: `expense-service`
-- **Tags**: `php`, `laravel`, `api`
-- **Address**: `laravel.test` (or your configured APP_URL)
-- **Port**: `80`
-
-### Environment Variables
-
-Add these to your `.env` file:
-```env
-CONSUL_HOST=consul-server
-CONSUL_PORT=8500
-CONSUL_SERVICE_NAME=expense-service
-CONSUL_SERVICE_ID=expense-service
-```
-
-## Docker Setup
-
-### Using Docker Compose with Consul
-
+## Generated using below CLI command
+### (NO NEED TO RUN AGAIN)
 ```bash
-docker-compose -f docker-compose.consul.yml up -d
+docker run --rm -v "$(pwd):/opt" -w /opt laravelsail/php84-composer:latest \
+    bash -c "composer create-project laravel/laravel expense-service && cd expense-service && php artisan sail:install --with=mysql"
 ```
 
-### Manual Registration
+# Quick Start
 
+## Starting the app
 ```bash
-./register-with-consul.sh
+./run-docker.sh
 ```
 
-## API Endpoints
+# Modifications / Additional Steps
 
-### Expenses
-- `GET /api/expenses` - List all expenses
-- `POST /api/expenses` - Create a new expense
-- `GET /api/expenses/{id}` - Get a specific expense
-- `PUT /api/expenses/{id}` - Update an expense
-- `DELETE /api/expenses/{id}` - Delete an expense
-
-### Health
-- `GET /health` - Basic health check
-- `GET /health/detailed` - Detailed health check with database status
-
-## Development
-
-### Setup
+## Execute Artisan Commands via Docker
+### To perform the CRUD implementation steps (from the previous response) without local PHP,
+### wrap every artisan command in a docker compose exec call
 ```bash
-composer install
-php artisan key:generate
-php artisan migrate
+docker compose exec laravel.test php artisan make:model Expense -mcr --api
 ```
 
-### Run Development Server
+## Define the Database Schema
+### Open the newly created migration file in database/migrations/****_create_expenses_table.php
+
+## Mass assignment
+### Added protected $fillable = ['title', 'amount', 'category', 'entry_date']; to `app/Models/Expense.php` model
+
+## Define API Routes
+### Using Command: `./vendor/bin/sail artisan install:api`
+
+## Add Resource Route
+### See `expense-service/routes/api.php`
+
+## Migrate command - this may not be required after running `Define API Routes`
+### Using Command : `./vendor/bin/sail artisan migrate`
+
+## Create an Expense
 ```bash
-php artisan serve
+curl -X POST http://localhost/api/expenses \
+     -H "Content-Type: application/json" \
+     -d '{
+           "title": "Coffee",
+           "amount": 4.50,
+           "category": "Food",
+           "entry_date": "2026-01-13"
+         }'
 ```
 
-### Run Tests
+## List All Expenses
 ```bash
-php artisan test
+curl http://localhost/api/expenses | jq
+# or
+curl -X GET http://localhost/api/expenses | jq
+
 ```
 
-## Docker Development
+## About Laravel
 
-### Using Sail
-```bash
-./vendor/bin/sail up
-./vendor/bin/sail artisan migrate
-```
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-### Using Custom Docker Compose
-```bash
-docker-compose up -d
-```
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-## Consul Commands
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-### Deregister Service
-```bash
-php artisan consul:deregister
-```
+## Learning Laravel
 
-### Graceful Shutdown
-```bash
-php artisan app:shutdown
-```
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
 
-## Production Deployment
+If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-1. Set `APP_ENV=production` in `.env`
-2. Set `APP_DEBUG=false`
-3. Configure database connection
-4. Run migrations: `php artisan migrate --force`
-5. The service will automatically register with Consul on startup
+## Laravel Sponsors
 
-## Monitoring
+We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
 
-### Check Service Health
-```bash
-curl http://localhost:8500/v1/health/checks/expense-service
-```
+### Premium Partners
 
-### Discover Service
-```bash
-curl http://localhost:8500/v1/catalog/service/expense-service
-```
+- **[Vehikl](https://vehikl.com)**
+- **[Tighten Co.](https://tighten.co)**
+- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
+- **[64 Robots](https://64robots.com)**
+- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
+- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
+- **[Redberry](https://redberry.international/laravel-development)**
+- **[Active Logic](https://activelogic.com)**
 
-### View in Consul UI
-Visit `http://localhost:8500/ui/dc1/services/expense-service`
+## Contributing
 
-## Troubleshooting
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-### Service Not Registering
-1. Check Consul server is running: `curl http://localhost:8500/v1/status/leader`
-2. Verify environment variables are set correctly
-3. Check logs: `php artisan tail` or `docker logs <container>`
+## Code of Conduct
 
-### Health Check Failing
-1. Ensure `/health` endpoint returns 200
-2. Check Consul UI for health status
-3. Verify network connectivity between service and Consul
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
 ## License
 
-MIT
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
