@@ -3,25 +3,48 @@ package com.delose.pfms.api_gateway.exception;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.codec.HttpMessageReader;
+import org.springframework.http.codec.HttpMessageWriter;
+import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.server.HandlerStrategies;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import org.springframework.web.reactive.result.view.ViewResolver;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
 
 @Component
 @Order(-2) // High precedence to handle exceptions before other handlers
 public class ReactiveGlobalExceptionHandler implements org.springframework.web.server.WebExceptionHandler {
+
+    private List<HttpMessageWriter<?>> messageWriters = Collections.emptyList();
+    private final List<ViewResolver> viewResolvers;
+    private final ObjectProvider<ServerCodecConfigurer> codecProvider;
+
+    public ReactiveGlobalExceptionHandler(HandlerStrategies strategies,
+                                          ObjectProvider<ServerCodecConfigurer> codecProvider) {
+//        this.messageWriters = strategies.messageWriters();
+        this.viewResolvers = strategies.viewResolvers();
+        this.codecProvider = codecProvider;
+    }
+
+    @Autowired
+    public void setMessageWriters(ServerCodecConfigurer serverCodecConfigurer) {
+        this.messageWriters = serverCodecConfigurer.getWriters();
+    }
 
     @Override
     public Mono<Void> handle(ServerWebExchange exchange, Throwable ex) {
@@ -32,10 +55,14 @@ public class ReactiveGlobalExceptionHandler implements org.springframework.web.s
         ServerRequest request = ServerRequest.create(exchange, (List<HttpMessageReader<?>>) exchange.getRequest().getHeaders());
 
         return handleException(ex, request)
-                .flatMap(response -> {
-                    exchange.getResponse().setStatusCode(response.statusCode());
-                    return response.writeTo(exchange.getResponse(), new org.springframework.web.reactive.function.server.support.ServerResponseContext());
-                })
+                .flatMap(response -> response.writeTo(exchange, new ServerResponse.Context() {
+                    @Override
+                    public List<HttpMessageWriter<?>> messageWriters() {
+                        return codecProvider.getIfAvailable().getWriters();
+                    }
+                    @Override
+                    public List<ViewResolver> viewResolvers() { return viewResolvers; }
+                }))
                 .onErrorResume(e -> Mono.error(ex));
     }
 
