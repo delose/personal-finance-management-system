@@ -38,6 +38,7 @@ const ExpensesPage: React.FC = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      console.log("fetchExpenses: " + JSON.stringify(response));
       const data = await response.text();
       // Parse the HTML response to extract JSON
       const parser = new DOMParser();
@@ -229,7 +230,7 @@ const ExpensesPage: React.FC = () => {
         >
           <h2 className="text-2xl font-bold mb-4 text-green-300">
             <FaList className="inline mr-2" />
-            Existing Expenses
+            Existing Expenses {expenses.length}
           </h2>
 
           {expenses.length === 0 ? (
