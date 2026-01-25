@@ -12,6 +12,7 @@ import Header from './components/Header';
 import { AuthProvider } from './context/AuthContext';
 import { getAuthToken } from './services/api';
 import DashboardMonitor from './components/DashboardMonitor';
+import ExpensesPage from './pages/ExpensesPage';
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = !!getAuthToken();
@@ -52,6 +53,11 @@ const App: React.FC = () => {
           <Route path="/dashboard" element={
             <PrivateRoute>
               <DashboardMonitor />
+            </PrivateRoute>
+          } />
+          <Route path="/expenses" element={
+            <PrivateRoute>
+              <ExpensesPage />
             </PrivateRoute>
           } />
           <Route path="/" element={
