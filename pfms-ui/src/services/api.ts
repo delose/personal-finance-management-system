@@ -289,11 +289,6 @@ export const getCurrentUser = async (): Promise<any> => {
   }
 };
 
-// Get auth token helper
-export const getAuthToken = (): string | null => {
-  return localStorage.getItem('authToken');
-};
-
 // Logout function
 export const logout = (): void => {
   localStorage.removeItem('authToken');
