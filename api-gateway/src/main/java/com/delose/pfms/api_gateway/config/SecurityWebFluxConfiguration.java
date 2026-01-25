@@ -14,6 +14,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.reactive.function.server.HandlerStrategies;
 
 import java.util.List;
 
@@ -89,5 +90,10 @@ public class SecurityWebFluxConfiguration {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public HandlerStrategies handlerStrategies() {
+        return HandlerStrategies.withDefaults();
     }
 }
