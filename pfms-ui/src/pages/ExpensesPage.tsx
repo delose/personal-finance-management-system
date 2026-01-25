@@ -38,14 +38,16 @@ const ExpensesPage: React.FC = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      console.log("fetchExpenses: " + JSON.stringify(response));
       const data = await response.text();
+      console.log("fetchExpenses response text:", data);
       // Parse the HTML response to extract JSON
       const parser = new DOMParser();
       const doc = parser.parseFromString(data, 'text/html');
       const preContent = doc.querySelector('pre')?.textContent;
+      console.log("fetchExpenses preContent:", preContent);
       if (preContent) {
         const parsedExpenses = JSON.parse(preContent);
+        console.log("fetchExpenses parsedExpenses:", parsedExpenses);
         setExpenses(parsedExpenses);
       }
     } catch (err) {
