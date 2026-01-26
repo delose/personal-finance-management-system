@@ -15,6 +15,7 @@ import DashboardMonitor from './components/DashboardMonitor';
 import ExpensesPage from './pages/ExpensesPage';
 import GoalsPage from './pages/GoalsPage';
 import ReportsPage from './pages/ReportsPage';
+import Footer from './components/Footer';
 
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = !!getAuthToken();
@@ -40,44 +41,49 @@ const App: React.FC = () => {
   return (
     <AuthProvider>
       <Router>
-        <Header />
-        <Routes>
-          <Route path="/architecture" element={<ArchitecturePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/session-expired" element={<SessionExpiredPage />} />
-          <Route path="/invalid-signature" element={<InvalidSignaturePage />} />
-          <Route path="/budget" element={
-            <PrivateRoute>
-              <BudgetPage />
-            </PrivateRoute>
-          } />
-          <Route path="/dashboard" element={
-            <PrivateRoute>
-              <DashboardMonitor />
-            </PrivateRoute>
-          } />
-          <Route path="/expenses" element={
-            <PrivateRoute>
-              <ExpensesPage />
-            </PrivateRoute>
-          } />
-          <Route path="/goals" element={
-            <PrivateRoute>
-              <GoalsPage />
-            </PrivateRoute>
-          } />
-          <Route path="/reports" element={
-            <PrivateRoute>
-              <ReportsPage />
-            </PrivateRoute>
-          } />
-          <Route path="/" element={
-            <PrivateRoute>
-              <BudgetPage />
-            </PrivateRoute>
-          } />
-        </Routes>
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <main className="flex-grow p-4">
+            <Routes>
+              <Route path="/architecture" element={<ArchitecturePage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/session-expired" element={<SessionExpiredPage />} />
+              <Route path="/invalid-signature" element={<InvalidSignaturePage />} />
+              <Route path="/budget" element={
+                <PrivateRoute>
+                  <BudgetPage />
+                </PrivateRoute>
+              } />
+              <Route path="/dashboard" element={
+                <PrivateRoute>
+                  <DashboardMonitor />
+                </PrivateRoute>
+              } />
+              <Route path="/expenses" element={
+                <PrivateRoute>
+                  <ExpensesPage />
+                </PrivateRoute>
+              } />
+              <Route path="/goals" element={
+                <PrivateRoute>
+                  <GoalsPage />
+                </PrivateRoute>
+              } />
+              <Route path="/reports" element={
+                <PrivateRoute>
+                  <ReportsPage />
+                </PrivateRoute>
+              } />
+              <Route path="/" element={
+                <PrivateRoute>
+                  <BudgetPage />
+                </PrivateRoute>
+              } />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </Router>
     </AuthProvider>
   );
