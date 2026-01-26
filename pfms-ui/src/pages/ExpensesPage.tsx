@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import BaseLayout from '../components/BaseLayout';
 import { motion } from 'framer-motion';
 import { FaReceipt, FaChartLine, FaCalendarAlt, FaPlus, FaList } from 'react-icons/fa';
+import ExpenseServiceHealth from '../components/ExpenseServiceHealth';
 
 interface Expense {
   id: number;
@@ -126,94 +127,7 @@ const ExpensesPage: React.FC = () => {
         </div>
 
         {/* API Test Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          className="bg-gray-800 rounded-lg p-6 mb-8"
-        >
-          <h2 className="text-2xl font-bold mb-4 text-blue-300">
-            <FaPlus className="inline mr-2" />
-            Add New Expense
-          </h2>
-          
-          {error && (
-            <div className="bg-red-500/20 border border-red-500 text-red-300 p-3 rounded mb-4">
-              {error}
-            </div>
-          )}
-          
-          {success && (
-            <div className="bg-green-500/20 border border-green-500 text-green-300 p-3 rounded mb-4">
-              {success}
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-1">Title:</label>
-              <input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleInputChange}
-                required
-                placeholder="e.g., Coffee"
-                className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">Amount:</label>
-              <input
-                type="number"
-                name="amount"
-                value={formData.amount}
-                onChange={handleInputChange}
-                required
-                step="0.01"
-                min="0"
-                placeholder="e.g., 4.50"
-                className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">Category:</label>
-              <input
-                type="text"
-                name="category"
-                value={formData.category}
-                onChange={handleInputChange}
-                required
-                placeholder="e.g., Food"
-                className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 focus:outline-none"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-1">Entry Date:</label>
-              <input
-                type="date"
-                name="entry_date"
-                value={formData.entry_date}
-                onChange={handleInputChange}
-                required
-                className="w-full p-2 rounded bg-gray-700 border border-gray-600 focus:border-blue-500 focus:outline-none"
-              />
-            </div>
-
-            <div className="md:col-span-2">
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:bg-blue-400"
-              >
-                {loading ? 'Creating...' : 'Create Expense'}
-              </button>
-            </div>
-          </form>
-        </motion.div>
+        <ExpenseServiceHealth />
 
         {/* Existing Expenses Section */}
         <motion.div
