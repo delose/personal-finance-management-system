@@ -224,7 +224,7 @@ const ExpensesPage: React.FC = () => {
         >
           <h2 className="text-2xl font-bold mb-4 text-green-300">
             <FaList className="inline mr-2" />
-            Existing Expenses {expenses.length}
+            Existing Expenses
           </h2>
 
           {expenses.length === 0 ? (
