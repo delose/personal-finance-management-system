@@ -20,7 +20,7 @@ const ExpenseServiceHealth: React.FC = () => {
     const startTime = performance.now();
 
     try {
-      const response = await fetch('http://localhost/api/expenses/health', {
+      const response = await fetch('http://localhost/api/health', {
         method: 'GET',
         signal: AbortSignal.timeout(5000), // 5 second timeout
       });
