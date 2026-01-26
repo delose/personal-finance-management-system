@@ -10,3 +10,8 @@ Route::get('/user', function (Request $request) {
 
 // Added the resource route
 Route::apiResource('expenses', ExpenseController::class);
+
+// Health check endpoint
+Route::get('/expenses/health', function () {
+    return response()->json(['status' => 'healthy', 'service' => 'expense-service']);
+});
