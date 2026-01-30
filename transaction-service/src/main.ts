@@ -7,10 +7,10 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  const httpPort = 3003; // Port for Consul Health Check (HTTP)
+  const httpPort = 3004; // Port for Consul Health Check (HTTP)
   const tcpPort = 3002; // Port for Microservice Messaging (TCP)
 
-  // 1. Connect TCP Microservice on 3003
+  // 1. Connect TCP Microservice on 3002
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.TCP,
     options: {
@@ -25,7 +25,7 @@ async function bootstrap() {
 
   // 3. Start both
   await app.startAllMicroservices();
-  await app.listen(httpPort, '0.0.0.0'); // Listen for Health Checks on 3003
+  await app.listen(httpPort, '0.0.0.0'); // Listen for Health Checks on 3004
 }
 
 bootstrap();
