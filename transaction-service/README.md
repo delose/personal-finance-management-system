@@ -64,6 +64,11 @@ curl -X POST http://localhost:3003/account \
      -d '{"email": "aaa@aaa.com", "password" : "pw123", "fullName": "Ziggy"}'
 ```
 
+## Health check for transaction service
+```bash
+curl localhost:3004
+````
+
 ## Deregister this consul
 ```bash
 npm run deregister:service transaction-service-3002
