@@ -143,8 +143,8 @@ Infrastructure:
 | **API Gateway** | Spring Boot | 8080 | MySQL | - | Eureka |
 | **Budget Service** | Spring Boot | 3001 | PostgreSQL | Kafka (Producer) | Eureka |
 | **Goal Service** | Spring Boot | 3002 | PostgreSQL | - | Eureka |
-| **Transaction Service** | NestJS | 3003 | PostgreSQL | RabbitMQ (Producer) | Consul |
-| **Account Service** | NestJS | 3001 | PostgreSQL | RabbitMQ (Consumer) | - |
+| **Transaction Service** | NestJS | 3004 | PostgreSQL | RabbitMQ (Producer) | Consul |
+| **Account Service** | NestJS | 3003 | PostgreSQL | RabbitMQ (Consumer) | - |
 | **Expense Service** | PHP | 3004 | PostgreSQL | - | Consul |
 | **Reporting Service** | Python/Flask | 3005 | PostgreSQL | - | Consul |
 | **Analytics Service** | Go | 3009 | TimescaleDB | Kafka (Consumer) | Consul |
