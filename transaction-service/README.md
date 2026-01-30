@@ -57,12 +57,17 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Test account creation (for logging only)
+## Test account creation (for logging only) via transaction service producer /account endpoint
 ```bash
-curl -X POST http://localhost:3003/account \
+curl -X POST http://localhost:3004/account \
      -H 'Content-Type: application/json' \
      -d '{"email": "aaa@aaa.com", "password" : "pw123", "fullName": "Ziggy"}'
 ```
+- Expected to see in `account-service` container
+```bash
+[Account-Service: Received account:  { email: 'aaa@aaa.com', password: 'pw123', fullName: 'Ziggy' }
+```
+
 
 ## Health check for transaction service
 ```bash
