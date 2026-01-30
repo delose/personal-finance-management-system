@@ -11,11 +11,9 @@ services:
   service:
     build: .
     ports:
-      - "3001:3001"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "3003:3003"
     environment:
-      PORT: 3001
+      PORT: 3003
       RABBITMQ_URL: amqp://guest:guest@host.docker.internal:5672
       SERVICE_NAME: account-service
       SERVICE_HOST: host.docker.internal
@@ -24,3 +22,5 @@ services:
       DB_USER: pfms
       DB_PASS: pfms
       DB_NAME: pfms
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
