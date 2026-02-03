@@ -13,3 +13,8 @@ localhost:8084/actuator/health
 ```bash
 localhost:8500/v1/health/node/goal-service
 ```
+
+# Prometheus endpoint
+```bash
+http://localhost:8084/actuator/prometheus
+```
