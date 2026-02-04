@@ -18,3 +18,9 @@ localhost:8500/v1/health/node/goal-service
 ```bash
 http://localhost:8084/actuator/prometheus
 ```
+
+# Prometheus page
+Click [here](http://localhost:9090/)
+
+# Grafana page
+Click [here](http://localhost:3005/)
