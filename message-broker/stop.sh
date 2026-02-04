@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker compse stop
+docker compose stop
 
 
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker compse down
+docker compose down
 
 
 
