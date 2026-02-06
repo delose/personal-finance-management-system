@@ -142,6 +142,24 @@ const DashboardMonitor: React.FC = () => {
               <h3 className="font-bold mb-1">Portainer</h3>
               <p className="text-sm opacity-90">Docker Management</p>
             </a>
+            <a
+              href="http://localhost:9090/query"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-lg shadow transition-colors duration-200 flex flex-col items-center justify-center"
+            >
+              <h3 className="font-bold mb-1">Prometheus</h3>
+              <p className="text-sm opacity-90">Time-series metrics</p>
+            </a>
+            <a
+              href="http://localhost:3005/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-green-600 hover:bg-green-700 text-white p-4 rounded-lg shadow transition-colors duration-200 flex flex-col items-center justify-center"
+            >
+              <h3 className="font-bold mb-1">Grafana</h3>
+              <p className="text-sm opacity-90">Frontend visualization</p>
+            </a>
           </div>
         </div>
 
