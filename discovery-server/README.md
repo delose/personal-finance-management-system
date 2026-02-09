@@ -6,29 +6,30 @@ Service registration & discovery
 
 ## Running the Discovery Server
 
-    ```
-    mvn spring-boot:run
-    ```
+```bash
+mvn spring-boot:run
+```
 
 This will start the Discovery Server on port 8761.
 
 ## Access Eureka Dashboard
 
-    ```
-    http://localhost:8761
-    ```
+```bash
+http://localhost:8761
+```
 
 ## Run the Tests
 
-    ```
-    mvn test
-    ```
+```bash
+mvn test
+```
 
 ## Health Check and Monitoring
 
 ``` bash
 curl http://localhost:8761/actuator/health
 curl http://localhost:8761/actuator/metrics 
+curl http://localhost:8761/health 
 ```
 
 ## Run dockerized app
